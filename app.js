@@ -28,6 +28,7 @@
     francophone: [["fr-fill", "fill-opacity", 0.55], ["fr-line", "line-opacity", 0.9]],
     germanophone: [["de-fill", "fill-opacity", 0.55], ["de-hatch", "fill-opacity", 1], ["de-line", "line-opacity", 0.9]],
     "ch-regions": [["ch-fill", "fill-opacity", 0.5], ["ch-line", "line-opacity", 0.7]],
+    buildings3d: [["buildings-3d", "fill-extrusion-opacity", 0.92]],
     "language-border": [["border-casing", "line-opacity", 0.9], ["border-line", "line-opacity", 1]],
   };
 
@@ -96,6 +97,8 @@
     map.on("load", () => {
       addDataLayers();
       if (!offline) addTerrain();
+      if (!offline) addBuildings();
+      if (!offline) map.once("idle", prewarmTiles);
       addMarkers();
       goTo(slideFromHash(), { instant: true });
     });
@@ -185,6 +188,65 @@
         "hillshade-highlight-color": "#ffffff",
       },
     }, map.getLayer("water") ? "water" : undefined);
+  }
+
+  // 3D buildings from the basemap's building layer, only from zoom 14.
+  function addBuildings() {
+    const style = map.getStyle();
+    const source = Object.keys(style.sources).find((id) => style.sources[id].type === "vector");
+    if (!source) return;
+    if (map.getLayer("building-3d")) map.removeLayer("building-3d"); // the basemap's own
+    const firstLabel = style.layers.find((l) => l.type === "symbol");
+    map.addLayer({
+      id: "buildings-3d", type: "fill-extrusion", source, "source-layer": "building", minzoom: 14,
+      filter: ["!=", ["get", "hide_3d"], true],
+      paint: {
+        "fill-extrusion-color": ["interpolate", ["linear"], ["coalesce", ["get", "render_height"], 5],
+          0, "#ece6dc", 25, "#d8d0c3", 80, "#bdb4a6"],
+        "fill-extrusion-height": ["coalesce", ["get", "render_height"], 5],
+        "fill-extrusion-base": ["coalesce", ["get", "render_min_height"], 0],
+        "fill-extrusion-opacity": 0,
+        "fill-extrusion-opacity-transition": { duration: FADE },
+      },
+    }, firstLabel && firstLabel.id);
+  }
+
+  // Download the tiles of every close-up in the background right after start,
+  // so they come from the browser cache when the camera gets there.
+  function prewarmTiles() {
+    const templates = [];
+    for (const id of ["dem", ...Object.keys(map.getStyle().sources)]) {
+      const src = map.getSource(id);
+      if (src && src.tiles && src.tiles[0] && (src.type === "vector" || id === "dem")) {
+        templates.push({ url: src.tiles[0], maxzoom: src.maxzoom || 14 });
+      }
+    }
+    const urls = new Set();
+    for (const slide of slides) {
+      if (slide.camera.zoom < 9) continue;
+      const [lng, lat] = slide.camera.center;
+      for (const t of templates) {
+        const top = Math.min(Math.floor(slide.camera.zoom), t.maxzoom);
+        for (let z = top; z >= top - 3 && z >= 8; z--) {
+          const n = 2 ** z;
+          const x = Math.floor(((lng + 180) / 360) * n);
+          const rad = (lat * Math.PI) / 180;
+          const y = Math.floor(((1 - Math.asinh(Math.tan(rad)) / Math.PI) / 2) * n);
+          for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+              urls.add(t.url.replace("{z}", z).replace("{x}", x + dx).replace("{y}", y + dy));
+            }
+          }
+        }
+      }
+    }
+    // A few at a time, so the visible map keeps priority.
+    const queue = [...urls];
+    const next = () => {
+      const url = queue.shift();
+      if (url) fetch(url).catch(() => {}).finally(next);
+    };
+    for (let i = 0; i < 4; i++) next();
   }
 
   function setTerrain(on) {
