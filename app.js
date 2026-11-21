@@ -107,6 +107,7 @@
     map.on("click", () => go(1));
 
     window.__map = map; // for debugging in the console
+    window.__goTo = goTo;
   }
 
   function onMapError() { /* tile errors are handled in the offline notice (see below) */ }
@@ -264,7 +265,7 @@
       const el = document.createElement("div");
       el.className = "marker";
       const label = document.createElement("span");
-      label.textContent = text;
+      label.textContent = plain(text);
       el.append(label);
       markers[f.properties.id] = el;
       new maplibregl.Marker({ element: el, anchor: "bottom" }).setLngLat(f.geometry.coordinates).addTo(map);
@@ -314,6 +315,7 @@
     stopRotation();
 
     $("counter").textContent = `${index + 1} / ${slides.length}`;
+    renderNotes();
     history.replaceState(null, "", `#${index + 1}`);
 
     const cam = { ...slide.camera, padding: cameraPadding(slide) };
@@ -336,12 +338,25 @@
 
   // Later steps hook into these three.
   function wantsTerrain(slide) { return (slide.layers || []).includes("terrain"); }
-  function cameraPadding() { return { top: 0, bottom: 0, left: 0, right: 0 }; }
+
+  // Keep the camera target in the part of the screen the panel leaves free.
+  function cameraPadding(slide) {
+    const layout = slide.panel ? slide.panel.layout || "side" : "none";
+    const w = window.innerWidth;
+    return {
+      top: 0,
+      bottom: 0,
+      left: layout === "title" ? w * 0.42 : 0,
+      right: layout === "side" ? w * 0.36 : layout === "wide" ? w * 0.46 : 0,
+    };
+  }
   function beforeMove(slide, duration) {
     // Cross-fade the layers part-way into the flight.
     const token = navToken;
     setTimeout(() => { if (token === navToken) applyLayers(slide); }, duration * 0.35);
     showMarkers(null);
+    $("panel").classList.add("hidden");
+    $("legend").classList.add("hidden");
     // Terrain is switched on before the flight and off only after it, so the
     // switch always happens far away from the ground where it is invisible.
     if (wantsTerrain(slide)) setTerrain(true);
@@ -350,8 +365,137 @@
     if (token !== navToken) return;
     if (!wantsTerrain(slide)) setTerrain(false);
     showMarkers(slide);
+    renderPanel(slide);
+    renderLegend(slide);
     startRotation(slide);
   }
+
+  /* ---------- panel, legend, notes ---------- */
+
+  // "[STRONG: text]" / "[WEAK: text]" -> "text" (unless SHOW_PLACEHOLDER_MARKS).
+  function plain(text) {
+    if (P.SHOW_PLACEHOLDER_MARKS) return text;
+    return String(text).replace(/\[(?:STRONG|WEAK):\s*([^\]]*)\]/g, "$1");
+  }
+
+  // Small DOM helper: el("p", "class", "text" or [children]).
+  function el(tag, className, content) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (Array.isArray(content)) node.append(...content.filter(Boolean));
+    else if (content != null) node.textContent = plain(content);
+    return node;
+  }
+
+  const langTag = (code) => el("span", "lang-tag", code.toUpperCase());
+
+  function renderPanel(slide) {
+    const panel = $("panel");
+    const p = slide.panel;
+    panel.replaceChildren();
+    if (!p) return;
+    panel.className = `layout-${p.layout || "side"}${p.weakPanel ? " weak-panel" : ""}`;
+
+    if (p.kicker) panel.append(el("p", "kicker", p.kicker));
+    if (p.heading) {
+      panel.append(el("h1", "", [p.weakPanel && langTag(P.WEAK_LANG), document.createTextNode(plain(p.heading))]));
+    }
+    if (p.subheading) panel.append(el("p", "subheading", p.subheading));
+    if (p.statement) panel.append(el("p", "statement", p.statement));
+    if (p.bullets) panel.append(el("ul", "bullets", p.bullets.map((b) => el("li", "", b))));
+    if (p.image) {
+      const img = el("img");
+      img.src = p.image.src;
+      img.alt = plain(p.image.alt || "");
+      panel.append(el("figure", "", [img, p.image.caption && el("figcaption", "", p.image.caption)]));
+    }
+    if (p.diagram && DIAGRAMS[p.diagram.type]) {
+      const figure = el("figure", "diagram");
+      figure.innerHTML = DIAGRAMS[p.diagram.type](p.diagram.labels || {});
+      panel.append(figure);
+    }
+    if (p.weakLanguage) {
+      const lines = [].concat(p.weakLanguage);
+      panel.append(el("div", "weak", [langTag(P.WEAK_LANG), el("div", "", lines.map((l) => el("p", "", l)))]));
+    }
+    if (p.showSources) panel.append(el("ol", "sources", P.sources.map((src) => el("li", "", src))));
+    if (p.names) panel.append(el("p", "names", p.names));
+    if (p.glossary && p.glossary.length) {
+      panel.append(el("div", "glossary", [
+        el("h2", "", P.ui.glossary),
+        el("dl", "", p.glossary.flatMap((g) => [
+          el("dt", "", [langTag(P.STRONG_LANG), document.createTextNode(plain(g.strong))]),
+          el("dd", "", [langTag(P.WEAK_LANG), document.createTextNode(plain(g.weak))]),
+        ])),
+      ]));
+    }
+    panel.classList.remove("hidden");
+  }
+
+  function renderLegend(slide) {
+    const legend = $("legend");
+    legend.replaceChildren();
+    if (!slide.legend) return;
+    for (const item of slide.legend) {
+      legend.append(el("div", "legend-row", [
+        el("span", `swatch swatch-${item.swatch}`),
+        el("span", "legend-strong", item.strong),
+        item.weak && el("span", "legend-weak", item.weak),
+      ]));
+    }
+    legend.classList.remove("hidden");
+  }
+
+  // Speaker notes (key N): cues for this slide and the title of the next one.
+  function renderNotes() {
+    const slide = slides[current];
+    const next = slides[current + 1];
+    $("notes").replaceChildren(
+      el("h2", "", `${plain(P.ui.notes)} ${current + 1} / ${slides.length}`),
+      el("ul", "", (slide.notes || []).map((n) => el("li", "", n))),
+      next && el("p", "notes-next", `${plain(P.ui.nextSlide)} : ${plain((next.panel && next.panel.heading) || next.id)}`),
+    );
+  }
+
+  function esc(text) {
+    return plain(text || "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  }
+
+  // Schematic drawings, by diagram.type. The labels come from content.js.
+  const DIAGRAMS = {
+    "lake-energy": (t) => `
+      <svg viewBox="0 0 520 250" role="img" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-cold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#1971c2"/></marker>
+          <marker id="arrow-hot" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#e03131"/></marker>
+        </defs>
+        <!-- lake -->
+        <path d="M6 168 q14 -9 28 0 t28 0 t28 0 t28 0 t28 0 v72 h-140z" fill="#a5d8ff" stroke="#1971c2" stroke-width="2"/>
+        <text x="76" y="215" text-anchor="middle" class="d-label">${esc(t.lake)}</text>
+        <!-- lake water to the station -->
+        <path d="M100 170 V112 H196" fill="none" stroke="#1971c2" stroke-width="5" marker-end="url(#arrow-cold)"/>
+        <text x="92" y="100" text-anchor="middle" class="d-flow" fill="#1971c2">${esc(t.intake)}</text>
+        <!-- heat-pump station -->
+        <rect x="204" y="70" width="120" height="84" rx="10" fill="#fff" stroke="#14202e" stroke-width="2.5"/>
+        <path d="M250 104 a15 15 0 1 1 15 15" fill="none" stroke="#e03131" stroke-width="4" marker-end="url(#arrow-hot)"/>
+        <path d="M279 120 a15 15 0 1 1 -15 -15" fill="none" stroke="#1971c2" stroke-width="4" marker-end="url(#arrow-cold)"/>
+        <text x="264" y="58" text-anchor="middle" class="d-label">${esc(t.station)}</text>
+        <!-- heat to the buildings -->
+        <path d="M324 96 H388" fill="none" stroke="#e03131" stroke-width="5" marker-end="url(#arrow-hot)"/>
+        <text x="356" y="84" text-anchor="middle" class="d-flow" fill="#e03131">${esc(t.heat)}</text>
+        <!-- buildings -->
+        <g fill="#fff" stroke="#14202e" stroke-width="2.5">
+          <path d="M398 154 V92 l24 -20 24 20 V154z"/>
+          <path d="M452 154 V64 h50 V154z"/>
+        </g>
+        <g fill="#ffd8a8"><rect x="413" y="104" width="16" height="16"/><rect x="462" y="78" width="12" height="14"/><rect x="482" y="78" width="12" height="14"/><rect x="462" y="106" width="12" height="14"/><rect x="482" y="106" width="12" height="14"/></g>
+        <text x="450" y="178" text-anchor="middle" class="d-label">${esc(t.buildings)}</text>
+        <!-- cooled water back to the lake -->
+        <path d="M388 136 H330" fill="none" stroke="#1971c2" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#arrow-cold)"/>
+        <path d="M250 154 V200 H156" fill="none" stroke="#1971c2" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#arrow-cold)"/>
+        <text x="262" y="222" text-anchor="start" class="d-flow" fill="#1971c2">${esc(t.back)}</text>
+      </svg>`,
+  };
 
   /* ---------- slow rotation while a slide is shown ---------- */
 
@@ -397,14 +541,16 @@
       case "Home": goTo(0); break;
       case "End": goTo(slides.length - 1); break;
       case "f": case "F": toggleFullscreen(); break;
+      case "n": case "N": $("notes").hidden = !$("notes").hidden; break;
       default: return;
     }
     e.preventDefault();
   });
   // Typing e.g. #7 in the address bar jumps to that slide.
   window.addEventListener("hashchange", () => goTo(slideFromHash()));
-  $("prev").addEventListener("click", () => go(-1));
-  $("next").addEventListener("click", () => go(1));
+  // (blur, so that Space/Enter afterwards does not also "click" the button)
+  $("prev").addEventListener("click", (e) => { e.currentTarget.blur(); go(-1); });
+  $("next").addEventListener("click", (e) => { e.currentTarget.blur(); go(1); });
 
   init();
 })();
