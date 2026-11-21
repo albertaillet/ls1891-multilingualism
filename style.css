@@ -54,3 +54,33 @@ html, body {
 #nav button:hover { background: rgba(20, 32, 46, 0.1); }
 #counter { font-size: 1.05rem; font-weight: 600; min-width: 3.6rem; text-align: center; }
 #keys { font-size: 0.75rem; opacity: 0.55; padding-right: 0.3rem; }
+
+/* ---------- map markers ---------- */
+/* MapLibre sets the opacity of .marker itself, so we fade its contents. */
+.marker { pointer-events: none; }
+.marker span, .marker::after { opacity: 0; transition: opacity 0.8s; }
+.marker.shown span, .marker.shown::after { opacity: 1; }
+.marker span {
+  display: block;
+  margin-bottom: 0.7rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 0.4rem;
+  background: var(--ink);
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+.marker::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-left: -0.35rem;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid #fff;
+}

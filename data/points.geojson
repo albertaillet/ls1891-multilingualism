@@ -1,0 +1,45 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "biel",
+        "verified": "OpenStreetMap (Nominatim, 2026-11-21): place=square 'Place Centrale / Zentralplatz', Biel/Bienne"
+      },
+      "geometry": { "type": "Point", "coordinates": [7.2468, 47.1369] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "language-border",
+        "verified": "A vertex of data/ch_language_border.geojson (BFS language regions) between Biel/Bienne and Evilard"
+      },
+      "geometry": { "type": "Point", "coordinates": [7.2276, 47.1539] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "lake-energy",
+        "verified": "NOT VERIFIED. Approximate point on the lakeshore between Biel and Nidau; the exact site of the Energieverbund Bielersee heat-pump station was not found in OpenStreetMap"
+      },
+      "geometry": { "type": "Point", "coordinates": [7.2365, 47.1300] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "tissot-arena",
+        "verified": "OpenStreetMap (Nominatim, 2026-11-21): leisure=stadium 'Tissot Arena', Boulevard des Sports 18; OSM also maps a power=plant (solar) on the roof at 47.15569, 7.28142"
+      },
+      "geometry": { "type": "Point", "coordinates": [7.2817, 47.1556] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "hagneck",
+        "verified": "OpenStreetMap (Overpass, 2026-11-21): power=plant 'Wasserkraftwerk Hagneck 2' (operator BKW), the plant opened in 2015"
+      },
+      "geometry": { "type": "Point", "coordinates": [7.1768, 47.0597] }
+    }
+  ]
+}

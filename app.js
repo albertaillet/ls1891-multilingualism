@@ -27,9 +27,24 @@
   const LAYER_PARTS = {
     francophone: [["fr-fill", "fill-opacity", 0.55], ["fr-line", "line-opacity", 0.9]],
     germanophone: [["de-fill", "fill-opacity", 0.55], ["de-hatch", "fill-opacity", 1], ["de-line", "line-opacity", 0.9]],
+    "ch-regions": [["ch-fill", "fill-opacity", 0.5], ["ch-line", "line-opacity", 0.7]],
+    "language-border": [["border-casing", "line-opacity", 0.9], ["border-line", "line-opacity", 1]],
   };
 
+  // Keyless elevation tiles (Mapzen Terrarium on AWS Open Data).
+  const DEM = {
+    type: "raster-dem",
+    tiles: ["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"],
+    encoding: "terrarium",
+    tileSize: 256,
+    maxzoom: 14,
+    attribution: "Terrain: Mapzen / AWS Open Data",
+  };
+  const TERRAIN_EXAGGERATION = 1.3;
+
   let map;
+  let terrainOn = false;
+  const markers = {}; // point id -> HTML element
   let offline = false;
   let current = -1;
   let navToken = 0; // invalidates pending "arrived" callbacks when the slide changes
@@ -54,6 +69,16 @@
       style = OFFLINE_STYLE;
     }
     style.projection = { type: "globe" };
+    style.sky = {
+      "sky-color": "#7db3e8",
+      "horizon-color": "#e4f0fb",
+      "fog-color": "#eef3f6",
+      "sky-horizon-blend": 0.7,
+      "horizon-fog-blend": 0.7,
+      "fog-ground-blend": 0.75,
+      // Blue halo around the globe, fading out as we approach the ground.
+      "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 1, 5, 1, 8, 0],
+    };
 
     const start = slides[slideFromHash()].camera;
     map = new maplibregl.Map({
@@ -70,6 +95,8 @@
     map.on("error", onMapError);
     map.on("load", () => {
       addDataLayers();
+      if (!offline) addTerrain();
+      addMarkers();
       goTo(slideFromHash(), { instant: true });
     });
     // Any manual interaction stops the automatic rotation.
@@ -135,6 +162,57 @@
       paint: { "fill-pattern": "hatch-de", "fill-opacity": 0, "fill-opacity-transition": fade },
     }, below);
     line("de-line", "germanophone", COLORS.de, 1.2);
+
+    map.addSource("ch-regions", { type: "geojson", data: "data/ch_language_regions.geojson" });
+    map.addSource("ch-border", { type: "geojson", data: "data/ch_language_border.geojson" });
+    fill("ch-fill", "ch-regions", ["match", ["get", "lang"], "de", COLORS.de, "fr", COLORS.fr, "it", COLORS.it, COLORS.rm]);
+    line("ch-line", "ch-regions", "#ffffff", 1);
+    // The German/French border: white casing with a dashed dark line on top.
+    line("border-casing", "ch-border", "#ffffff", ["interpolate", ["linear"], ["zoom"], 6, 4, 13, 9]);
+    line("border-line", "ch-border", "#14202e", ["interpolate", ["linear"], ["zoom"], 6, 2, 13, 4], { "line-dasharray": [2, 2] });
+  }
+
+  // Two separate DEM sources, as MapLibre recommends: one drives the 3D
+  // terrain, the other the hillshading.
+  function addTerrain() {
+    map.addSource("dem", DEM);
+    map.addSource("dem-hillshade", DEM);
+    map.addLayer({
+      id: "hillshade", type: "hillshade", source: "dem-hillshade", minzoom: 6,
+      paint: {
+        "hillshade-exaggeration": 0.35,
+        "hillshade-shadow-color": "#3d4a57",
+        "hillshade-highlight-color": "#ffffff",
+      },
+    }, map.getLayer("water") ? "water" : undefined);
+  }
+
+  function setTerrain(on) {
+    if (offline || on === terrainOn) return;
+    terrainOn = on;
+    map.setTerrain(on ? { source: "dem", exaggeration: TERRAIN_EXAGGERATION } : null);
+  }
+
+  // Labelled points from data/points.geojson; the label texts are in content.js.
+  async function addMarkers() {
+    const points = await (await fetch("data/points.geojson")).json();
+    for (const f of points.features) {
+      const text = (P.pointLabels || {})[f.properties.id];
+      if (!text) continue;
+      const el = document.createElement("div");
+      el.className = "marker";
+      const label = document.createElement("span");
+      label.textContent = text;
+      el.append(label);
+      markers[f.properties.id] = el;
+      new maplibregl.Marker({ element: el, anchor: "bottom" }).setLngLat(f.geometry.coordinates).addTo(map);
+    }
+    showMarkers(slides[current]);
+  }
+
+  function showMarkers(slide) {
+    const wanted = (slide && slide.markers) || [];
+    for (const [id, el] of Object.entries(markers)) el.classList.toggle("shown", wanted.includes(id));
   }
 
   // Fade every known layer to what this slide asks for. An entry is either a
@@ -145,6 +223,7 @@
       if (typeof entry === "string") wanted[entry] = 1;
       else wanted[entry.id] = entry.opacity ?? 1;
     }
+    // ("terrain" is also a valid name; it is handled in setTerrain.)
     for (const [name, parts] of Object.entries(LAYER_PARTS)) {
       for (const [layerId, prop, full] of parts) {
         if (map.getLayer(layerId)) map.setPaintProperty(layerId, prop, full * (wanted[name] || 0));
@@ -194,14 +273,21 @@
   }
 
   // Later steps hook into these three.
+  function wantsTerrain(slide) { return (slide.layers || []).includes("terrain"); }
   function cameraPadding() { return { top: 0, bottom: 0, left: 0, right: 0 }; }
   function beforeMove(slide, duration) {
     // Cross-fade the layers part-way into the flight.
     const token = navToken;
     setTimeout(() => { if (token === navToken) applyLayers(slide); }, duration * 0.35);
+    showMarkers(null);
+    // Terrain is switched on before the flight and off only after it, so the
+    // switch always happens far away from the ground where it is invisible.
+    if (wantsTerrain(slide)) setTerrain(true);
   }
   function arrived(slide, token) {
     if (token !== navToken) return;
+    if (!wantsTerrain(slide)) setTerrain(false);
+    showMarkers(slide);
     startRotation(slide);
   }
 
