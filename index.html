@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Biel/Bienne</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/unpkg.com/maplibre-gl@5.24.1/dist/maplibre-gl.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="map"></div>
+
+  <div id="offline" hidden></div>
+  <div id="legend" class="hidden"></div>
+  <aside id="panel" class="hidden"></aside>
+  <div id="notes" hidden></div>
+
+  <nav id="nav">
+    <button id="prev" type="button" aria-label="←">‹</button>
+    <span id="counter">–</span>
+    <button id="next" type="button" aria-label="→">›</button>
+    <span id="keys">← → · N · F</span>
+  </nav>
+
+  <script src="assets/unpkg.com/maplibre-gl@5.24.1/dist/maplibre-gl.js"></script>
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

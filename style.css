@@ -1,0 +1,56 @@
+/* Everything scales with the viewport width: 15px at 1280, ~22px at 1920. */
+:root {
+  --fr: #2f6fde;
+  --de: #e8590c;
+  --it: #2f9e44;
+  --rm: #9c36b5;
+  --ink: #14202e;
+  --paper: rgba(255, 255, 255, 0.9);
+  --line: rgba(20, 32, 46, 0.18);
+  --accent: #0b7285;
+  font-size: clamp(14px, 1.15vw, 28px);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #0b1420;
+  color: var(--ink);
+  font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+#map { position: absolute; inset: 0; }
+.maplibregl-canvas { cursor: default; }
+
+/* ---------- navigation bar (bottom left) ---------- */
+#nav {
+  position: absolute;
+  left: 1rem;
+  bottom: 2.4rem;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  background: var(--paper);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+  font-variant-numeric: tabular-nums;
+}
+#nav button {
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+#nav button:hover { background: rgba(20, 32, 46, 0.1); }
+#counter { font-size: 1.05rem; font-weight: 600; min-width: 3.6rem; text-align: center; }
+#keys { font-size: 0.75rem; opacity: 0.55; padding-right: 0.3rem; }
