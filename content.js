@@ -5,8 +5,8 @@ const BIEL = [7.2468, 47.1369];
 window.PRESENTATION = {
   slides: [
     { id: "title",       camera: { center: [10, 30],         zoom: 1.7,  pitch: 0,  bearing: 0 },   duration: 3000, rotate: 3,  layers: [] },
-    { id: "francophone", camera: { center: [8, 20],          zoom: 2.4,  pitch: 0,  bearing: 0 },   duration: 4500, layers: [] },
-    { id: "fr-de",       camera: { center: [9, 49],          zoom: 4.3,  pitch: 0,  bearing: 0 },   duration: 4500, layers: [] },
+    { id: "francophone", camera: { center: [8, 20],          zoom: 2.4,  pitch: 0,  bearing: 0 },   duration: 4500, layers: ["francophone"] },
+    { id: "fr-de",       camera: { center: [9, 49],          zoom: 4.3,  pitch: 0,  bearing: 0 },   duration: 4500, layers: ["francophone", "germanophone"] },
     { id: "switzerland", camera: { center: [8.23, 46.8],     zoom: 7.4,  pitch: 0,  bearing: 0 },   duration: 6000, layers: [] },
     { id: "biel",        camera: { center: BIEL,             zoom: 12.3, pitch: 50, bearing: -20 }, duration: 8000, layers: [] },
     { id: "energiestadt", camera: { center: BIEL,            zoom: 13.4, pitch: 60, bearing: 20 },  duration: 4000, rotate: 2, layers: [] },
