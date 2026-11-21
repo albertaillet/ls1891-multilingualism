@@ -392,7 +392,7 @@
     renderNotes();
     history.replaceState(null, "", `#${index + 1}`);
 
-    const cam = { ...slide.camera, padding: cameraPadding(slide) };
+    const cam = fitCamera({ ...slide.camera, padding: cameraPadding(slide) });
     // Going back replays the move we came by, so it takes the same time.
     const duration = instant ? 0 : backwards && from ? from.duration : slide.duration;
 
@@ -404,6 +404,23 @@
       map.flyTo({ ...cam, duration, curve: 1.5, essential: true, easing: easeInOutCubic });
       map.once("moveend", () => arrived(slide, token));
     }
+  }
+
+  // camera.fit = [west, south, east, north]: centre on that box and pick the
+  // zoom at which it fits in the screen area left free by the padding.
+  function fitCamera(cam) {
+    if (!cam.fit) return cam;
+    const [west, south, east, north] = cam.fit;
+    const mercY = (lat) => (180 / Math.PI) * Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360));
+    const freeW = window.innerWidth - cam.padding.left - cam.padding.right;
+    const freeH = window.innerHeight - cam.padding.top - cam.padding.bottom;
+    const zoomFor = (pixels, degrees) => Math.log2((pixels * 360) / (degrees * 512));
+    const { fit, ...rest } = cam;
+    return {
+      ...rest,
+      center: [(west + east) / 2, (south + north) / 2],
+      zoom: Math.min(zoomFor(freeW, east - west), zoomFor(freeH, mercY(north) - mercY(south))),
+    };
   }
 
   function easeInOutCubic(t) {
@@ -420,7 +437,8 @@
     return {
       top: 0,
       bottom: 0,
-      left: layout === "title" ? w * 0.42 : 0,
+      // a fitted box also keeps clear of the legend in the top-left corner
+      left: layout === "title" ? w * 0.42 : slide.camera.fit && slide.legend ? w * 0.13 : 0,
       right: layout === "side" ? w * 0.36 : layout === "wide" ? w * 0.46 : 0,
     };
   }

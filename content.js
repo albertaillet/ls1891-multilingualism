@@ -11,6 +11,8 @@
    {
      id: "solar",
      camera: { center: [lng, lat], zoom, pitch, bearing },
+         // optional: fit: [west, south, east, north] picks center and zoom so
+         // that this box fits in the space beside the panel
      duration: 3000,              // flight time to this slide, in ms
      rotate: 3,                   // slow rotation while shown, degrees/second
      layers: ["terrain", "buildings3d"],
@@ -69,7 +71,7 @@ const OPENING = [
     duration: 2500,
     layers: ["francophone"],
     legend: [
-      { swatch: "fr", strong: "[STRONG: français = langue officielle]", weak: "[WEAK: Französisch = Amtssprache]" },
+      { swatch: "fr", strong: "[STRONG: Français = langue officielle]", weak: "[WEAK: Französisch = Amtssprache]" },
     ],
     panel: {
       heading: "[STRONG: Le monde francophone]",
@@ -92,9 +94,9 @@ const OPENING = [
     duration: 2500,
     layers: ["francophone", "germanophone"],
     legend: [
-      { swatch: "fr", strong: "[STRONG: français officiel]", weak: "[WEAK: Französisch]" },
-      { swatch: "de", strong: "[STRONG: allemand officiel]", weak: "[WEAK: Deutsch]" },
-      { swatch: "both", strong: "[STRONG: les deux langues (rayé)]", weak: "[WEAK: beide Sprachen (gestreift)]" },
+      { swatch: "fr", strong: "[STRONG: Français officiel]", weak: "[WEAK: Französisch]" },
+      { swatch: "de", strong: "[STRONG: Allemand officiel]", weak: "[WEAK: Deutsch]" },
+      { swatch: "both", strong: "[STRONG: Les deux langues (rayé)]", weak: "[WEAK: Beide Sprachen (gestreift)]" },
     ],
     panel: {
       heading: "[STRONG: Français + allemand]",
@@ -113,15 +115,17 @@ const OPENING = [
   },
   {
     id: "switzerland",
-    camera: { center: [8.23, 46.8], zoom: 7.4, pitch: 0, bearing: 0 },
+    // `fit` = [west, south, east, north]: the zoom is chosen so that this box
+    // fits in the space the panel leaves free, on any screen size.
+    camera: { center: [8.23, 46.8], zoom: 7.4, pitch: 0, bearing: 0, fit: [5.9, 45.75, 10.55, 47.85] },
     duration: 3000,
     layers: ["ch-regions", "language-border"],
     legend: [
-      { swatch: "de", strong: "[STRONG: allemand]", weak: "[WEAK: Deutsch]" },
-      { swatch: "fr", strong: "[STRONG: français]", weak: "[WEAK: Französisch]" },
-      { swatch: "it", strong: "[STRONG: italien]", weak: "[WEAK: Italienisch]" },
-      { swatch: "rm", strong: "[STRONG: romanche]", weak: "[WEAK: Rätoromanisch]" },
-      { swatch: "border", strong: "[STRONG: frontière allemand/français]", weak: "[WEAK: deutsch-französische Sprachgrenze]" },
+      { swatch: "de", strong: "[STRONG: Allemand]", weak: "[WEAK: Deutsch]" },
+      { swatch: "fr", strong: "[STRONG: Français]", weak: "[WEAK: Französisch]" },
+      { swatch: "it", strong: "[STRONG: Italien]", weak: "[WEAK: Italienisch]" },
+      { swatch: "rm", strong: "[STRONG: Romanche]", weak: "[WEAK: Rätoromanisch]" },
+      { swatch: "border", strong: "[STRONG: Frontière allemand/français]", weak: "[WEAK: Deutsch-französische Sprachgrenze]" },
     ],
     panel: {
       heading: "[STRONG: La Suisse : quatre langues]",
@@ -147,9 +151,9 @@ const OPENING = [
     layers: ["terrain", { id: "ch-regions", opacity: 0.35 }, "language-border"],
     markers: ["biel", "language-border"],
     legend: [
-      { swatch: "de", strong: "[STRONG: région germanophone]", weak: "[WEAK: deutsches Sprachgebiet]" },
-      { swatch: "fr", strong: "[STRONG: région francophone]", weak: "[WEAK: französisches Sprachgebiet]" },
-      { swatch: "border", strong: "[STRONG: frontière linguistique]", weak: "[WEAK: Sprachgrenze]" },
+      { swatch: "de", strong: "[STRONG: Région germanophone]", weak: "[WEAK: Deutsches Sprachgebiet]" },
+      { swatch: "fr", strong: "[STRONG: Région francophone]", weak: "[WEAK: Französisches Sprachgebiet]" },
+      { swatch: "border", strong: "[STRONG: Frontière linguistique]", weak: "[WEAK: Sprachgrenze]" },
     ],
     panel: {
       heading: "Biel/Bienne",
