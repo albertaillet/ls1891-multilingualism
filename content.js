@@ -51,9 +51,9 @@ const CLOSE_UP = ["terrain", "buildings3d"];
 const OPENING = [
   {
     id: "title",
-    camera: { center: [10, 30], zoom: 1.7, pitch: 0, bearing: 0 },
-    duration: 1500,
-    rotate: 3,
+    // Flat, straight-down view of Biel/Bienne and its lake.
+    camera: { center: BIEL, zoom: 11.3, pitch: 0, bearing: 0 },
+    duration: 1000,
     layers: [],
     panel: {
       layout: "title",
@@ -68,7 +68,7 @@ const OPENING = [
   {
     id: "francophone",
     camera: { center: [8, 20], zoom: 2.4, pitch: 0, bearing: 0 },
-    duration: 2500,
+    duration: 2400,
     layers: ["francophone"],
     legend: [
       { swatch: "fr", strong: "[STRONG: Français = langue officielle]", weak: "[WEAK: Französisch = Amtssprache]" },
@@ -91,7 +91,7 @@ const OPENING = [
   {
     id: "fr-de",
     camera: { center: [9, 49], zoom: 4.3, pitch: 0, bearing: 0 },
-    duration: 2500,
+    duration: 1400,
     layers: ["francophone", "germanophone"],
     legend: [
       { swatch: "fr", strong: "[STRONG: Français officiel]", weak: "[WEAK: Französisch]" },
@@ -118,7 +118,7 @@ const OPENING = [
     // `fit` = [west, south, east, north]: the zoom is chosen so that this box
     // fits in the space the panel leaves free, on any screen size.
     camera: { center: [8.23, 46.8], zoom: 7.4, pitch: 0, bearing: 0, fit: [5.9, 45.75, 10.55, 47.85] },
-    duration: 3000,
+    duration: 1800,
     layers: ["ch-regions", "language-border"],
     legend: [
       { swatch: "de", strong: "[STRONG: Allemand]", weak: "[WEAK: Deutsch]" },
@@ -147,7 +147,7 @@ const OPENING = [
   {
     id: "biel",
     camera: { center: BIEL, zoom: 12.3, pitch: 50, bearing: -20 },
-    duration: 4000,
+    duration: 2200,
     layers: ["terrain", { id: "ch-regions", opacity: 0.35 }, "language-border"],
     markers: ["biel", "language-border"],
     legend: [
@@ -182,7 +182,7 @@ const MY_SLIDES = [
   {
     id: "energiestadt",
     camera: { center: BIEL, zoom: 14.1, pitch: 60, bearing: 20 },
-    duration: 2000,
+    duration: 1200,
     rotate: 2,
     layers: [...CLOSE_UP, "language-border"],
     markers: ["biel"],
@@ -207,7 +207,7 @@ const MY_SLIDES = [
   {
     id: "lake",
     camera: { center: [7.2365, 47.13], zoom: 14.8, pitch: 62, bearing: 45 },
-    duration: 2500,
+    duration: 1400,
     rotate: 2,
     layers: CLOSE_UP,
     markers: ["lake-energy"],
@@ -246,7 +246,7 @@ const MY_SLIDES = [
   {
     id: "solar",
     camera: { center: [7.2816, 47.1556], zoom: 16.1, pitch: 62, bearing: -30 },
-    duration: 3000,
+    duration: 1800,
     rotate: 3,
     layers: CLOSE_UP,
     markers: ["tissot-arena"],
@@ -271,7 +271,7 @@ const MY_SLIDES = [
   {
     id: "hagneck",
     camera: { center: [7.1768, 47.06], zoom: 15.2, pitch: 65, bearing: 130 },
-    duration: 3500,
+    duration: 2000,
     rotate: 2,
     layers: CLOSE_UP,
     markers: ["hagneck"],
@@ -302,7 +302,7 @@ const CLOSING = [
   {
     id: "summary",
     camera: { center: [7.225, 47.108], zoom: 11.4, pitch: 45, bearing: 0 },
-    duration: 3000,
+    duration: 1800,
     layers: ["terrain", "language-border"],
     markers: ["lake-energy", "tissot-arena", "hagneck"],
     panel: {
@@ -324,7 +324,7 @@ const CLOSING = [
   {
     id: "stance",
     camera: { center: [7.17, 47.09], zoom: 10.6, pitch: 35, bearing: -40 },
-    duration: 2000,
+    duration: 1200,
     layers: ["terrain"],
     markers: ["biel"],
     panel: {
@@ -338,7 +338,7 @@ const CLOSING = [
   {
     id: "sources",
     camera: { center: [8.23, 46.8], zoom: 5.2, pitch: 0, bearing: 0 },
-    duration: 2500,
+    duration: 1500,
     layers: ["ch-regions", "language-border"],
     panel: {
       layout: "wide",

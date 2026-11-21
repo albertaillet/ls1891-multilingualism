@@ -20,7 +20,7 @@
   };
 
   const COLORS = { fr: "#2f6fde", de: "#e8590c", it: "#2f9e44", rm: "#9c36b5" };
-  const FADE = 800; // ms, layer fade in/out
+  const FADE = 500; // ms, layer fade in/out
 
   // Names usable in a slide's `layers` list, and the map layers each one fades:
   // [map layer id, opacity property, opacity when fully shown]
