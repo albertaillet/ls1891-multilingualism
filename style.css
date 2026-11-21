@@ -58,7 +58,7 @@ html, body {
 /* ---------- map markers ---------- */
 /* MapLibre sets the opacity of .marker itself, so we fade its contents. */
 .marker { pointer-events: none; }
-.marker span, .marker::after { opacity: 0; transition: opacity 0.8s; }
+.marker span, .marker::after { opacity: 0; transition: opacity 0.4s; }
 .marker.shown span, .marker.shown::after { opacity: 1; }
 .marker span {
   display: block;
@@ -86,7 +86,7 @@ html, body {
 }
 
 /* ---------- text panel ---------- */
-#panel, #legend { transition: opacity 0.7s ease, transform 0.7s ease; }
+#panel, #legend { transition: opacity 0.4s ease, transform 0.4s ease; }
 #panel.hidden, #legend.hidden { opacity: 0; pointer-events: none; }
 #panel.hidden { transform: translateY(0.8rem); }
 

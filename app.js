@@ -20,7 +20,7 @@
   };
 
   const COLORS = { fr: "#2f6fde", de: "#e8590c", it: "#2f9e44", rm: "#9c36b5" };
-  const FADE = 1500; // ms, layer fade in/out
+  const FADE = 800; // ms, layer fade in/out
 
   // Names usable in a slide's `layers` list, and the map layers each one fades:
   // [map layer id, opacity property, opacity when fully shown]
@@ -65,12 +65,27 @@
     return null;
   }
 
+  // Basemap layers that are dropped to keep the map calm: points of interest,
+  // street names and road numbers, small places, tunnels, footpaths, service
+  // roads, railway ticks, airports, small land-use patches, canton borders.
+  const BASEMAP_HIDE = /^(poi_|highway-|road_shield|airport|aeroway|road_one_way|label_other|label_village|label_state|waterway_line_label|tunnel_|boundary_3|landuse_(pitch|track|cemetery|hospital|school)|road_area_pattern|park_outline)|path_pedestrian|service_track|_link|rail_hatching|transit_rail/;
+  // Town names only once we are close; cities and countries stay.
+  const BASEMAP_MINZOOM = { label_town: 9, road_minor: 13, road_minor_casing: 13 };
+
+  function simplifyBasemap(style) {
+    style.layers = style.layers.filter((l) => !BASEMAP_HIDE.test(l.id));
+    for (const l of style.layers) {
+      if (BASEMAP_MINZOOM[l.id]) l.minzoom = Math.max(l.minzoom || 0, BASEMAP_MINZOOM[l.id]);
+    }
+  }
+
   async function init() {
     let style = await fetchStyle();
     if (!style) {
       offline = true;
       style = OFFLINE_STYLE;
     }
+    simplifyBasemap(style);
     style.projection = { type: "globe" };
     style.sky = {
       "sky-color": "#7db3e8",
@@ -94,6 +109,7 @@
       maxPitch: 75,
       attributionControl: false,
       fadeDuration: 300,
+      keyboard: false, // the arrow keys change slides, they must not pan the map
     });
     map.addControl(new maplibregl.AttributionControl({
       compact: false,
@@ -320,9 +336,36 @@
     // ("terrain" is also a valid name; it is handled in setTerrain.)
     for (const [name, parts] of Object.entries(LAYER_PARTS)) {
       for (const [layerId, prop, full] of parts) {
-        if (map.getLayer(layerId)) map.setPaintProperty(layerId, prop, full * (wanted[name] || 0));
+        if (!map.getLayer(layerId)) continue;
+        const opacity = full * (wanted[name] || 0);
+        if (opacity > 0) map.setLayoutProperty(layerId, "visibility", "visible");
+        map.setPaintProperty(layerId, prop, opacity);
       }
     }
+    refreshTerrainDuringFade(slide);
+  }
+
+  // With 3D terrain on, MapLibre draws the flat layers into cached textures
+  // and does not redraw them while an opacity fades, which leaves stale
+  // colour patches. So we redraw the textures on every frame of the fade and,
+  // when it is over, switch fully faded layers off (which also redraws them).
+  function refreshTerrainDuringFade(slide) {
+    const token = navToken;
+    const end = performance.now() + FADE + 150;
+    const frame = (now) => {
+      if (token !== navToken) return;
+      const cache = map.terrain && map.terrain.tileManager;
+      if (cache && cache.freeRtt) { cache.freeRtt(); map.triggerRepaint(); }
+      if (now < end) { requestAnimationFrame(frame); return; }
+      for (const parts of Object.values(LAYER_PARTS)) {
+        for (const [layerId, prop] of parts) {
+          if (map.getLayer(layerId) && map.getPaintProperty(layerId, prop) === 0) {
+            map.setLayoutProperty(layerId, "visibility", "none");
+          }
+        }
+      }
+    };
+    requestAnimationFrame(frame);
   }
 
   /* ---------- navigation ---------- */
@@ -562,10 +605,12 @@
     else document.documentElement.requestFullscreen().catch(() => {});
   }
 
-  window.addEventListener("keydown", (e) => {
+  // Listening in the capture phase on the document, so the keys work no matter
+  // what was clicked last (map, panel or a button).
+  document.addEventListener("keydown", (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     switch (e.key) {
-      case "ArrowRight": case "ArrowDown": case " ": case "PageDown": case "Enter":
+      case "ArrowRight": case "ArrowDown": case " ": case "Spacebar": case "PageDown": case "Enter":
         go(1); break;
       case "ArrowLeft": case "ArrowUp": case "PageUp": case "Backspace":
         go(-1); break;
@@ -576,7 +621,10 @@
       default: return;
     }
     e.preventDefault();
-  });
+    e.stopPropagation();
+  }, true);
+  // Space is released on a focused button: do not let that "click" it as well.
+  document.addEventListener("keyup", (e) => { if (e.key === " ") e.preventDefault(); }, true);
   // Typing e.g. #7 in the address bar jumps to that slide.
   window.addEventListener("hashchange", () => goTo(slideFromHash()));
   // (blur, so that Space/Enter afterwards does not also "click" the button)
