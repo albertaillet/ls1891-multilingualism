@@ -23,6 +23,8 @@ html, body {
 }
 
 #map { position: absolute; inset: 0; }
+/* invisible second map that preloads the tiles of the next slides */
+#preload { position: absolute; inset: 0; visibility: hidden; pointer-events: none; }
 .maplibregl-canvas { cursor: default; }
 
 /* ---------- navigation bar (bottom left) ---------- */

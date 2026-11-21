@@ -17,6 +17,10 @@ blocks loading the data files that way.
 
 Internet is needed for the map tiles and the terrain. Everything else is in the repo.
 
+While a slide is shown, an invisible second map loads the tiles of the next two
+slides in the background, so pause a few seconds on a slide before moving on and
+the next flight arrives without blank tiles.
+
 ## Controls
 
 | Key | Action |

@@ -98,6 +98,8 @@
       "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 1, 5, 1, 8, 0],
     };
 
+    const styleCopy = JSON.parse(JSON.stringify(style));
+
     const start = slides[slideFromHash()].camera;
     map = new maplibregl.Map({
       container: "map",
@@ -122,7 +124,7 @@
       addDataLayers();
       if (!offline) addTerrain();
       if (!offline) addBuildings();
-      if (!offline) map.once("idle", prewarmTiles);
+      if (!offline) map.once("idle", () => startPreloader(styleCopy));
       addMarkers();
       goTo(slideFromHash(), { instant: true });
     });
@@ -225,17 +227,17 @@
 
   // Two separate DEM sources, as MapLibre recommends: one drives the 3D
   // terrain, the other the hillshading.
-  function addTerrain() {
-    map.addSource("dem", DEM);
-    map.addSource("dem-hillshade", DEM);
-    map.addLayer({
+  function addTerrain(m = map) {
+    m.addSource("dem", DEM);
+    m.addSource("dem-hillshade", DEM);
+    m.addLayer({
       id: "hillshade", type: "hillshade", source: "dem-hillshade", minzoom: 6,
       paint: {
         "hillshade-exaggeration": 0.35,
         "hillshade-shadow-color": "#3d4a57",
         "hillshade-highlight-color": "#ffffff",
       },
-    }, map.getLayer("water") ? "water" : undefined);
+    }, m.getLayer("water") ? "water" : undefined);
   }
 
   // 3D buildings from the basemap's building layer, only from zoom 14.
@@ -259,42 +261,47 @@
     }, firstLabel && firstLabel.id);
   }
 
-  // Download the tiles of every close-up in the background right after start,
-  // so they come from the browser cache when the camera gets there.
-  function prewarmTiles() {
-    const templates = [];
-    for (const id of ["dem", ...Object.keys(map.getStyle().sources)]) {
-      const src = map.getSource(id);
-      if (src && src.tiles && src.tiles[0] && (src.type === "vector" || id === "dem")) {
-        templates.push({ url: src.tiles[0], maxzoom: src.maxzoom || 14 });
-      }
+  /* ---------- preloading the next slides ---------- */
+
+  // A second, invisible map of the same size sits behind the real one. While
+  // you talk on a slide it visits the camera positions of the next two
+  // slides, so exactly the tiles they need (basemap, buildings, elevation) are
+  // already in the browser cache when the real camera flies there.
+  const PRELOAD_AHEAD = 2;
+  let preMap = null;
+  let preToken = 0;
+
+  function startPreloader(style) {
+    preMap = new maplibregl.Map({
+      container: "preload",
+      style,
+      interactive: false,
+      attributionControl: false,
+      pixelRatio: 0.5, // same tiles, a quarter of the drawing work
+      maxPitch: 75,
+      fadeDuration: 0,
+    });
+    preMap.on("error", () => {});
+    preMap.once("load", () => {
+      addTerrain(preMap);
+      preloadAhead();
+    });
+  }
+
+  async function preloadAhead() {
+    if (!preMap || !preMap.loaded()) return;
+    const token = ++preToken;
+    for (let i = current + 1; i <= current + PRELOAD_AHEAD && i < slides.length; i++) {
+      const slide = slides[i];
+      preMap.setTerrain(wantsTerrain(slide) ? { source: "dem", exaggeration: TERRAIN_EXAGGERATION } : null);
+      preMap.jumpTo(fitCamera({ ...slide.camera, padding: cameraPadding(slide) }));
+      // Wait until everything for this view is loaded (or give up after 10 s).
+      await new Promise((resolve) => {
+        const timer = setTimeout(resolve, 10000);
+        preMap.once("idle", () => { clearTimeout(timer); resolve(); });
+      });
+      if (token !== preToken) return; // the slide changed meanwhile
     }
-    const urls = new Set();
-    for (const slide of slides) {
-      if (slide.camera.zoom < 9) continue;
-      const [lng, lat] = slide.camera.center;
-      for (const t of templates) {
-        const top = Math.min(Math.floor(slide.camera.zoom), t.maxzoom);
-        for (let z = top; z >= top - 3 && z >= 8; z--) {
-          const n = 2 ** z;
-          const x = Math.floor(((lng + 180) / 360) * n);
-          const rad = (lat * Math.PI) / 180;
-          const y = Math.floor(((1 - Math.asinh(Math.tan(rad)) / Math.PI) / 2) * n);
-          for (let dx = -1; dx <= 1; dx++) {
-            for (let dy = -1; dy <= 1; dy++) {
-              urls.add(t.url.replace("{z}", z).replace("{x}", x + dx).replace("{y}", y + dy));
-            }
-          }
-        }
-      }
-    }
-    // A few at a time, so the visible map keeps priority.
-    const queue = [...urls];
-    const next = () => {
-      const url = queue.shift();
-      if (url) fetch(url).catch(() => {}).finally(next);
-    };
-    for (let i = 0; i < 4; i++) next();
   }
 
   function setTerrain(on) {
@@ -460,6 +467,7 @@
     renderPanel(slide);
     renderLegend(slide);
     startRotation(slide);
+    preloadAhead();
   }
 
   /* ---------- panel, legend, notes ---------- */
