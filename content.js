@@ -297,11 +297,10 @@ const MY_SLIDES = [
 const CLOSING = [
   {
     id: "summary",
-    camera: { center: BIEL, zoom: 11.6, pitch: 45, bearing: 0 },
+    camera: { center: [7.225, 47.108], zoom: 11.4, pitch: 45, bearing: 0 },
     duration: 6000,
-    rotate: 1,
     layers: ["terrain", "language-border"],
-    markers: ["biel", "lake-energy", "tissot-arena", "hagneck"],
+    markers: ["lake-energy", "tissot-arena", "hagneck"],
     panel: {
       weakPanel: true, // the whole panel is in the weak language
       heading: "[WEAK: Zusammenfassung]",

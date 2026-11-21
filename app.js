@@ -54,6 +54,8 @@
   /* ---------- start-up ---------- */
 
   async function fetchStyle() {
+    // index.html?offline pretends there is no network, to rehearse that case.
+    if (new URLSearchParams(location.search).has("offline")) return null;
     for (const url of STYLE_URLS) {
       try {
         const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
@@ -93,7 +95,13 @@
       attributionControl: false,
       fadeDuration: 300,
     });
+    map.addControl(new maplibregl.AttributionControl({
+      compact: false,
+      customAttribution: ["Natural Earth", "BFS/OFS (ThemaKart, régions linguistiques)"],
+    }), "bottom-left");
     map.on("error", onMapError);
+    map.on("data", onMapData);
+    if (offline) showOffline(true);
     map.on("load", () => {
       addDataLayers();
       if (!offline) addTerrain();
@@ -110,7 +118,30 @@
     window.__goTo = goTo;
   }
 
-  function onMapError() { /* tile errors are handled in the offline notice (see below) */ }
+  /* ---------- "map offline" notice ---------- */
+
+  function showOffline(on) {
+    $("offline").textContent = plain(P.ui.offline);
+    $("offline").hidden = !on;
+  }
+
+  // Several failed tile requests within a few seconds = the network is gone.
+  let recentErrors = [];
+  function onMapError() {
+    const now = Date.now();
+    recentErrors = recentErrors.filter((t) => now - t < 15000);
+    recentErrors.push(now);
+    if (recentErrors.length >= 4) showOffline(true);
+  }
+
+  // A basemap tile arrived again: the network is back.
+  function onMapData(e) {
+    if (offline || !e.tile || !e.sourceId) return;
+    const source = map.getSource(e.sourceId);
+    if (!source || source.type === "geojson") return;
+    recentErrors = [];
+    showOffline(false);
+  }
 
   /* ---------- data layers ---------- */
 
