@@ -21,9 +21,9 @@
       "type": "Feature",
       "properties": {
         "id": "lake-energy",
-        "verified": "NOT VERIFIED. Approximate point on the lakeshore between Biel and Nidau; the exact site of the Energieverbund Bielersee heat-pump station was not found in OpenStreetMap"
+        "verified": "Energy centre (heat pumps) of the Energieverbund Bielersee in the Alpha building, Schlossstrasse 15, Nidau, according to the ESB project page (esb.ch/de/energieverbund-bielersee). Coordinate of that address from OpenStreetMap (Nominatim, 2026-11-22)"
       },
-      "geometry": { "type": "Point", "coordinates": [7.2365, 47.1300] }
+      "geometry": { "type": "Point", "coordinates": [7.2372, 47.1269] }
     },
     {
       "type": "Feature",

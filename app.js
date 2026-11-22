@@ -5,6 +5,7 @@
   const P = window.PRESENTATION;
   const slides = P.slides;
   const $ = (id) => document.getElementById(id);
+  const FRESH = window.FRESH || ""; // cache-buster for local files, set in index.html
 
   // Keyless basemap styles, tried in order.
   const STYLE_URLS = [
@@ -197,12 +198,12 @@
     }, below);
 
     if (offline) {
-      map.addSource("land", { type: "geojson", data: "data/world_land.geojson" });
+      map.addSource("land", { type: "geojson", data: "data/world_land.geojson" + FRESH });
       map.addLayer({ id: "land", type: "fill", source: "land", paint: { "fill-color": "#f3f1ea" } });
     }
 
-    map.addSource("francophone", { type: "geojson", data: "data/francophone.geojson" });
-    map.addSource("germanophone", { type: "geojson", data: "data/germanophone.geojson" });
+    map.addSource("francophone", { type: "geojson", data: "data/francophone.geojson" + FRESH });
+    map.addSource("germanophone", { type: "geojson", data: "data/germanophone.geojson" + FRESH });
     map.addImage("hatch-de", hatchImage(COLORS.de), { pixelRatio: 2 });
 
     fill("fr-fill", "francophone", COLORS.fr);
@@ -216,8 +217,8 @@
     }, below);
     line("de-line", "germanophone", COLORS.de, 1.2);
 
-    map.addSource("ch-regions", { type: "geojson", data: "data/ch_language_regions.geojson" });
-    map.addSource("ch-border", { type: "geojson", data: "data/ch_language_border.geojson" });
+    map.addSource("ch-regions", { type: "geojson", data: "data/ch_language_regions.geojson" + FRESH });
+    map.addSource("ch-border", { type: "geojson", data: "data/ch_language_border.geojson" + FRESH });
     fill("ch-fill", "ch-regions", ["match", ["get", "lang"], "de", COLORS.de, "fr", COLORS.fr, "it", COLORS.it, COLORS.rm]);
     line("ch-line", "ch-regions", "#ffffff", 1);
     // The German/French border: white casing with a dashed dark line on top.
@@ -313,7 +314,7 @@
 
   // Labelled points from data/points.geojson; the label texts are in content.js.
   async function addMarkers() {
-    const points = await (await fetch("data/points.geojson")).json();
+    const points = await (await fetch("data/points.geojson" + FRESH)).json();
     for (const f of points.features) {
       const text = (P.pointLabels || {})[f.properties.id];
       if (!text) continue;

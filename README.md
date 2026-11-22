@@ -55,8 +55,8 @@ describes the fields of a slide.
   the flight time in ms, `rotate` the slow rotation in degrees per second.
 - **Labelled points** are in [`data/points.geojson`](data/points.geojson), their
   texts in `pointLabels`, and a slide shows them with `markers: ["id"]`.
-- **Sources slide**: the `SOURCES` list. The data sources are filled in; the first
-  three entries are placeholders for your own content sources.
+- **Sources slide**: the `SOURCES` list. Content sources come first, then the map
+  data; the full links are at the end of `SCRIPT.md`.
 
 Files: `index.html` (page), `content.js` (text and camera stops), `app.js`
 (engine), `style.css` (looks), `data/` (map data), `assets/` (MapLibre).

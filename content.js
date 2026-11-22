@@ -211,7 +211,7 @@ const MY_SLIDES = [
   },
   {
     id: "lake",
-    camera: { center: [7.2365, 47.13], zoom: 14.8, pitch: 62, bearing: 45 },
+    camera: { center: [7.2372, 47.1275], zoom: 14.7, pitch: 62, bearing: 45 },
     duration: 1400,
     rotate: 2,
     layers: CLOSE_UP,
@@ -356,16 +356,19 @@ const CLOSING = [
 ];
 
 /* --------------------------------------------------------------------------
-   Sources slide. The data sources are filled in; add your content sources.
+   Sources slide: content sources first, then the map data. The full links
+   are at the end of SCRIPT.md.
    -------------------------------------------------------------------------- */
 const SOURCES = [
-  "[STRONG: Source de contenu 1 – à compléter (auteur, titre, année, URL)]",
-  "[STRONG: Source de contenu 2 – à compléter]",
-  "[STRONG: Source de contenu 3 – à compléter]",
-  "Office fédéral de la statistique (OFS/BFS) : régions linguistiques 2020 et limites communales généralisées (ThemaKart), état au 1.1.2024.",
-  "Natural Earth 5.1.2 : Admin 0 – Countries, 1:50m (domaine public). naturalearthdata.com",
-  "Fond de carte : OpenFreeMap, © OpenMapTiles, données © OpenStreetMap contributors.",
-  "Relief : Terrain Tiles (Mapzen), AWS Open Data.",
+  "Ville de Bienne / Cité de l'énergie : fiche informative « Biel/Bienne », 14.12.2020. biel-bienne.ch",
+  "Ville de Bienne : Stratégie climatique 2050, volet « Protection du climat », mai 2020. biel-bienne.ch",
+  "Energie Service Biel/Bienne (ESB) : Energieverbund Bielersee, page du projet. esb.ch/de/energieverbund-bielersee",
+  "Solar Agentur Schweiz : Prix solaire suisse 2017, Tissot Arena. solaragentur.ch",
+  "BKW : Wasserkraftwerk Hagneck, fiche du centre de visiteurs. bkw.ch – et moneycab.com, 23.10.2015",
+  "DFAE : « Quatre langues, quatre cultures, mais un seul pays », 24.9.2020. eda.admin.ch",
+  "OIF : La langue française dans le monde, synthèse 2026. francophonie.org",
+  "Cartes : Office fédéral de la statistique (OFS/BFS), régions linguistiques 2020 et limites communales (ThemaKart), état au 1.1.2024 ; Natural Earth 5.1.2.",
+  "Fond de carte : OpenFreeMap, © OpenMapTiles, © OpenStreetMap contributors. Relief : Terrain Tiles (Mapzen), AWS Open Data.",
 ];
 
 window.PRESENTATION = {
@@ -385,7 +388,7 @@ window.PRESENTATION = {
   pointLabels: {
     "biel": "Biel / Bienne",
     "language-border": "[STRONG: frontière linguistique] / [WEAK: Sprachgrenze]",
-    "lake-energy": "[STRONG: Énergie du lac]",
+    "lake-energy": "[STRONG: Centrale d'énergie du lac]",
     "tissot-arena": "Tissot Arena",
     "hagneck": "[STRONG: Centrale de Hagneck]",
   },

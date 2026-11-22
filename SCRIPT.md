@@ -190,4 +190,4 @@ Liens :
 - BKW, centrale de Hagneck : <https://bkw.ch/fileadmin/user_upload/03_Energie/03_05_Energieproduktion/Besucherzentren_PDF/Factsheet_Wasserkraftwerk_Hagneck_de.pdf>
 - moneycab, inauguration de Hagneck : <https://www.moneycab.com/?p=1052571>
 
-Ces sources ne sont pas encore sur la diapositive 12.
+Ces sources sont aussi sur la diapositive 12 (liste `SOURCES` dans `content.js`).
