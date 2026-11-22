@@ -31,6 +31,28 @@
     "ch-regions": [["ch-fill", "fill-opacity", 0.5], ["ch-line", "line-opacity", 0.7]],
     buildings3d: [["buildings-3d", "fill-extrusion-opacity", 0.92]],
     "language-border": [["border-casing", "line-opacity", 0.9], ["border-line", "line-opacity", 1]],
+    aerial: [["aerial", "raster-opacity", 1]],
+    funiculars: [["tr-funicular-casing", "line-opacity", 0.9], ["tr-funicular", "line-opacity", 1]],
+    trolleybuses: [["tr-trolleybus-casing", "line-opacity", 0.9], ["tr-trolleybus", "line-opacity", 1]],
+    boat: [["tr-boat-casing", "line-opacity", 0.9], ["tr-boat", "line-opacity", 1]],
+  };
+
+  // Public transport lines (data/transport.geojson). A slide that shows one of
+  // these layers also gets its moving vehicles: `count` of them per line, each
+  // taking `seconds` from one end of the line to the other and back.
+  const TRANSPORT = {
+    funicular: { layer: "funiculars", color: "#d6336c", count: 2, seconds: 16 },
+    trolleybus: { layer: "trolleybuses", color: "#7048e8", count: 4, seconds: 70 },
+    boat: { layer: "boat", color: "#0b7285", count: 2, seconds: 60, dash: [2, 1.5] },
+  };
+
+  // Keyless aerial photos of Switzerland (swisstopo SWISSIMAGE), for close-ups.
+  const AERIAL = {
+    type: "raster",
+    tiles: ["https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg"],
+    tileSize: 256,
+    maxzoom: 19,
+    attribution: "Photos aériennes : © swisstopo",
   };
 
   // Credit lines appear on the map only while their data is on screen. Natural
@@ -55,6 +77,7 @@
   let current = -1;
   let navToken = 0; // invalidates pending "arrived" callbacks when the slide changes
   let rotateRaf = 0;
+  let ready = false; // the map has loaded and slides can be shown
 
   /* ---------- start-up ---------- */
 
@@ -128,8 +151,11 @@
       addDataLayers();
       if (!offline) addTerrain();
       if (!offline) addBuildings();
+      if (!offline) addAerial();
+      addTransport();
       if (!offline) map.once("idle", () => startPreloader(styleCopy));
       addMarkers();
+      ready = true;
       goTo(slideFromHash(), { instant: true });
     });
     // Any manual interaction stops the automatic rotation.
@@ -265,6 +291,86 @@
     }, firstLabel && firstLabel.id);
   }
 
+  // Aerial photos go below all of our own layers and below the buildings.
+  function addAerial(m = map) {
+    m.addSource("aerial", AERIAL);
+    m.addLayer({
+      id: "aerial", type: "raster", source: "aerial", minzoom: 12,
+      layout: { visibility: "none" },
+      paint: { "raster-opacity": 0, "raster-opacity-transition": { duration: FADE } },
+    }, m.getLayer("fr-fill") ? "fr-fill" : undefined);
+  }
+
+  /* ---------- public transport: lines and moving vehicles ---------- */
+
+  const vehicles = []; // { mode, el, marker, line, lengths, total, offset }
+
+  async function addTransport() {
+    const data = await (await fetch("data/transport.geojson" + FRESH)).json();
+    map.addSource("transport", { type: "geojson", data });
+    const below = map.getLayer("buildings-3d") ? "buildings-3d" : undefined;
+    for (const [mode, t] of Object.entries(TRANSPORT)) {
+      const layer = (id, color, width, extra = {}) => map.addLayer({
+        id, type: "line", source: "transport", filter: ["==", ["get", "mode"], mode],
+        layout: { "line-join": "round", "line-cap": "round", visibility: "none" },
+        paint: { "line-color": color, "line-width": width, "line-opacity": 0, "line-opacity-transition": { duration: FADE }, ...extra },
+      }, below);
+      layer(`tr-${mode}-casing`, "#ffffff", 7);
+      layer(`tr-${mode}`, t.color, 4, t.dash ? { "line-dasharray": t.dash } : {});
+    }
+    for (const f of data.features) {
+      const t = TRANSPORT[f.properties.mode];
+      const line = f.geometry.coordinates;
+      // Distance from the start of the line to each of its points.
+      const lengths = [0];
+      for (let i = 1; i < line.length; i++) {
+        const dx = (line[i][0] - line[i - 1][0]) * Math.cos((line[i][1] * Math.PI) / 180);
+        lengths.push(lengths[i - 1] + Math.hypot(dx, line[i][1] - line[i - 1][1]));
+      }
+      for (let n = 0; n < t.count; n++) {
+        const el = document.createElement("div");
+        el.className = `vehicle vehicle-${f.properties.mode}`;
+        el.append(document.createElement("i"));
+        const marker = new maplibregl.Marker({ element: el }).setLngLat(line[0]).addTo(map);
+        vehicles.push({ mode: f.properties.mode, el, marker, line, lengths, total: lengths[lengths.length - 1], offset: (2 * n) / t.count });
+      }
+    }
+    if (slides[current]) { applyLayers(slides[current]); showVehicles(slides[current]); }
+  }
+
+  // Where a vehicle is: `phase` runs 0 → 1 (there) → 2 (back again).
+  function vehiclePosition(v, phase) {
+    const along = (phase <= 1 ? phase : 2 - phase) * v.total;
+    let i = 1;
+    while (i < v.lengths.length - 1 && v.lengths[i] < along) i++;
+    const t = (along - v.lengths[i - 1]) / (v.lengths[i] - v.lengths[i - 1] || 1);
+    const a = v.line[i - 1];
+    const b = v.line[i];
+    return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+  }
+
+  let vehicleRaf = 0;
+  function showVehicles(slide) {
+    const names = ((slide && slide.layers) || []).map((l) => (typeof l === "string" ? l : l.id));
+    let any = false;
+    for (const v of vehicles) {
+      const on = names.includes(TRANSPORT[v.mode].layer);
+      v.el.classList.toggle("shown", on);
+      any = any || on;
+    }
+    cancelAnimationFrame(vehicleRaf);
+    if (!any) return;
+    const step = (now) => {
+      for (const v of vehicles) {
+        if (!v.el.classList.contains("shown")) continue;
+        const phase = (now / 1000 / TRANSPORT[v.mode].seconds + v.offset) % 2;
+        v.marker.setLngLat(vehiclePosition(v, phase));
+      }
+      vehicleRaf = requestAnimationFrame(step);
+    };
+    vehicleRaf = requestAnimationFrame(step);
+  }
+
   /* ---------- preloading the next slides ---------- */
 
   // A second, invisible map of the same size sits behind the real one. While
@@ -288,6 +394,8 @@
     preMap.on("error", () => {});
     preMap.once("load", () => {
       addTerrain(preMap);
+      addAerial(preMap);
+      preMap.setPaintProperty("aerial", "raster-opacity", 1);
       preloadAhead();
     });
   }
@@ -298,6 +406,7 @@
     for (let i = current + 1; i <= current + PRELOAD_AHEAD && i < slides.length; i++) {
       const slide = slides[i];
       preMap.setTerrain(wantsTerrain(slide) ? { source: "dem", exaggeration: TERRAIN_EXAGGERATION } : null);
+      preMap.setLayoutProperty("aerial", "visibility", (slide.layers || []).includes("aerial") ? "visible" : "none");
       preMap.setProjection({ type: slide.projection || "globe" });
       preMap.jumpTo(fitCamera({ ...slide.camera, padding: cameraPadding(slide) }));
       // Wait until everything for this view is loaded (or give up after 10 s).
@@ -335,6 +444,7 @@
   function showMarkers(slide) {
     const wanted = (slide && slide.markers) || [];
     for (const [id, el] of Object.entries(markers)) el.classList.toggle("shown", wanted.includes(id));
+    showVehicles(slide);
   }
 
   // Fade every known layer to what this slide asks for. An entry is either a
@@ -392,7 +502,7 @@
   }
 
   function goTo(index, { instant = false } = {}) {
-    if (index === current || !map) return;
+    if (index === current || !ready) return;
     const from = slides[current];
     const slide = slides[index];
     const backwards = index < current;
@@ -538,7 +648,20 @@
       const lines = [].concat(p.weakLanguage);
       panel.append(el("div", "weak", [langTag(P.WEAK_LANG), el("div", "", lines.map((l) => el("p", "", l)))]));
     }
-    if (p.showSources) panel.append(el("ol", "sources", P.sources.map((src) => el("li", "", src))));
+    // A source is a text, or { text, links: [["shown name", "https://..."]] }.
+    if (p.showSources) {
+      panel.append(el("ol", "sources", P.sources.map((src) => {
+        const item = el("li", "", typeof src === "string" ? src : src.text);
+        for (const [name, url] of src.links || []) {
+          const a = el("a", "", name);
+          a.href = url;
+          a.target = "_blank";
+          a.rel = "noopener";
+          item.append(" ", a);
+        }
+        return item;
+      })));
+    }
     if (p.names) panel.append(el("p", "names", p.names));
     if (p.glossary && p.glossary.length) {
       panel.append(el("div", "glossary", [

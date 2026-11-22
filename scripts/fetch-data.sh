@@ -1,6 +1,6 @@
 #!/bin/sh
 # Rebuilds every generated file in data/ from pinned upstream sources.
-# Needs curl, shasum and npx (Node). See data/SOURCES.md for licences.
+# Needs curl, shasum, node and npx (Node.js). See data/SOURCES.md for licences.
 set -eu
 cd "$(dirname "$0")/.."
 
@@ -41,6 +41,21 @@ fetch municipalities.shx "https://unpkg.com/swiss-maps@4.7.0/2024/municipalities
 # SPRGEB2020 is the language region: 1 German, 2 French, 3 Italian, 4 Romansh.
 # (Three tiny areas that belong to no municipality have no entry and are dropped.)
 fetch bfs_levels_2024-01-01.csv "https://www.agvchapp.bfs.admin.ch/api/communes/levels?date=01-01-2024"
+
+# Funiculars, trolleybus lines 1, 3 and 4 and the Biel–Erlach boat route from
+# OpenStreetMap, as they were on 2026-11-01 (the date in the query pins the
+# data). Only the "elements" are kept, because the rest of the answer contains
+# the time of the request.
+OSM_QUERY='[out:json][timeout:90][date:"2026-11-01T00:00:00Z"];(way["railway"="funicular"](47.12,7.20,47.17,7.27);relation(id:1861122,12012146,2131075,18638227););out geom;'
+echo "fetch OpenStreetMap transport lines (Overpass API)"
+curl -fL -sS --retry 5 --retry-delay 20 -A "map-presentation-fetch-data/1.0" \
+  -o data/raw/osm_transport.tmp --data-urlencode "data=$OSM_QUERY" https://overpass-api.de/api/interpreter
+node -e '
+  const fs = require("fs");
+  const osm = JSON.parse(fs.readFileSync("data/raw/osm_transport.tmp", "utf8"));
+  fs.writeFileSync("data/raw/osm_transport.json", JSON.stringify({ elements: osm.elements }) + "\n");
+'
+rm data/raw/osm_transport.tmp
 
 # Compare the raw files with the recorded checksums (or record them the first time).
 if [ -f data/checksums.sha256 ]; then
@@ -87,6 +102,10 @@ $MAPSHAPER data/ch_language_regions.geojson \
   -filter "lang == 'de' || lang == 'fr'" \
   -innerlines \
   -o precision=0.0001 data/ch_language_border.geojson
+
+# One clean line per funicular, bus line and boat route (see the script).
+echo "build data/transport.geojson"
+node scripts/osm-lines.mjs data/raw/osm_transport.json data/transport.geojson
 
 echo "done"
 wc -c data/*.geojson

@@ -7,7 +7,13 @@
         "id": "biel",
         "verified": "OpenStreetMap (Nominatim, 2026-11-21): place=square 'Place Centrale / Zentralplatz', Biel/Bienne"
       },
-      "geometry": { "type": "Point", "coordinates": [7.2468, 47.1369] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.2468,
+          47.1369
+        ]
+      }
     },
     {
       "type": "Feature",
@@ -15,7 +21,13 @@
         "id": "language-border",
         "verified": "A vertex of data/ch_language_border.geojson (BFS language regions) between Biel/Bienne and Evilard"
       },
-      "geometry": { "type": "Point", "coordinates": [7.2276, 47.1539] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.2276,
+          47.1539
+        ]
+      }
     },
     {
       "type": "Feature",
@@ -23,7 +35,13 @@
         "id": "lake-energy",
         "verified": "Energy centre (heat pumps) of the Energieverbund Bielersee in the Alpha building, Schlossstrasse 15, Nidau, according to the ESB project page (esb.ch/de/energieverbund-bielersee). Coordinate of that address from OpenStreetMap (Nominatim, 2026-11-22)"
       },
-      "geometry": { "type": "Point", "coordinates": [7.2372, 47.1269] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.2372,
+          47.1269
+        ]
+      }
     },
     {
       "type": "Feature",
@@ -31,7 +49,13 @@
         "id": "tissot-arena",
         "verified": "OpenStreetMap (Nominatim, 2026-11-21): leisure=stadium 'Tissot Arena', Boulevard des Sports 18; OSM also maps a power=plant (solar) on the roof at 47.15569, 7.28142"
       },
-      "geometry": { "type": "Point", "coordinates": [7.2817, 47.1556] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.2817,
+          47.1556
+        ]
+      }
     },
     {
       "type": "Feature",
@@ -39,7 +63,83 @@
         "id": "hagneck",
         "verified": "OpenStreetMap (Overpass, 2026-11-21): power=plant 'Wasserkraftwerk Hagneck 2' (operator BKW), the plant opened in 2015"
       },
-      "geometry": { "type": "Point", "coordinates": [7.1768, 47.0597] }
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.1768,
+          47.0597
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "magglingen",
+        "verified": "Upper end of the funicular line Biel/Bienne - Magglingen/Macolin in data/transport.geojson (OpenStreetMap railway=funicular, state of 2026-11-01)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.2144,
+          47.1391
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "evilard",
+        "verified": "Upper end of the funicular line Biel/Bienne - Leubringen/Evilard in data/transport.geojson (OpenStreetMap railway=funicular, state of 2026-11-01)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.2392,
+          47.1496
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "swatch",
+        "verified": "OpenStreetMap (Nominatim, 2026-11-22): tourism=museum 'Cité du Temps / Omega Museum', Rue Nicolas-G.-Hayek 2, on the Swatch Group site; the Swatch headquarters is the long building next to it"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.2608,
+          47.144
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "lakeshore",
+        "verified": "Boat landing of Biel/Bienne: first point of the boat route Biel/Bienne - Erlach in data/transport.geojson (OpenStreetMap). The exact outline of the former Expo.02 site is NOT verified; the marker only stands for the lakeshore"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.2358,
+          47.1311
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "central-square",
+        "verified": "OpenStreetMap (Nominatim, 2026-11-22): place=square 'Place Centrale / Zentralplatz' (the bilingual name as mapped)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.2468,
+          47.1369
+        ]
+      }
     }
   ]
 }
