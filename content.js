@@ -16,9 +16,9 @@
      duration: 3000,              // flight time to this slide, in ms
      rotate: 3,                   // slow rotation while shown, degrees/second
      projection: "mercator",      // flat map for this slide; default is the globe
-     layers: ["terrain", "buildings3d"],
+     layers: ["terrain", "funiculars"],
          // francophone, germanophone, ch-regions, language-border,
-         // terrain, buildings3d, aerial (aerial photos, Switzerland only),
+         // terrain (3D relief),
          // funiculars, trolleybuses, boat (lines with moving vehicles).
          // Dim one with { id: "ch-regions", opacity: 0.3 }
      markers: ["tissot-arena"],   // ids from data/points.geojson
@@ -46,10 +46,8 @@ const WEAK_LANG = "de";
 const SHOW_PLACEHOLDER_MARKS = false;
 
 const BIEL = [7.2468, 47.1369];
-// Close-ups: 3D terrain, aerial photos, and 3D building blocks that are half
-// transparent so the roofs in the photo stay visible. Write "buildings3d"
-// instead of the { ... } for solid blocks, or remove it for photos only.
-const CLOSE_UP = ["terrain", "aerial", { id: "buildings3d", opacity: 0.5 }];
+// Close-ups: 3D terrain under the aerial photos (the imagery is always on).
+const CLOSE_UP = ["terrain"];
 
 /* --------------------------------------------------------------------------
    Opening sequence (slides 1-5): from the world to Biel/Bienne
@@ -575,7 +573,10 @@ const SOURCES = [
       ["panneau de rue", "https://commons.wikimedia.org/wiki/File:2005-Biel-Quellgasse.jpg"],
     ],
   },
-  { text: "Fond de carte : OpenFreeMap, © OpenMapTiles, © OpenStreetMap contributors. Relief : Terrain Tiles (Mapzen), AWS Open Data. Photos aériennes : © swisstopo." },
+  {
+    text: "Images satellite : Sentinel-2 cloudless, EOX (données Copernicus Sentinel 2016–2017, CC BY 4.0). Photos aériennes : © swisstopo. Relief : Terrain Tiles (Mapzen), AWS Open Data.",
+    links: [["s2maps.eu", "https://s2maps.eu"]],
+  },
 ];
 
 window.PRESENTATION = {

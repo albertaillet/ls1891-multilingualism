@@ -21,7 +21,8 @@ the table, the script warns that the checksum changed.
 | --- | --- | --- |
 | `francophone.geojson` | Natural Earth | Countries where French is an official language (code list at the top of `scripts/fetch-data.sh`). `both: true` marks countries that are also in the German list |
 | `germanophone.geojson` | Natural Earth | Countries where German is an official language (DE, AT, CH, LI, LU, BE) |
-| `world_land.geojson` | Natural Earth | Plain land outline, the backdrop when the basemap is unreachable |
+| `world_land.geojson` | Natural Earth | Plain land outline, the backdrop when the imagery is unreachable |
+| `world_borders.geojson` | Natural Earth | Country borders without coastlines, drawn over the satellite imagery |
 | `ch_language_regions.geojson` | BFS municipalities + BFS language regions | Municipalities joined to `SPRGEB2020` and dissolved into four regions (`lang`: de, fr, it, rm) |
 | `ch_language_border.geojson` | `ch_language_regions.geojson` | The line shared by the German and French regions |
 | `transport.geojson` | `osm_transport.json`, with `scripts/osm-lines.mjs` | One line per funicular, trolleybus line and boat route (`mode`: funicular, trolleybus, boat), along which the vehicles on the map move. The vehicles are decoration: they do not follow the timetable |
@@ -34,7 +35,7 @@ where its coordinate comes from.
 ## Photos on the slides (`assets/photos/`)
 
 Downloaded from Wikimedia Commons by `scripts/fetch-photos.sh`, scaled down to
-at most 1280 pixels wide. The author and licence are shown under each photo,
+at most 1280 pixels wide. The files are not committed (`.gitignore`). The author and licence are shown under each photo,
 and the sources slide links to each file page.
 
 | File | Commons file | Author | Licence |

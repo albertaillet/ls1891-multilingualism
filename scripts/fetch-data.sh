@@ -87,6 +87,13 @@ $MAPSHAPER data/raw/ne_50m_admin_0_countries.geojson \
   -simplify 12% keep-shapes \
   -o precision=0.01 data/world_land.geojson
 
+# Country borders (without the coastlines, which the imagery shows by itself).
+echo "build data/world_borders.geojson"
+$MAPSHAPER data/raw/ne_50m_admin_0_countries.geojson \
+  -simplify 35% \
+  -innerlines \
+  -o precision=0.001 data/world_borders.geojson
+
 echo "build data/ch_language_regions.geojson"
 $MAPSHAPER data/raw/municipalities.shp \
   -proj wgs84 from=EPSG:2056 \

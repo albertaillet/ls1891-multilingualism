@@ -47,9 +47,10 @@ describes the fields of a slide.
   the German summary (`SUMMARY`) and **Payam's slides 14–16** are `PAYAM_SLIDES`.
   Reorder, delete or copy the blocks; the numbering and the navigation follow
   automatically.
-- **Close-ups** use aerial photos (`"aerial"` in `layers`, Switzerland only) with
-  half-transparent 3D building blocks on top; `CLOSE_UP` at the top of
-  `content.js` sets this for all of them.
+- **The map** is satellite imagery only: Sentinel-2 for the whole world, and
+  sharp swisstopo aerial photos that fade in over Switzerland from zoom 11.
+  There are no roads, place names or building blocks. White country borders
+  are drawn on top while the camera is far away (up to zoom 8.5).
 - **Moving vehicles**: a slide with `"funiculars"`, `"trolleybuses"` or `"boat"`
   in `layers` shows those lines with vehicles moving along them. They are
   decoration and do not follow the timetable; their number and speed are set in
@@ -82,13 +83,13 @@ glossary and notes keep working. `index.html?offline` shows this mode on purpose
 After the network is back, reload the page. See [FALLBACK.md](FALLBACK.md) for
 recording a backup video.
 
-## External services used at run time (all keyless, checked 2026-11-21)
+## External services used at run time (all keyless, checked 2026-11-22)
 
 | What | URL | Attribution |
 | --- | --- | --- |
-| Basemap style and vector tiles | `https://tiles.openfreemap.org/styles/liberty` (fallback: `.../styles/positron`) | OpenFreeMap, © OpenMapTiles, data from OpenStreetMap (ODbL) |
-| Aerial photos on the close-ups | `https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg` | © swisstopo (SWISSIMAGE, free use with source) |
-| Elevation for 3D terrain and hillshade | `https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png` | Terrain Tiles (Mapzen), AWS Open Data |
+| Satellite imagery of the world | `https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless_3857/default/g/{z}/{y}/{x}.jpg` | Sentinel-2 cloudless 2016, s2maps.eu by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016 & 2017), CC BY 4.0 |
+| Aerial photos of Switzerland (from zoom 11) | `https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg` | © swisstopo (SWISSIMAGE, free use with source) |
+| Elevation for 3D terrain | `https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png` | Terrain Tiles (Mapzen), AWS Open Data |
 
 Committed to the repo:
 
@@ -100,17 +101,19 @@ Committed to the repo:
 | OpenStreetMap transport lines (funiculars, trolleybus, boat) | state of 1.11.2026 | ODbL, © OpenStreetMap contributors |
 
 Details and URLs of the data: [data/SOURCES.md](data/SOURCES.md). The credit line
-at the bottom left of the map always names OpenFreeMap, OpenMapTiles and
-OpenStreetMap, and adds the terrain tiles, swisstopo and BFS/OFS only on slides
-that show that data. Natural Earth is public domain and is credited on the sources slide only.
+at the bottom left of the map always names the Sentinel-2 imagery, and adds
+swisstopo, the terrain tiles, OpenStreetMap (transport lines) and BFS/OFS only
+on slides that show that data. Natural Earth is public domain and is credited on the sources slide only.
 
 ## Rebuild from scratch
 
 ```bash
-./scripts/fetch-deps.sh && ./scripts/fetch-data.sh
+./scripts/fetch-deps.sh && ./scripts/fetch-data.sh && ./scripts/fetch-photos.sh
 ```
 
 - `scripts/fetch-deps.sh` downloads the pinned MapLibre files into `assets/`.
+- `scripts/fetch-photos.sh` downloads the slide photos into `assets/photos/`.
+  They are not committed, so run it once after cloning.
 - `scripts/fetch-data.sh` downloads the raw data into `data/raw/`, checks it
   against `data/checksums.sha256` (and warns if an upstream file changed), then
   rebuilds `data/*.geojson` with `npx mapshaper@0.8.6` and

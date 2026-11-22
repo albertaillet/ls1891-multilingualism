@@ -7,13 +7,39 @@
   const $ = (id) => document.getElementById(id);
   const FRESH = window.FRESH || ""; // cache-buster for local files, set in index.html
 
-  // Keyless basemap styles, tried in order.
-  const STYLE_URLS = [
-    "https://tiles.openfreemap.org/styles/liberty",
-    "https://tiles.openfreemap.org/styles/positron",
-  ];
+  // The basemap is satellite imagery only, from two keyless services: the
+  // whole world from Sentinel-2 (about 10 m per pixel), and sharp aerial
+  // photos of Switzerland that fade in on top of it when we get close.
+  const SATELLITE = {
+    type: "raster",
+    tiles: ["https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless_3857/default/g/{z}/{y}/{x}.jpg"],
+    tileSize: 256,
+    maxzoom: 13,
+    attribution: '<a href="https://s2maps.eu" target="_blank" rel="noopener">Sentinel-2 cloudless</a> by EOX (modified Copernicus Sentinel data 2016–17)',
+  };
+  const AERIAL = {
+    type: "raster",
+    tiles: ["https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg"],
+    tileSize: 256,
+    maxzoom: 19,
+    bounds: [5.9, 45.8, 10.5, 47.85], // Switzerland; no requests outside it
+    attribution: "Photos aériennes : © swisstopo",
+  };
+  const AERIAL_FROM = 11; // zoom at which the aerial photos start to fade in
+  const ONLINE_STYLE = {
+    version: 8,
+    sources: { satellite: SATELLITE, aerial: AERIAL },
+    layers: [
+      { id: "background", type: "background", paint: { "background-color": "#0b1420" } },
+      { id: "satellite", type: "raster", source: "satellite" },
+      {
+        id: "aerial", type: "raster", source: "aerial", minzoom: AERIAL_FROM,
+        paint: { "raster-opacity": ["interpolate", ["linear"], ["zoom"], AERIAL_FROM, 0, AERIAL_FROM + 1, 1] },
+      },
+    ],
+  };
 
-  // Used when no basemap can be fetched: plain globe, local data only.
+  // Used when the imagery cannot be fetched: plain globe, local data only.
   const OFFLINE_STYLE = {
     version: 8,
     sources: {},
@@ -29,9 +55,7 @@
     francophone: [["fr-fill", "fill-opacity", 0.55], ["fr-line", "line-opacity", 0.9]],
     germanophone: [["de-fill", "fill-opacity", 0.55], ["de-hatch", "fill-opacity", 1], ["de-line", "line-opacity", 0.9]],
     "ch-regions": [["ch-fill", "fill-opacity", 0.5], ["ch-line", "line-opacity", 0.7]],
-    buildings3d: [["buildings-3d", "fill-extrusion-opacity", 0.92]],
     "language-border": [["border-casing", "line-opacity", 0.9], ["border-line", "line-opacity", 1]],
-    aerial: [["aerial", "raster-opacity", 1]],
     funiculars: [["tr-funicular-casing", "line-opacity", 0.9], ["tr-funicular", "line-opacity", 1]],
     trolleybuses: [["tr-trolleybus-casing", "line-opacity", 0.9], ["tr-trolleybus", "line-opacity", 1]],
     boat: [["tr-boat-casing", "line-opacity", 0.9], ["tr-boat", "line-opacity", 1]],
@@ -44,15 +68,6 @@
     funicular: { layer: "funiculars", color: "#d6336c", count: 2, seconds: 16 },
     trolleybus: { layer: "trolleybuses", color: "#7048e8", count: 4, seconds: 70 },
     boat: { layer: "boat", color: "#0b7285", count: 2, seconds: 60, dash: [2, 1.5] },
-  };
-
-  // Keyless aerial photos of Switzerland (swisstopo SWISSIMAGE), for close-ups.
-  const AERIAL = {
-    type: "raster",
-    tiles: ["https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg"],
-    tileSize: 256,
-    maxzoom: 19,
-    attribution: "Photos aériennes : © swisstopo",
   };
 
   // Credit lines appear on the map only while their data is on screen. Natural
@@ -81,30 +96,16 @@
 
   /* ---------- start-up ---------- */
 
+  // The satellite style if one of its tiles can be fetched, otherwise null.
   async function fetchStyle() {
     // index.html?offline pretends there is no network, to rehearse that case.
     if (new URLSearchParams(location.search).has("offline")) return null;
-    for (const url of STYLE_URLS) {
-      try {
-        const res = await fetch(url, { signal: AbortSignal.timeout(6000) });
-        if (res.ok) return await res.json();
-      } catch (e) { /* try the next one */ }
-    }
+    try {
+      const tile = SATELLITE.tiles[0].replace("{z}", 0).replace("{x}", 0).replace("{y}", 0);
+      const res = await fetch(tile, { signal: AbortSignal.timeout(6000) });
+      if (res.ok) return JSON.parse(JSON.stringify(ONLINE_STYLE));
+    } catch (e) { /* no network */ }
     return null;
-  }
-
-  // Basemap layers that are dropped to keep the map calm: points of interest,
-  // street names and road numbers, small places, tunnels, footpaths, service
-  // roads, railway ticks, airports, small land-use patches, canton borders.
-  const BASEMAP_HIDE = /^(poi_|highway-|road_shield|airport|aeroway|road_one_way|label_other|label_village|label_state|waterway_line_label|tunnel_|boundary_3|landuse_(pitch|track|cemetery|hospital|school)|road_area_pattern|park_outline)|path_pedestrian|service_track|_link|rail_hatching|transit_rail/;
-  // Town names only once we are close; cities and countries stay.
-  const BASEMAP_MINZOOM = { label_town: 9, road_minor: 13, road_minor_casing: 13 };
-
-  function simplifyBasemap(style) {
-    style.layers = style.layers.filter((l) => !BASEMAP_HIDE.test(l.id));
-    for (const l of style.layers) {
-      if (BASEMAP_MINZOOM[l.id]) l.minzoom = Math.max(l.minzoom || 0, BASEMAP_MINZOOM[l.id]);
-    }
   }
 
   async function init() {
@@ -113,7 +114,6 @@
       offline = true;
       style = OFFLINE_STYLE;
     }
-    simplifyBasemap(style);
     style.projection = { type: "globe" };
     style.sky = {
       "sky-color": "#7db3e8",
@@ -150,8 +150,6 @@
     map.on("load", () => {
       addDataLayers();
       if (!offline) addTerrain();
-      if (!offline) addBuildings();
-      if (!offline) addAerial();
       addTransport();
       if (!offline) map.once("idle", () => startPreloader(styleCopy));
       addMarkers();
@@ -211,9 +209,7 @@
   }
 
   function addDataLayers() {
-    // Our fills go below the basemap labels so that place names stay readable.
-    const firstLabel = map.getStyle().layers.find((l) => l.type === "symbol");
-    const below = firstLabel ? firstLabel.id : undefined;
+    const below = undefined; // on top of the imagery
     const fade = { duration: FADE };
 
     const fill = (id, source, color, filter) => map.addLayer({
@@ -246,6 +242,19 @@
     }, below);
     line("de-line", "germanophone", COLORS.de, 1.2);
 
+    // Country borders (Natural Earth), always on while we are far away. They
+    // are too coarse for close views, so they fade out there.
+    map.addSource("borders", { type: "geojson", data: "data/world_borders.geojson" + FRESH });
+    map.addLayer({
+      id: "borders", type: "line", source: "borders", maxzoom: 8.5,
+      layout: { "line-join": "round", "line-cap": "round" },
+      paint: {
+        "line-color": "#ffffff",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 1, 0.6, 6, 1.4],
+        "line-opacity": ["interpolate", ["linear"], ["zoom"], 7, 0.75, 8.5, 0],
+      },
+    });
+
     map.addSource("ch-regions", { type: "geojson", data: "data/ch_language_regions.geojson" + FRESH, attribution: BFS_CREDIT });
     map.addSource("ch-border", { type: "geojson", data: "data/ch_language_border.geojson" + FRESH, attribution: BFS_CREDIT });
     fill("ch-fill", "ch-regions", ["match", ["get", "lang"], "de", COLORS.de, "fr", COLORS.fr, "it", COLORS.it, COLORS.rm]);
@@ -255,50 +264,9 @@
     line("border-line", "ch-border", "#14202e", ["interpolate", ["linear"], ["zoom"], 6, 2, 13, 4], { "line-dasharray": [2, 2] });
   }
 
-  // Two separate DEM sources, as MapLibre recommends: one drives the 3D
-  // terrain, the other the hillshading.
+  // Elevation for the 3D terrain.
   function addTerrain(m = map) {
     m.addSource("dem", DEM);
-    m.addSource("dem-hillshade", DEM);
-    m.addLayer({
-      id: "hillshade", type: "hillshade", source: "dem-hillshade", minzoom: 6,
-      paint: {
-        "hillshade-exaggeration": 0.35,
-        "hillshade-shadow-color": "#3d4a57",
-        "hillshade-highlight-color": "#ffffff",
-      },
-    }, m.getLayer("water") ? "water" : undefined);
-  }
-
-  // 3D buildings from the basemap's building layer, only from zoom 14.
-  function addBuildings() {
-    const style = map.getStyle();
-    const source = Object.keys(style.sources).find((id) => style.sources[id].type === "vector");
-    if (!source) return;
-    if (map.getLayer("building-3d")) map.removeLayer("building-3d"); // the basemap's own
-    const firstLabel = style.layers.find((l) => l.type === "symbol");
-    map.addLayer({
-      id: "buildings-3d", type: "fill-extrusion", source, "source-layer": "building", minzoom: 14,
-      filter: ["!=", ["get", "hide_3d"], true],
-      paint: {
-        "fill-extrusion-color": ["interpolate", ["linear"], ["coalesce", ["get", "render_height"], 5],
-          0, "#ece6dc", 25, "#d8d0c3", 80, "#bdb4a6"],
-        "fill-extrusion-height": ["coalesce", ["get", "render_height"], 5],
-        "fill-extrusion-base": ["coalesce", ["get", "render_min_height"], 0],
-        "fill-extrusion-opacity": 0,
-        "fill-extrusion-opacity-transition": { duration: FADE },
-      },
-    }, firstLabel && firstLabel.id);
-  }
-
-  // Aerial photos go below all of our own layers and below the buildings.
-  function addAerial(m = map) {
-    m.addSource("aerial", AERIAL);
-    m.addLayer({
-      id: "aerial", type: "raster", source: "aerial", minzoom: 12,
-      layout: { visibility: "none" },
-      paint: { "raster-opacity": 0, "raster-opacity-transition": { duration: FADE } },
-    }, m.getLayer("fr-fill") ? "fr-fill" : undefined);
   }
 
   /* ---------- public transport: lines and moving vehicles ---------- */
@@ -307,8 +275,8 @@
 
   async function addTransport() {
     const data = await (await fetch("data/transport.geojson" + FRESH)).json();
-    map.addSource("transport", { type: "geojson", data });
-    const below = map.getLayer("buildings-3d") ? "buildings-3d" : undefined;
+    map.addSource("transport", { type: "geojson", data, attribution: "Lignes : © OpenStreetMap" });
+    const below = undefined;
     for (const [mode, t] of Object.entries(TRANSPORT)) {
       const layer = (id, color, width, extra = {}) => map.addLayer({
         id, type: "line", source: "transport", filter: ["==", ["get", "mode"], mode],
@@ -375,7 +343,7 @@
 
   // A second, invisible map of the same size sits behind the real one. While
   // you talk on a slide it visits the camera positions of the next two
-  // slides, so exactly the tiles they need (basemap, buildings, elevation) are
+  // slides, so exactly the tiles they need (imagery, elevation) are
   // already in the browser cache when the real camera flies there.
   const PRELOAD_AHEAD = 2;
   let preMap = null;
@@ -394,8 +362,6 @@
     preMap.on("error", () => {});
     preMap.once("load", () => {
       addTerrain(preMap);
-      addAerial(preMap);
-      preMap.setPaintProperty("aerial", "raster-opacity", 1);
       preloadAhead();
     });
   }
@@ -406,7 +372,6 @@
     for (let i = current + 1; i <= current + PRELOAD_AHEAD && i < slides.length; i++) {
       const slide = slides[i];
       preMap.setTerrain(wantsTerrain(slide) ? { source: "dem", exaggeration: TERRAIN_EXAGGERATION } : null);
-      preMap.setLayoutProperty("aerial", "visibility", (slide.layers || []).includes("aerial") ? "visible" : "none");
       preMap.setProjection({ type: slide.projection || "globe" });
       preMap.jumpTo(fitCamera({ ...slide.camera, padding: cameraPadding(slide) }));
       // Wait until everything for this view is loaded (or give up after 10 s).
