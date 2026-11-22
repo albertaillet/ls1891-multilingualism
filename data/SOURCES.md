@@ -30,3 +30,20 @@ the table, the script warns that the checksum changed.
 
 `points.geojson` is written by hand. Each feature has a `verified` property saying
 where its coordinate comes from.
+
+## Photos on the slides (`assets/photos/`)
+
+Downloaded from Wikimedia Commons by `scripts/fetch-photos.sh`, scaled down to
+at most 1280 pixels wide. The author and licence are shown under each photo,
+and the sources slide links to each file page.
+
+| File | Commons file | Author | Licence |
+| --- | --- | --- | --- |
+| `tissot-arena.jpg` | [Solarkraftwerk Tissot Arena.jpg](https://commons.wikimedia.org/wiki/File:Solarkraftwerk_Tissot_Arena.jpg) | ESB BielBienne | CC BY-SA 4.0 |
+| `hagneck.jpg` | [Neues Wasserkraftwerk Hagneck.jpg](https://commons.wikimedia.org/wiki/File:Neues_Wasserkraftwerk_Hagneck.jpg) | Arkelin | CC BY 4.0 |
+| `funicular.jpg` | [I09 386 Standseilbahn Leubringen, Wagen 1.jpg](https://commons.wikimedia.org/wiki/File:I09_386_Standseilbahn_Leubringen,_Wagen_1.jpg) | Falk2 | CC BY-SA 4.0 |
+| `trolleybus.jpg` | [Trolleybus des TPB Bienne.JPG](https://commons.wikimedia.org/wiki/File:Trolleybus_des_TPB_Bienne.JPG) | VincentdeMorteau | CC BY-SA 3.0 |
+| `mobicat.jpg` | [MobiCat Ligerz.jpg](https://commons.wikimedia.org/wiki/File:MobiCat_Ligerz.jpg) | Bielersee Schifffahrtsgesellschaft (BSG) | CC BY-SA 3.0 |
+| `swatch.jpg` | [Swatch-Bienne-10.jpg](https://commons.wikimedia.org/wiki/File:Swatch-Bienne-10.jpg) | MHM55 | CC BY-SA 4.0 |
+| `expo02.jpg` | [Tuerme auf der Arteplage Biel der Expo.02.jpg](https://commons.wikimedia.org/wiki/File:Tuerme_auf_der_Arteplage_Biel_der_Expo.02.jpg) | WikiNik (September 2002) | CC BY-SA 3.0 |
+| `street-sign.jpg` | [2005-Biel-Quellgasse.jpg](https://commons.wikimedia.org/wiki/File:2005-Biel-Quellgasse.jpg) | Roland Zumbuehl | CC BY-SA 4.0 |

@@ -585,6 +585,7 @@
     showMarkers(null);
     $("panel").classList.add("hidden");
     $("legend").classList.add("hidden");
+    $("photos").classList.add("hidden");
     // Terrain is switched on before the flight and off only after it, so the
     // switch always happens far away from the ground where it is invisible.
     if (wantsTerrain(slide)) setTerrain(true);
@@ -596,6 +597,7 @@
     showMarkers(slide);
     renderPanel(slide);
     renderLegend(slide);
+    renderPhotos(slide);
     startRotation(slide);
     preloadAhead();
   }
@@ -633,12 +635,6 @@
     if (p.subheading) panel.append(el("p", "subheading", p.subheading));
     if (p.statement) panel.append(el("p", "statement", p.statement));
     if (p.bullets) panel.append(el("ul", "bullets", p.bullets.map((b) => el("li", "", b))));
-    if (p.image) {
-      const img = el("img");
-      img.src = p.image.src;
-      img.alt = plain(p.image.alt || "");
-      panel.append(el("figure", "", [img, p.image.caption && el("figcaption", "", p.image.caption)]));
-    }
     if (p.diagram && DIAGRAMS[p.diagram.type]) {
       const figure = el("figure", "diagram");
       figure.innerHTML = DIAGRAMS[p.diagram.type](p.diagram.labels || {});
@@ -673,6 +669,20 @@
       ]));
     }
     panel.classList.remove("hidden");
+  }
+
+  // Photos sit in their own card on the map: panel.image is one photo or a
+  // list of two, each { src, alt, caption }.
+  function renderPhotos(slide) {
+    const box = $("photos");
+    const images = [].concat((slide.panel && slide.panel.image) || []);
+    box.replaceChildren(...images.map((image) => {
+      const img = el("img");
+      img.src = image.src;
+      img.alt = plain(image.alt || "");
+      return el("figure", "", [img, image.caption && el("figcaption", "", image.caption)]);
+    }));
+    if (images.length) box.classList.remove("hidden");
   }
 
   function renderLegend(slide) {

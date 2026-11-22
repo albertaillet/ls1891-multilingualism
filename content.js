@@ -30,7 +30,7 @@
        heading: "...",
        bullets: ["...", "..."],   // 3-5 short keywords
        weakLanguage: ["..."],     // shown in italics with a language tag
-       image: { src: "img/photo.jpg", alt: "...", caption: "..." },
+       image: { src: "assets/photos/photo.jpg", alt: "...", caption: "..." },   // or a list of two; shown in a card on the map
        diagram: { type: "lake-energy", labels: { ... } },
        glossary: [{ strong: "...", weak: "..." }],
      },
@@ -263,6 +263,7 @@ const MY_SLIDES = [
     panel: {
       kicker: "Tissot Arena",
       heading: "[STRONG: Du soleil sur le toit]",
+      image: { src: "assets/photos/tissot-arena.jpg", alt: "Tissot Arena", caption: "Photo : ESB BielBienne, CC BY-SA 4.0" },
       bullets: [
         "[STRONG: stade de football et de hockey]",
         "[STRONG: le toit : une grande centrale solaire]",
@@ -288,6 +289,7 @@ const MY_SLIDES = [
     panel: {
       kicker: "[STRONG: Canal de Hagneck]",
       heading: "[STRONG: La centrale hydroélectrique de Hagneck]",
+      image: { src: "assets/photos/hagneck.jpg", alt: "Hagneck", caption: "Photo : Arkelin, CC BY 4.0" },
       bullets: [
         "[STRONG: l'Aar arrive ici dans le lac de Bienne]",
         "[STRONG: nouvelle centrale depuis 2015]",
@@ -314,6 +316,7 @@ const MY_SLIDES = [
     panel: {
       kicker: "[STRONG: Transports]",
       heading: "[STRONG: Monter sans voiture]",
+      image: { src: "assets/photos/funicular.jpg", alt: "Funiculaire Bienne–Évilard", caption: "Photo : Falk2, CC BY-SA 4.0" },
       bullets: [
         "[STRONG: deux funiculaires partent de la ville]",
         "[STRONG: Macolin : depuis 1887, 1,7 km]",
@@ -341,6 +344,10 @@ const MY_SLIDES = [
     panel: {
       kicker: "[STRONG: Transports]",
       heading: "[STRONG: Trolleybus et bateaux]",
+      image: [
+        { src: "assets/photos/trolleybus.jpg", alt: "Trolleybus", caption: "Photo : VincentdeMorteau, CC BY-SA 3.0" },
+        { src: "assets/photos/mobicat.jpg", alt: "MobiCat", caption: "Photo : BSG, CC BY-SA 3.0" },
+      ],
       bullets: [
         "[STRONG: trolleybus : bus électriques, depuis 1940]",
         "[STRONG: bateaux : Bienne – île Saint-Pierre – Erlach]",
@@ -393,6 +400,7 @@ const PAYAM_SLIDES = [
     panel: {
       kicker: "[STRONG: Architecture]",
       heading: "[STRONG: Swatch et Omega : un siège en bois]",
+      image: { src: "assets/photos/swatch.jpg", alt: "Swatch", caption: "Photo : MHM55, CC BY-SA 4.0" },
       bullets: [
         "[STRONG: Bienne : siège mondial de Swatch et d'Omega]",
         "[STRONG: siège de Swatch : 2019, architecte Shigeru Ban]",
@@ -418,6 +426,7 @@ const PAYAM_SLIDES = [
     panel: {
       kicker: "Expo.02",
       heading: "[STRONG: L'héritage d'Expo.02 au bord du lac]",
+      image: { src: "assets/photos/expo02.jpg", alt: "Expo.02", caption: "Photo (2002) : WikiNik, CC BY-SA 3.0" },
       bullets: [
         "[STRONG: 2002 : exposition nationale suisse, Expo.02]",
         "[STRONG: Bienne : une des « arteplages », au bord du lac]",
@@ -442,6 +451,7 @@ const PAYAM_SLIDES = [
     panel: {
       kicker: "[STRONG: Espace public]",
       heading: "[STRONG: Des rues en deux langues]",
+      image: { src: "assets/photos/street-sign.jpg", alt: "Quellgasse / Rue de la Source", caption: "Photo : Roland Zumbuehl, CC BY-SA 4.0" },
       bullets: [
         "[STRONG: tous les noms de rue : en allemand et en français]",
         "[STRONG: habitants : 55 % allemand, 45 % français]",
@@ -552,6 +562,19 @@ const SOURCES = [
     ["eda.admin.ch", "https://www.eda.admin.ch/fr/quatre-langues-quatre-cultures-mais-un-seul-pays"],
     ["francophonie.org", "https://www.francophonie.org/sites/default/files/2026-04/Synthese_rapport_Langue_francaise_dans_le_monde_2026.pdf"]] },
   { text: "Cartes : OFS/BFS, régions linguistiques 2020 (état 1.1.2024) ; Natural Earth 5.1.2 ; lignes de transport : OpenStreetMap (1.11.2026)." },
+  {
+    text: "Photos : Wikimedia Commons, auteurs et licences sous chaque photo.",
+    links: [
+      ["Tissot Arena", "https://commons.wikimedia.org/wiki/File:Solarkraftwerk_Tissot_Arena.jpg"],
+      ["Hagneck", "https://commons.wikimedia.org/wiki/File:Neues_Wasserkraftwerk_Hagneck.jpg"],
+      ["funiculaire", "https://commons.wikimedia.org/wiki/File:I09_386_Standseilbahn_Leubringen,_Wagen_1.jpg"],
+      ["trolleybus", "https://commons.wikimedia.org/wiki/File:Trolleybus_des_TPB_Bienne.JPG"],
+      ["MobiCat", "https://commons.wikimedia.org/wiki/File:MobiCat_Ligerz.jpg"],
+      ["Swatch", "https://commons.wikimedia.org/wiki/File:Swatch-Bienne-10.jpg"],
+      ["Expo.02", "https://commons.wikimedia.org/wiki/File:Tuerme_auf_der_Arteplage_Biel_der_Expo.02.jpg"],
+      ["panneau de rue", "https://commons.wikimedia.org/wiki/File:2005-Biel-Quellgasse.jpg"],
+    ],
+  },
   { text: "Fond de carte : OpenFreeMap, © OpenMapTiles, © OpenStreetMap contributors. Relief : Terrain Tiles (Mapzen), AWS Open Data. Photos aériennes : © swisstopo." },
 ];
 

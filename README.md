@@ -58,8 +58,12 @@ describes the fields of a slide.
 - **Glossary**: `glossary: [{ strong: "...", weak: "..." }]` per panel.
 - **Weak-language keywords**: `weakLanguage: ["..."]` per panel; `weakPanel: true`
   marks a panel that is entirely in the weak language (the summary).
-- **An image**: put the file in the repo (e.g. `img/photo.jpg`) and add
-  `image: { src: "img/photo.jpg", alt: "...", caption: "..." }` to the panel.
+- **A photo**: put the file in `assets/photos/` and add
+  `image: { src: "assets/photos/photo.jpg", alt: "...", caption: "..." }` to
+  the panel (or a list of two). It appears in its own card at the bottom left
+  of the map. The photos now in use come from Wikimedia Commons;
+  `scripts/fetch-photos.sh` downloads them again, and `data/SOURCES.md` lists
+  their authors and licences.
 - **Camera**: `camera: { center: [lng, lat], zoom, pitch, bearing }`, `duration` is
   the flight time in ms, `rotate` the slow rotation in degrees per second.
 - **Labelled points** are in [`data/points.geojson`](data/points.geojson), their
