@@ -47,8 +47,9 @@ describes the fields of a slide.
   the German summary (`SUMMARY`) and **Payam's slides 14–16** are `PAYAM_SLIDES`.
   Reorder, delete or copy the blocks; the numbering and the navigation follow
   automatically.
-- **Close-ups** use aerial photos (`"aerial"` in `layers`, Switzerland only).
-  Replace it with `"buildings3d"` for grey building blocks on the drawn map.
+- **Close-ups** use aerial photos (`"aerial"` in `layers`, Switzerland only) with
+  half-transparent 3D building blocks on top; `CLOSE_UP` at the top of
+  `content.js` sets this for all of them.
 - **Moving vehicles**: a slide with `"funiculars"`, `"trolleybuses"` or `"boat"`
   in `layers` shows those lines with vehicles moving along them. They are
   decoration and do not follow the timetable; their number and speed are set in

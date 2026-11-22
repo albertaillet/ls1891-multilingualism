@@ -46,9 +46,10 @@ const WEAK_LANG = "de";
 const SHOW_PLACEHOLDER_MARKS = false;
 
 const BIEL = [7.2468, 47.1369];
-// Close-ups: 3D terrain with aerial photos. Use "buildings3d" instead of
-// "aerial" to get plain grey building blocks on the drawn map.
-const CLOSE_UP = ["terrain", "aerial"];
+// Close-ups: 3D terrain, aerial photos, and 3D building blocks that are half
+// transparent so the roofs in the photo stay visible. Write "buildings3d"
+// instead of the { ... } for solid blocks, or remove it for photos only.
+const CLOSE_UP = ["terrain", "aerial", { id: "buildings3d", opacity: 0.5 }];
 
 /* --------------------------------------------------------------------------
    Opening sequence (slides 1-5): from the world to Biel/Bienne
