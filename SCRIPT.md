@@ -11,17 +11,17 @@ elles sont plus faciles à dire à voix haute.
 | --- | --- | --- | --- | --- |
 | Introduction | ensemble | 1–5 | ~110 | ~1:00 |
 | Énergie | Albert | 6–9 | ~155 | ~1:25 |
-| Transports | Albert | 10–11 | ~80 | ~0:45 |
-| Zusammenfassung | Albert | 12 | ~30 | ~0:20 |
-| Architecture et rues | Payam | 13–15 | ~195 | ~1:50 |
-| Notre avis, sources | ensemble | 16–17 | ~80 | ~0:45 |
-| **Total** | | | **~655** | **~6:05** |
+| Transports | Albert | 10–12 | ~130 | ~1:10 |
+| Zusammenfassung | Albert | 13 | ~30 | ~0:20 |
+| Architecture et rues | Payam | 14–16 | ~195 | ~1:50 |
+| Notre avis, sources | ensemble | 17–18 | ~80 | ~0:45 |
+| **Total** | | | **~705** | **~6:30** |
 
-Il reste environ 55 secondes de marge pour les transitions de la carte.
+Il reste environ 30 secondes de marge pour les transitions de la carte.
 Chronométrez-vous une fois à voix haute, ensemble.
 
 - `→` = appuyer sur Espace pour passer à la diapositive suivante.
-- Les textes de Payam (13–15) et les avis (16) sont des propositions : à
+- Les textes de Payam (14–16) et les avis (17) sont des propositions : à
   réécrire avec vos mots.
 - « Ouvert en 2015 » pour la Tissot Arena n'est plus dans le texte, parce que
   la source n'a pas pu être vérifiée.
@@ -130,7 +130,17 @@ MobiCat, est un catamaran solaire.
 
 →
 
-### 12 · Zusammenfassung (résumé en allemand)
+### 12 · Le train : la ligne du pied du Jura
+
+Bienne est aussi une gare importante. La ligne du pied du Jura relie Genève et
+Zurich et passe par Bienne, au bord du lac. Depuis 2025, les trains des CFF
+roulent avec 100 % d'électricité renouvelable, surtout de l'énergie
+hydraulique. Et au bord du lac, on construit un nouveau tunnel : il doit ouvrir
+fin 2029.
+
+→
+
+### 13 · Zusammenfassung (résumé en allemand)
 
 **DE** – *Ich fasse kurz zusammen. Biel ist eine zweisprachige Stadt. Die Stadt
 nutzt Seewasser, Sonne und Wasserkraft. Es gibt Standseilbahnen, Trolleybusse
@@ -142,7 +152,7 @@ und Schiffe. Das Ziel: klimaneutral bis 2050.*
 
 ## Architecture et rues (Payam) – proposition
 
-### 13 · Swatch et Omega : un siège en bois
+### 14 · Swatch et Omega : un siège en bois
 
 Bienne est aussi la ville des montres. Swatch et Omega ont ici leur siège
 mondial. Regardez ce long bâtiment courbe : c'est le siège de Swatch, ouvert en
@@ -154,7 +164,7 @@ matériau renouvelable. C'est donc aussi un exemple de construction durable.
 
 →
 
-### 14 · L'héritage d'Expo.02 au bord du lac
+### 15 · L'héritage d'Expo.02 au bord du lac
 
 En 2002, la Suisse a organisé une exposition nationale, Expo.02. Bienne était
 une des villes de l'exposition, avec un site au bord du lac. Après l'exposition, on a tout démonté. Depuis, la ville se demande :
@@ -165,7 +175,7 @@ AGGLOlac, a été refusé.
 
 →
 
-### 15 · Des rues en deux langues
+### 16 · Des rues en deux langues
 
 À Bienne, le bilinguisme se voit dans la rue. Tous les noms de rue sont en
 allemand et en français, par exemple « Zentralplatz » et « Place Centrale ».
@@ -181,7 +191,7 @@ ville.
 
 ## Conclusion (ensemble)
 
-### 16 · Notre avis
+### 17 · Notre avis
 
 *(Propositions – à remplacer par vos avis personnels.)*
 
@@ -196,7 +206,7 @@ Swatch montre qu'on peut construire grand avec du bois.
 
 →
 
-### 17 · Sources
+### 18 · Sources
 
 Voici nos sources. Merci de votre attention. Avez-vous des questions ?
 
@@ -204,7 +214,7 @@ Voici nos sources. Merci de votre attention. Avez-vous des questions ?
 
 ## D'où viennent les chiffres
 
-Les liens sont sur la diapositive 17 (liste `SOURCES` dans `content.js`), où on
+Les liens sont sur la diapositive 18 (liste `SOURCES` dans `content.js`), où on
 peut cliquer dessus.
 
 | Diapositive | Affirmation | Source |
@@ -220,7 +230,9 @@ peut cliquer dessus.
 | 10 | ouverture 1887 (Macolin) et 1898 (Évilard) | Wikipédia seulement **(à vérifier)** |
 | 11 | trolleybus depuis 1940 | Wikipédia seulement **(à vérifier)** |
 | 11 | bateaux Bienne – île Saint-Pierre – Erlach ; MobiCat, catamaran solaire de 2001 | BSG, bielersee.ch |
-| 13 | siège inauguré le 3.10.2019 ; 240 m ; env. 4 600 poutres ; Shigeru Ban | Swatch Group, communiqué 2019 |
-| 14 | Expo.02 du 15.5 au 20.10.2002 ; bâtiments démontés | Wikipédia ; SRF, « 20 Jahre Expo.02 » |
-| 14 | AGGLOlac refusé le 18.3.2021 | cash.ch, 2021 |
-| 15 | 55,2 % allemand, 44,8 % français (31.12.2025) ; noms de rue bilingues ; règlement de 1996 | Ville de Bienne, page « Zweisprachigkeit » |
+| 12 | trains CFF : 100 % d'électricité renouvelable depuis le 1.1.2025, surtout hydraulique | CFF/SBB, page « Renewable energy » ; swissinfo.ch |
+| 12 | tunnel de Gléresse (Ligerz) : 2,1 km, mise en service prévue fin 2029 | SRF ; Plattform J, 12.9.2023 **(date à vérifier)** |
+| 14 | siège inauguré le 3.10.2019 ; 240 m ; env. 4 600 poutres ; Shigeru Ban | Swatch Group, communiqué 2019 |
+| 15 | Expo.02 du 15.5 au 20.10.2002 ; bâtiments démontés | Wikipédia ; SRF, « 20 Jahre Expo.02 » |
+| 15 | AGGLOlac refusé le 18.3.2021 | cash.ch, 2021 |
+| 16 | 55,2 % allemand, 44,8 % français (31.12.2025) ; noms de rue bilingues ; règlement de 1996 | Ville de Bienne, page « Zweisprachigkeit » |

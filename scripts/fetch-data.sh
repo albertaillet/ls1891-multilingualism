@@ -42,11 +42,11 @@ fetch municipalities.shx "https://unpkg.com/swiss-maps@4.7.0/2024/municipalities
 # (Three tiny areas that belong to no municipality have no entry and are dropped.)
 fetch bfs_levels_2024-01-01.csv "https://www.agvchapp.bfs.admin.ch/api/communes/levels?date=01-01-2024"
 
-# Funiculars, trolleybus lines 1, 3 and 4 and the Biel–Erlach boat route from
-# OpenStreetMap, as they were on 2026-11-01 (the date in the query pins the
-# data). Only the "elements" are kept, because the rest of the answer contains
+# Funiculars, trolleybus lines 1, 3 and 4, the Biel–Erlach boat route and the
+# SBB tracks around Biel from OpenStreetMap, as they were on 2026-11-01 (the
+# date in the query pins the data). Only the "elements" are kept, because the rest of the answer contains
 # the time of the request.
-OSM_QUERY='[out:json][timeout:90][date:"2026-11-01T00:00:00Z"];(way["railway"="funicular"](47.12,7.20,47.17,7.27);relation(id:1861122,12012146,2131075,18638227););out geom;'
+OSM_QUERY='[out:json][timeout:90][date:"2026-11-01T00:00:00Z"];(way["railway"="funicular"](47.12,7.20,47.17,7.27);way["railway"="rail"]["usage"~"^(main|branch)$"](47.03,7.05,47.22,7.42);relation(id:1861122,12012146,2131075,18638227););out geom;'
 echo "fetch OpenStreetMap transport lines (Overpass API)"
 curl -fL -sS --retry 5 --retry-delay 20 -A "map-presentation-fetch-data/1.0" \
   -o data/raw/osm_transport.tmp --data-urlencode "data=$OSM_QUERY" https://overpass-api.de/api/interpreter

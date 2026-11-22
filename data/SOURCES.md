@@ -25,7 +25,7 @@ the table, the script warns that the checksum changed.
 | `world_borders.geojson` | Natural Earth | Country borders without coastlines, drawn over the satellite imagery |
 | `ch_language_regions.geojson` | BFS municipalities + BFS language regions | Municipalities joined to `SPRGEB2020` and dissolved into four regions (`lang`: de, fr, it, rm) |
 | `ch_language_border.geojson` | `ch_language_regions.geojson` | The line shared by the German and French regions |
-| `transport.geojson` | `osm_transport.json`, with `scripts/osm-lines.mjs` | One line per funicular, trolleybus line and boat route (`mode`: funicular, trolleybus, boat), along which the vehicles on the map move. The vehicles are decoration: they do not follow the timetable |
+| `transport.geojson` | `osm_transport.json`, with `scripts/osm-lines.mjs` | One line per funicular, trolleybus line, boat route and SBB line (`mode`: funicular, trolleybus, boat, train; the SBB lines are the Jura foot line and the line towards Bern, as far as about 15 km from Biel), along which the vehicles on the map move. The vehicles are decoration: they do not follow the timetable |
 
 ## Hand-written
 
@@ -51,6 +51,6 @@ and the sources slide links to each file page.
 
 ## Vehicle pictograms
 
-The moving vehicles use three pictograms from the Temaki icon set 5.13.0
-(`tram_side`, `trolleybus`, `ferry`), https://github.com/rapideditor/temaki,
+The moving vehicles use four pictograms from the Temaki icon set 5.13.0
+(`tram_side`, `trolleybus`, `ferry`, `heavy_rail`), https://github.com/rapideditor/temaki,
 CC0 (public domain). Their paths are written directly in `app.js`.

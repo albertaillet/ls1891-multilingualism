@@ -1,6 +1,7 @@
 // Turns the OpenStreetMap extract data/raw/osm_transport.json (Overpass
 // "out geom" JSON) into data/transport.geojson: one clean line per funicular,
-// trolleybus line and boat route, for the moving vehicles on the map.
+// trolleybus line, boat route and SBB main line, for the moving vehicles on
+// the map.
 // Usage: node scripts/osm-lines.mjs data/raw/osm_transport.json data/transport.geojson
 import { readFileSync, writeFileSync } from "node:fs";
 
@@ -122,6 +123,25 @@ for (const rel of osm.elements.filter((e) => e.type === "relation" && ROUTES[e.i
   const to = outerEnd(ways[ways.length - 1], ways[ways.length - 2]);
   features.push(feature(ROUTES[rel.id], path(nodes, from, to)));
 }
+
+// SBB lines around Biel/Bienne: the tracks as a graph, and the shortest way
+// through it between two places. The Jura foot line uses main-line tracks
+// only; the line to Bern is tagged as a branch line in OpenStreetMap.
+function railLine(usages, from, to) {
+  const ways = osm.elements
+    .filter((e) => e.type === "way" && e.tags && e.tags.railway === "rail" && usages.includes(e.tags.usage))
+    .map((e) => e.geometry);
+  const nodes = graphOf(ways);
+  const nearest = ([lon, lat]) => [...nodes.values()].reduce((a, b) => (metres(b.p, { lon, lat }) < metres(a.p, { lon, lat }) ? b : a));
+  return path(nodes, nearest(from), nearest(to));
+}
+const STATION = [7.2428, 47.1329]; // Biel/Bienne station
+const jura = [
+  ...railLine(["main"], [7.0, 47.04], STATION), // from Neuchâtel and Geneva
+  ...railLine(["main"], STATION, [7.5, 47.2]).slice(1), // on to Olten and Zurich
+];
+features.push(feature({ id: "rail-jura", mode: "train", name: "Jurasüdfuss" }, jura));
+features.push(feature({ id: "rail-bern", mode: "train", name: "Biel/Bienne – Bern" }, railLine(["main", "branch"], STATION, [7.38, 47.02])));
 
 writeFileSync(output, JSON.stringify({ type: "FeatureCollection", features }) + "\n");
 for (const f of features) console.log(`  ${f.properties.id}: ${f.geometry.coordinates.length} points`);

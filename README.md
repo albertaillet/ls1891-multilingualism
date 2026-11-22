@@ -43,15 +43,15 @@ describes the fields of a slide.
 - **Drafted text** is wrapped as `"[STRONG: ...]"` or `"[WEAK: ...]"`. On screen
   only the inner text is shown. Rewrite the text; keeping or deleting the wrapper
   is up to you. Set `SHOW_PLACEHOLDER_MARKS = true` to see the wrappers on screen.
-- **Your slides 6–11** (energy, transport) are the `MY_SLIDES` list, slide 12 is
-  the German summary (`SUMMARY`) and **Payam's slides 13–15** are `PAYAM_SLIDES`.
+- **Your slides 6–12** (energy, transport) are the `MY_SLIDES` list, slide 13 is
+  the German summary (`SUMMARY`) and **Payam's slides 14–16** are `PAYAM_SLIDES`.
   Reorder, delete or copy the blocks; the numbering and the navigation follow
   automatically.
 - **The map** is satellite imagery only: Sentinel-2 for the whole world, and
   sharp swisstopo aerial photos that fade in over Switzerland from zoom 11.
   There are no roads, place names or building blocks. White country borders
   are drawn on top while the camera is far away (up to zoom 8.5).
-- **Moving vehicles**: a slide with `"funiculars"`, `"trolleybuses"` or `"boat"`
+- **Moving vehicles**: a slide with `"funiculars"`, `"trolleybuses"`, `"boat"` or `"trains"`
   in `layers` shows those lines with vehicles moving along them. They are
   decoration and do not follow the timetable; their number and speed are set in
   `TRANSPORT` at the top of `app.js`.
@@ -98,7 +98,7 @@ Committed to the repo:
 | MapLibre GL JS (`assets/unpkg.com/maplibre-gl@5.24.1/`) | 5.24.1 | BSD-3-Clause |
 | Natural Earth countries | 5.1.2 | public domain |
 | BFS/OFS municipality boundaries and language regions | state of 1.1.2024 | open data, source attribution required |
-| OpenStreetMap transport lines (funiculars, trolleybus, boat) | state of 1.11.2026 | ODbL, © OpenStreetMap contributors |
+| OpenStreetMap transport lines (funiculars, trolleybus, boat, SBB tracks) | state of 1.11.2026 | ODbL, © OpenStreetMap contributors |
 
 Details and URLs of the data: [data/SOURCES.md](data/SOURCES.md). The credit line
 at the bottom left of the map always names the Sentinel-2 imagery, and adds

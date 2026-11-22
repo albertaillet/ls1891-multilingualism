@@ -276,9 +276,10 @@ figcaption { font-size: 0.75rem; opacity: 0.7; margin-top: 0.2rem; }
 .vehicle svg { width: 1.15rem; height: 1.15rem; fill: #fff; }
 .vehicle.shown i { opacity: 1; }
 
-.swatch-funicular, .swatch-trolleybus, .swatch-boat { height: 0; border: 0; border-radius: 0; }
+.swatch-funicular, .swatch-trolleybus, .swatch-boat, .swatch-train { height: 0; border: 0; border-radius: 0; }
 .swatch-funicular { border-top: 0.3rem solid #d6336c; }
 .swatch-trolleybus { border-top: 0.3rem solid #7048e8; }
 .swatch-boat { border-top: 0.3rem dashed #0b7285; }
+.swatch-train { border-top: 0.3rem solid #e03131; }
 
 .sources a { color: #1864ab; white-space: nowrap; }

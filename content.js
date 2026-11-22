@@ -19,7 +19,7 @@
      layers: ["terrain", "funiculars"],
          // francophone, germanophone, ch-regions, language-border,
          // terrain (3D relief),
-         // funiculars, trolleybuses, boat (lines with moving vehicles).
+         // funiculars, trolleybuses, boat, trains (lines with moving vehicles).
          // Dim one with { id: "ch-regions", opacity: 0.3 }
      markers: ["tissot-arena"],   // ids from data/points.geojson
      legend: [{ swatch: "fr", strong: "...", weak: "..." }],
@@ -357,7 +357,32 @@ const MY_SLIDES = [
         { strong: "l'électricité", weak: "der Strom" },
       ],
     },
-    notes: ["[STRONG: suivre un bus et un bateau sur la carte]", "[STRONG: électricité au lieu du diesel]", "[STRONG: transition → résumé en allemand]"],
+    notes: ["[STRONG: suivre un bus et un bateau sur la carte]", "[STRONG: électricité au lieu du diesel]"],
+  },
+  {
+    id: "train",
+    camera: { center: [7.225, 47.115], zoom: 11.2, pitch: 45, bearing: -15 },
+    duration: 1600,
+    rotate: 0.5,
+    layers: ["terrain", "trains"],
+    markers: ["biel"],
+    legend: [{ swatch: "train", strong: "[STRONG: Lignes CFF]", weak: "[WEAK: SBB-Linien]" }],
+    panel: {
+      kicker: "[STRONG: Transports]",
+      heading: "[STRONG: Le train : la ligne du pied du Jura]",
+      bullets: [
+        "[STRONG: ligne Genève – Bienne – Zurich, et ligne vers Berne]",
+        "[STRONG: depuis 2025 : 100 % d'électricité renouvelable, surtout hydraulique]",
+        "[STRONG: au bord du lac : nouveau tunnel de Gléresse (2,1 km), prévu pour fin 2029]",
+      ],
+      weakLanguage: ["[WEAK: Die Züge der SBB fahren mit erneuerbarem Strom]"],
+      glossary: [
+        { strong: "la gare", weak: "der Bahnhof" },
+        { strong: "les CFF", weak: "die SBB" },
+        { strong: "la voie", weak: "das Gleis" },
+      ],
+    },
+    notes: ["[STRONG: suivre un train le long du lac]", "[STRONG: CFF = SBB en allemand]", "[STRONG: transition → résumé en allemand]"],
   },
 ];
 
@@ -525,6 +550,11 @@ const SOURCES = [
   { text: "Bielersee-Schifffahrts-Gesellschaft (BSG) : réseau et MobiCat.", links: [
     ["bielersee.ch", "https://www.bielersee.ch/kursfahrten/streckennetz/bielersee"],
     ["MobiCat", "https://www.bielersee.ch/unternehmen/flotte/ems-mobicat"]] },
+  { text: "CFF/SBB : énergie renouvelable (depuis 2025) ; tunnel de Gléresse/Ligerz : SRF, Plattform J (2023).", links: [
+    ["sbb.ch", "https://company.sbb.ch/en/company/responsibility/sustainability/renewable-energy.html"],
+    ["swissinfo.ch", "https://www.swissinfo.ch/eng/climate-change/sbb-trains-will-only-run-on-electricity-from-renewable-sources-from-2025/88603509"],
+    ["srf.ch", "https://www.srf.ch/news/schweiz/neuer-bahntunnel-sbb-bohrt-sich-durch-die-jurasuedfusslinie-soll-schneller-werden"],
+    ["plattformj.ch", "https://www.plattformj.ch/artikel/213576/"]] },
   { text: "Swatch Group : inauguration du siège, 3.10.2019.", links: [["swatchgroup.com", "https://www.swatchgroup.com/en/services/archive/2019/swatch-inaugurates-its-headquarters-biel"]] },
   { text: "Expo.02 : SRF, « 20 Jahre Expo.02 » ; AGGLOlac : cash.ch, 2021.", links: [
     ["srf.ch", "https://www.srf.ch/kultur/gesellschaft-religion/20-jahre-expo-02-wichtig-fuer-unsere-identitaet-oder-nur-teures-spektakel"],
@@ -533,7 +563,7 @@ const SOURCES = [
   { text: "DFAE : « Quatre langues, quatre cultures, mais un seul pays », 2020 ; OIF : La langue française dans le monde, 2026.", links: [
     ["eda.admin.ch", "https://www.eda.admin.ch/fr/quatre-langues-quatre-cultures-mais-un-seul-pays"],
     ["francophonie.org", "https://www.francophonie.org/sites/default/files/2026-04/Synthese_rapport_Langue_francaise_dans_le_monde_2026.pdf"]] },
-  { text: "Cartes : OFS/BFS, régions linguistiques 2020 (état 1.1.2024) ; Natural Earth 5.1.2 ; lignes de transport : OpenStreetMap (1.11.2026)." },
+  { text: "Cartes : OFS/BFS, régions linguistiques 2020 (état 1.1.2024) ; Natural Earth 5.1.2 ; lignes de transport et de train : OpenStreetMap (1.11.2026)." },
   {
     text: "Photos : Wikimedia Commons, auteurs et licences sous chaque photo.",
     links: [
