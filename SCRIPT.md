@@ -4,7 +4,7 @@ Texte complet pour chaque diapositive. Français = langue forte, allemand =
 langue faible (en *italique*, marqué **DE**). Les phrases sont courtes exprès :
 elles sont plus faciles à dire à voix haute.
 
-- **Ma partie** : diapositives 6 à 11, environ 440 mots, soit 3 min 30 à 4 min à un
+- **Ma partie** : diapositives 6 à 11, environ 480 mots, soit près de 4 minutes à un
   rythme calme. Chronomètre-toi une fois à voix haute.
 - Diapositives 1 à 5 : l'introduction du groupe, environ 1 min 30.
 - `→` = appuyer sur Espace pour passer à la diapositive suivante.
