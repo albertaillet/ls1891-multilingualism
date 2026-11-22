@@ -357,30 +357,7 @@ const MY_SLIDES = [
         { strong: "l'électricité", weak: "der Strom" },
       ],
     },
-    notes: ["[STRONG: suivre un bus et un bateau sur la carte]", "[STRONG: électricité au lieu du diesel]"],
-  },
-  {
-    id: "westast",
-    camera: { center: [7.2390, 47.1325], zoom: 14.2, pitch: 58, bearing: -60 },
-    duration: 1500,
-    rotate: 1.5,
-    layers: CLOSE_UP,
-    panel: {
-      kicker: "[STRONG: Autoroute A5]",
-      heading: "[STRONG: Le « Westast » : une autoroute stoppée]",
-      bullets: [
-        "[STRONG: projet : une autoroute à travers la ville]",
-        "[STRONG: coût : env. 2,2 milliards de francs]",
-        "[STRONG: 2018 : des milliers de personnes manifestent]",
-        "[STRONG: 2019–2020 : dialogue ; 2021 : projet abandonné]",
-      ],
-      weakLanguage: ["[WEAK: Die Autobahn «Westast» wurde gestoppt]"],
-      glossary: [
-        { strong: "l'autoroute", weak: "die Autobahn" },
-        { strong: "manifester", weak: "demonstrieren" },
-      ],
-    },
-    notes: ["[STRONG: les habitants ont dit non]", "[STRONG: transition → résumé en allemand]"],
+    notes: ["[STRONG: suivre un bus et un bateau sur la carte]", "[STRONG: électricité au lieu du diesel]", "[STRONG: transition → résumé en allemand]"],
   },
 ];
 
@@ -548,9 +525,6 @@ const SOURCES = [
   { text: "Bielersee-Schifffahrts-Gesellschaft (BSG) : réseau et MobiCat.", links: [
     ["bielersee.ch", "https://www.bielersee.ch/kursfahrten/streckennetz/bielersee"],
     ["MobiCat", "https://www.bielersee.ch/unternehmen/flotte/ems-mobicat"]] },
-  { text: "A5 Westast : SRF, 3.11.2018 ; Grand Conseil du canton de Berne (motion).", links: [
-    ["srf.ch", "https://www.srf.ch/news/bewegung-biel-bleibt-laut-tausende-protestieren-gegen-westast-der-autobahnumfahrung"],
-    ["be.ch", "https://ogd.parl.apps.be.ch/pdf-upload/dca9a6bde672425c9378f6b7cf3fe3d8-332.pdf"]] },
   { text: "Swatch Group : inauguration du siège, 3.10.2019.", links: [["swatchgroup.com", "https://www.swatchgroup.com/en/services/archive/2019/swatch-inaugurates-its-headquarters-biel"]] },
   { text: "Expo.02 : SRF, « 20 Jahre Expo.02 » ; AGGLOlac : cash.ch, 2021.", links: [
     ["srf.ch", "https://www.srf.ch/kultur/gesellschaft-religion/20-jahre-expo-02-wichtig-fuer-unsere-identitaet-oder-nur-teures-spektakel"],

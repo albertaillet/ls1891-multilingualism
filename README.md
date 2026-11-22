@@ -43,8 +43,8 @@ describes the fields of a slide.
 - **Drafted text** is wrapped as `"[STRONG: ...]"` or `"[WEAK: ...]"`. On screen
   only the inner text is shown. Rewrite the text; keeping or deleting the wrapper
   is up to you. Set `SHOW_PLACEHOLDER_MARKS = true` to see the wrappers on screen.
-- **Your slides 6–12** (energy, transport) are the `MY_SLIDES` list, slide 13 is
-  the German summary (`SUMMARY`) and **Payam's slides 14–16** are `PAYAM_SLIDES`.
+- **Your slides 6–11** (energy, transport) are the `MY_SLIDES` list, slide 12 is
+  the German summary (`SUMMARY`) and **Payam's slides 13–15** are `PAYAM_SLIDES`.
   Reorder, delete or copy the blocks; the numbering and the navigation follow
   automatically.
 - **The map** is satellite imagery only: Sentinel-2 for the whole world, and
