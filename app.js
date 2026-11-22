@@ -537,8 +537,7 @@
     const w = window.innerWidth;
     return {
       top: 0,
-      // a photo card sits at the bottom left: keep the target above it
-      bottom: slide.panel && slide.panel.image ? window.innerHeight * 0.4 : 0,
+      bottom: 0,
       // a fitted box also keeps clear of the legend in the top-left corner
       left: layout === "title" ? w * 0.42 : slide.camera.fit && slide.legend ? w * 0.13 : 0,
       right: layout === "side" ? w * 0.36 : layout === "wide" ? w * 0.46 : 0,
@@ -551,7 +550,6 @@
     showMarkers(null);
     $("panel").classList.add("hidden");
     $("legend").classList.add("hidden");
-    $("photos").classList.add("hidden");
     // Terrain is switched on before the flight and off only after it, so the
     // switch always happens far away from the ground where it is invisible.
     if (wantsTerrain(slide)) setTerrain(true);
@@ -563,7 +561,6 @@
     showMarkers(slide);
     renderPanel(slide);
     renderLegend(slide);
-    renderPhotos(slide);
     startRotation(slide);
     preloadAhead();
   }
@@ -601,6 +598,15 @@
     if (p.subheading) panel.append(el("p", "subheading", p.subheading));
     if (p.statement) panel.append(el("p", "statement", p.statement));
     if (p.bullets) panel.append(el("ul", "bullets", p.bullets.map((b) => el("li", "", b))));
+    // One photo, or a list of two that share a row: { src, alt, caption }.
+    const photos = [].concat(p.image || []).map((image) => {
+      const img = el("img");
+      img.alt = plain(image.alt || "");
+      img.onload = () => fitPhotos(panel);
+      img.src = image.src;
+      return el("figure", "", [img, image.caption && el("figcaption", "", image.caption)]);
+    });
+    if (photos.length) panel.append(el("div", "photos", photos));
     if (p.diagram && DIAGRAMS[p.diagram.type]) {
       const figure = el("figure", "diagram");
       figure.innerHTML = DIAGRAMS[p.diagram.type](p.diagram.labels || {});
@@ -637,18 +643,14 @@
     panel.classList.remove("hidden");
   }
 
-  // Photos sit in their own card on the map: panel.image is one photo or a
-  // list of two, each { src, alt, caption }.
-  function renderPhotos(slide) {
-    const box = $("photos");
-    const images = [].concat((slide.panel && slide.panel.image) || []);
-    box.replaceChildren(...images.map((image) => {
-      const img = el("img");
-      img.src = image.src;
-      img.alt = plain(image.alt || "");
-      return el("figure", "", [img, image.caption && el("figcaption", "", image.caption)]);
-    }));
-    if (images.length) box.classList.remove("hidden");
+  // Photos shrink until the panel fits on the screen.
+  function fitPhotos(panel) {
+    const imgs = [...panel.querySelectorAll(".photos img")];
+    for (const img of imgs) img.style.maxHeight = "";
+    const over = panel.scrollHeight - panel.clientHeight;
+    if (over <= 0) return;
+    const tallest = Math.max(...imgs.map((img) => img.offsetHeight));
+    for (const img of imgs) img.style.maxHeight = `${Math.max(tallest - over, 60)}px`;
   }
 
   function renderLegend(slide) {

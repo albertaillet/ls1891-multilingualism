@@ -30,7 +30,7 @@
        heading: "...",
        bullets: ["...", "..."],   // 3-5 short keywords
        weakLanguage: ["..."],     // shown in italics with a language tag
-       image: { src: "assets/photos/photo.jpg", alt: "...", caption: "..." },   // or a list of two; shown in a card on the map
+       image: { src: "assets/photos/photo.jpg", alt: "...", caption: "..." },   // or a list of two; shown in the panel
        diagram: { type: "lake-energy", labels: { ... } },
        glossary: [{ strong: "...", weak: "..." }],
      },

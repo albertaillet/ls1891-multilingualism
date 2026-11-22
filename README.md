@@ -61,8 +61,8 @@ describes the fields of a slide.
   marks a panel that is entirely in the weak language (the summary).
 - **A photo**: put the file in `assets/photos/` and add
   `image: { src: "assets/photos/photo.jpg", alt: "...", caption: "..." }` to
-  the panel (or a list of two). It appears in its own card at the bottom left
-  of the map. The photos now in use come from Wikimedia Commons;
+  the panel (or a list of two). It appears in the text panel and shrinks if
+  the panel would not fit on the screen. The photos now in use come from Wikimedia Commons;
   `scripts/fetch-photos.sh` downloads them again, and `data/SOURCES.md` lists
   their authors and licences.
 - **Camera**: `camera: { center: [lng, lat], zoom, pitch, bearing }`, `duration` is
