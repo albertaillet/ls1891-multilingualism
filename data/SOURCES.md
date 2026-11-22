@@ -48,3 +48,9 @@ and the sources slide links to each file page.
 | `swatch.jpg` | [Swatch-Bienne-10.jpg](https://commons.wikimedia.org/wiki/File:Swatch-Bienne-10.jpg) | MHM55 | CC BY-SA 4.0 |
 | `expo02.jpg` | [Tuerme auf der Arteplage Biel der Expo.02.jpg](https://commons.wikimedia.org/wiki/File:Tuerme_auf_der_Arteplage_Biel_der_Expo.02.jpg) | WikiNik (September 2002) | CC BY-SA 3.0 |
 | `street-sign.jpg` | [2005-Biel-Quellgasse.jpg](https://commons.wikimedia.org/wiki/File:2005-Biel-Quellgasse.jpg) | Roland Zumbuehl | CC BY-SA 4.0 |
+
+## Vehicle pictograms
+
+The moving vehicles use three pictograms from the Temaki icon set 5.13.0
+(`tram_side`, `trolleybus`, `ferry`), https://github.com/rapideditor/temaki,
+CC0 (public domain). Their paths are written directly in `app.js`.
