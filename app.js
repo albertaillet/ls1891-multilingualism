@@ -294,6 +294,7 @@
     for (let i = current + 1; i <= current + PRELOAD_AHEAD && i < slides.length; i++) {
       const slide = slides[i];
       preMap.setTerrain(wantsTerrain(slide) ? { source: "dem", exaggeration: TERRAIN_EXAGGERATION } : null);
+      preMap.setProjection({ type: slide.projection || "globe" });
       preMap.jumpTo(fitCamera({ ...slide.camera, padding: cameraPadding(slide) }));
       // Wait until everything for this view is loaded (or give up after 10 s).
       await new Promise((resolve) => {
@@ -403,6 +404,13 @@
     // Going back replays the move we came by, so it takes the same time.
     const duration = instant ? 0 : backwards && from ? from.duration : slide.duration;
 
+    // Switch between globe and flat map while the camera is close to the
+    // ground, where the two look the same: before the flight if we start
+    // close, otherwise after it.
+    const projection = slide.projection || "globe";
+    const switchNow = map.getZoom() >= 7 || cam.zoom < 7;
+    if (switchNow) setProjection(projection);
+
     beforeMove(slide, duration);
     if (duration === 0) {
       map.jumpTo(cam);
@@ -435,6 +443,13 @@
   }
 
   // Later steps hook into these three.
+  let currentProjection = "globe";
+  function setProjection(type) {
+    if (type === currentProjection) return;
+    currentProjection = type;
+    map.setProjection({ type });
+  }
+
   function wantsTerrain(slide) { return (slide.layers || []).includes("terrain"); }
 
   // Keep the camera target in the part of the screen the panel leaves free.
@@ -462,6 +477,7 @@
   }
   function arrived(slide, token) {
     if (token !== navToken) return;
+    setProjection(slide.projection || "globe");
     if (!wantsTerrain(slide)) setTerrain(false);
     showMarkers(slide);
     renderPanel(slide);

@@ -15,6 +15,7 @@
          // that this box fits in the space beside the panel
      duration: 3000,              // flight time to this slide, in ms
      rotate: 3,                   // slow rotation while shown, degrees/second
+     projection: "mercator",      // flat map for this slide; default is the globe
      layers: ["terrain", "buildings3d"],
          // francophone, germanophone, ch-regions, language-border,
          // terrain, buildings3d. Dim one with { id: "ch-regions", opacity: 0.3 }
@@ -67,7 +68,9 @@ const OPENING = [
   },
   {
     id: "francophone",
-    camera: { center: [8, 20], zoom: 2.4, pitch: 0, bearing: 0 },
+    // Flat map (not the globe), fitted to France and French-speaking Africa.
+    projection: "mercator",
+    camera: { center: [8, 20], zoom: 2.4, pitch: 0, bearing: 0, fit: [-30, -30, 55, 58] },
     duration: 2400,
     layers: ["francophone"],
     legend: [
@@ -90,6 +93,8 @@ const OPENING = [
   },
   {
     id: "fr-de",
+    // Also flat, so the map does not bend between this slide and the last one.
+    projection: "mercator",
     camera: { center: [9, 49], zoom: 4.3, pitch: 0, bearing: 0 },
     duration: 1400,
     layers: ["francophone", "germanophone"],
