@@ -305,7 +305,7 @@ const MY_SLIDES = [
   },
   {
     id: "funiculars",
-    camera: { center: [7.2265, 47.1415], zoom: 13.2, pitch: 58, bearing: 150 },   // as in the photo: down the Évilard line
+    camera: { center: [7.2290, 47.1420], zoom: 13.6, pitch: 60, bearing: -30 },   // from the city side, looking up the slope
     duration: 1800,
     rotate: 0.5,
     layers: [...CLOSE_UP, "funiculars"],
