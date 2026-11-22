@@ -263,19 +263,21 @@ figcaption { font-size: 0.75rem; opacity: 0.7; margin-top: 0.2rem; }
 /* ---------- moving vehicles on the transport lines ---------- */
 .vehicle { pointer-events: none; }
 .vehicle i {
-  display: block;
-  width: 1rem;
-  height: 1rem;
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
   border-radius: 50%;
-  border: 0.18rem solid #fff;
+  border: 0.16rem solid;
+  background: #fff;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  font-size: 1.2rem;
+  font-style: normal;
+  line-height: 1;
   opacity: 0;
   transition: opacity 0.4s;
 }
 .vehicle.shown i { opacity: 1; }
-.vehicle-funicular i { background: #d6336c; border-radius: 0.25rem; }
-.vehicle-trolleybus i { background: #7048e8; }
-.vehicle-boat i { background: #0b7285; width: 1.3rem; border-radius: 50% 50% 50% 50% / 80% 80% 30% 30%; }
 
 .swatch-funicular, .swatch-trolleybus, .swatch-boat { height: 0; border: 0; border-radius: 0; }
 .swatch-funicular { border-top: 0.3rem solid #d6336c; }

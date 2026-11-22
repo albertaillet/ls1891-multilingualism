@@ -62,12 +62,12 @@
   };
 
   // Public transport lines (data/transport.geojson). A slide that shows one of
-  // these layers also gets its moving vehicles: `count` of them per line, each
+  // these layers also gets its moving vehicles (emoji `icon`): `count` per line, each
   // taking `seconds` from one end of the line to the other and back.
   const TRANSPORT = {
-    funicular: { layer: "funiculars", color: "#d6336c", count: 2, seconds: 16 },
-    trolleybus: { layer: "trolleybuses", color: "#7048e8", count: 4, seconds: 70 },
-    boat: { layer: "boat", color: "#0b7285", count: 2, seconds: 60, dash: [2, 1.5] },
+    funicular: { layer: "funiculars", color: "#d6336c", icon: "🚞", count: 2, seconds: 16 },
+    trolleybus: { layer: "trolleybuses", color: "#7048e8", icon: "🚎", count: 4, seconds: 70 },
+    boat: { layer: "boat", color: "#0b7285", icon: "⛴️", count: 2, seconds: 60, dash: [2, 1.5] },
   };
 
   // Credit lines appear on the map only while their data is on screen. Natural
@@ -298,7 +298,10 @@
       for (let n = 0; n < t.count; n++) {
         const el = document.createElement("div");
         el.className = `vehicle vehicle-${f.properties.mode}`;
-        el.append(document.createElement("i"));
+        const badge = document.createElement("i");
+        badge.textContent = t.icon;
+        badge.style.borderColor = t.color;
+        el.append(badge);
         const marker = new maplibregl.Marker({ element: el }).setLngLat(line[0]).addTo(map);
         vehicles.push({ mode: f.properties.mode, el, marker, line, lengths, total: lengths[lengths.length - 1], offset: (2 * n) / t.count });
       }
