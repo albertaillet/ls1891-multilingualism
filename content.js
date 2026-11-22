@@ -18,10 +18,12 @@
      projection: "mercator",      // flat map for this slide; default is the globe
      layers: ["terrain", "buildings3d"],
          // francophone, germanophone, ch-regions, language-border,
-         // terrain, buildings3d. Dim one with { id: "ch-regions", opacity: 0.3 }
+         // terrain, buildings3d, aerial (aerial photos, Switzerland only),
+         // funiculars, trolleybuses, boat (lines with moving vehicles).
+         // Dim one with { id: "ch-regions", opacity: 0.3 }
      markers: ["tissot-arena"],   // ids from data/points.geojson
      legend: [{ swatch: "fr", strong: "...", weak: "..." }],
-         // swatches: fr, de, both, it, rm, border
+         // swatches: fr, de, both, it, rm, border, funicular, trolleybus, boat
      panel: {
        layout: "side",            // "side" (default), "title" or "wide"
        kicker: "small line above the heading",
@@ -44,7 +46,9 @@ const WEAK_LANG = "de";
 const SHOW_PLACEHOLDER_MARKS = false;
 
 const BIEL = [7.2468, 47.1369];
-const CLOSE_UP = ["terrain", "buildings3d"];
+// Close-ups: 3D terrain with aerial photos. Use "buildings3d" instead of
+// "aerial" to get plain grey building blocks on the drawn map.
+const CLOSE_UP = ["terrain", "aerial"];
 
 /* --------------------------------------------------------------------------
    Opening sequence (slides 1-5): from the world to Biel/Bienne
@@ -163,12 +167,12 @@ const OPENING = [
     panel: {
       heading: "Biel/Bienne",
       bullets: [
-        "[STRONG: plus grande ville officiellement bilingue de Suisse]",
+        "[STRONG: plus grande ville bilingue de Suisse]",
         "[STRONG: env. 56 000 habitants]",
-        "[STRONG: sur la frontière linguistique]",
-        "[STRONG: entre le lac de Bienne et le Jura]",
+        "[STRONG: en train : Berne ≈ 25 min, Zurich ≈ 1 h 10]",
+        "[STRONG: sur la frontière linguistique, entre lac et Jura]",
       ],
-      weakLanguage: ["[WEAK: grösste offiziell zweisprachige Stadt der Schweiz]"],
+      weakLanguage: ["[WEAK: grösste zweisprachige Stadt der Schweiz]"],
       glossary: [
         { strong: "bilingue", weak: "zweisprachig" },
         { strong: "le lac de Bienne", weak: "der Bielersee" },
@@ -180,7 +184,7 @@ const OPENING = [
 ];
 
 /* --------------------------------------------------------------------------
-   MY CONTENT SLIDES (6-9): 3D close-ups.
+   MY CONTENT SLIDES (6-12): energy (6-9) and transport (10-12), 3D close-ups.
    Add, remove or reorder the blocks below freely; the slide numbers follow.
    -------------------------------------------------------------------------- */
 const MY_SLIDES = [
@@ -259,7 +263,7 @@ const MY_SLIDES = [
       kicker: "Tissot Arena",
       heading: "[STRONG: Du soleil sur le toit]",
       bullets: [
-        "[STRONG: stade de football et de hockey, ouvert en 2015]",
+        "[STRONG: stade de football et de hockey]",
         "[STRONG: le toit : une grande centrale solaire]",
         "[STRONG: env. 2 MW de puissance]",
         "[STRONG: utiliser les surfaces qui existent déjà]",
@@ -298,25 +302,177 @@ const MY_SLIDES = [
     },
     notes: ["[STRONG: situer : au sud du lac]", "[STRONG: canal → centrale → lac]", "[STRONG: lien avec la ville de Bienne]"],
   },
+  {
+    id: "funiculars",
+    camera: { center: [7.2300, 47.1425], zoom: 13.9, pitch: 62, bearing: -35 },
+    duration: 1800,
+    rotate: 1.5,
+    layers: [...CLOSE_UP, "funiculars"],
+    markers: ["magglingen", "evilard"],
+    legend: [{ swatch: "funicular", strong: "[STRONG: Funiculaire]", weak: "[WEAK: Standseilbahn]" }],
+    panel: {
+      kicker: "[STRONG: Transports]",
+      heading: "[STRONG: Monter sans voiture]",
+      bullets: [
+        "[STRONG: deux funiculaires partent de la ville]",
+        "[STRONG: Macolin : depuis 1887, 1,7 km]",
+        "[STRONG: Évilard : depuis 1898, 7 minutes]",
+      ],
+      weakLanguage: ["[WEAK: Die Standseilbahn fährt in 7 Minuten nach Leubringen]"],
+      glossary: [
+        { strong: "le funiculaire", weak: "die Standseilbahn" },
+        { strong: "Macolin / Évilard", weak: "Magglingen / Leubringen" },
+      ],
+    },
+    notes: ["[STRONG: montrer les deux lignes et les cabines]", "[STRONG: plus de 120 ans : une vieille idée durable]"],
+  },
+  {
+    id: "bus-boat",
+    camera: { center: [7.2560, 47.1370], zoom: 12.9, pitch: 50, bearing: 15 },
+    duration: 1600,
+    rotate: 1,
+    layers: ["terrain", "funiculars", "trolleybuses", "boat"],
+    legend: [
+      { swatch: "trolleybus", strong: "[STRONG: Trolleybus]", weak: "[WEAK: Trolleybus]" },
+      { swatch: "boat", strong: "[STRONG: Bateau]", weak: "[WEAK: Schiff]" },
+      { swatch: "funicular", strong: "[STRONG: Funiculaire]", weak: "[WEAK: Standseilbahn]" },
+    ],
+    panel: {
+      kicker: "[STRONG: Transports]",
+      heading: "[STRONG: Trolleybus et bateaux]",
+      bullets: [
+        "[STRONG: trolleybus : bus électriques, depuis 1940]",
+        "[STRONG: bateaux : Bienne – île Saint-Pierre – Erlach]",
+        "[STRONG: le « MobiCat » : un catamaran solaire]",
+      ],
+      weakLanguage: ["[WEAK: Der Trolleybus fährt mit Strom]"],
+      glossary: [
+        { strong: "le bateau", weak: "das Schiff" },
+        { strong: "l'électricité", weak: "der Strom" },
+      ],
+    },
+    notes: ["[STRONG: suivre un bus et un bateau sur la carte]", "[STRONG: électricité au lieu du diesel]"],
+  },
+  {
+    id: "westast",
+    camera: { center: [7.2390, 47.1325], zoom: 14.2, pitch: 58, bearing: -60 },
+    duration: 1500,
+    rotate: 1.5,
+    layers: CLOSE_UP,
+    panel: {
+      kicker: "[STRONG: Autoroute A5]",
+      heading: "[STRONG: Le « Westast » : une autoroute stoppée]",
+      bullets: [
+        "[STRONG: projet : une autoroute à travers la ville]",
+        "[STRONG: coût : env. 2,2 milliards de francs]",
+        "[STRONG: 2018 : des milliers de personnes manifestent]",
+        "[STRONG: 2019–2020 : dialogue ; 2021 : projet abandonné]",
+      ],
+      weakLanguage: ["[WEAK: Die Autobahn «Westast» wurde gestoppt]"],
+      glossary: [
+        { strong: "l'autoroute", weak: "die Autobahn" },
+        { strong: "manifester", weak: "demonstrieren" },
+      ],
+    },
+    notes: ["[STRONG: les habitants ont dit non]", "[STRONG: transition → résumé en allemand]"],
+  },
 ];
 
 /* --------------------------------------------------------------------------
-   Closing slides: summary in the weak language, personal stance, sources
+   PAYAM'S SLIDES: architecture and streets. Drafts, to be rewritten by Payam.
    -------------------------------------------------------------------------- */
-const CLOSING = [
+const PAYAM_SLIDES = [
+  {
+    id: "swatch",
+    camera: { center: [7.2606, 47.1436], zoom: 16, pitch: 62, bearing: 30 },
+    duration: 1800,
+    rotate: 3,
+    layers: CLOSE_UP,
+    markers: ["swatch"],
+    panel: {
+      kicker: "[STRONG: Architecture]",
+      heading: "[STRONG: Swatch et Omega : un siège en bois]",
+      bullets: [
+        "[STRONG: Bienne : siège mondial de Swatch et d'Omega]",
+        "[STRONG: siège de Swatch : 2019, architecte Shigeru Ban]",
+        "[STRONG: 240 m de long, env. 4 600 poutres en bois]",
+        "[STRONG: le bois : un matériau renouvelable]",
+      ],
+      weakLanguage: ["[WEAK: Der Hauptsitz von Swatch ist aus Holz]"],
+      glossary: [
+        { strong: "le siège", weak: "der Hauptsitz" },
+        { strong: "le bois", weak: "das Holz" },
+        { strong: "l'horlogerie", weak: "die Uhrenindustrie" },
+      ],
+    },
+    notes: ["[STRONG: montrer le long bâtiment courbe]", "[STRONG: horlogerie = l'industrie de la ville]"],
+  },
+  {
+    id: "expo",
+    camera: { center: [7.2350, 47.1300], zoom: 14.6, pitch: 60, bearing: 60 },
+    duration: 1600,
+    rotate: 2,
+    layers: CLOSE_UP,
+    markers: ["lakeshore"],
+    panel: {
+      kicker: "Expo.02",
+      heading: "[STRONG: L'héritage d'Expo.02 au bord du lac]",
+      bullets: [
+        "[STRONG: 2002 : exposition nationale suisse, Expo.02]",
+        "[STRONG: Bienne : une des « arteplages », au bord du lac]",
+        "[STRONG: après l'expo : les bâtiments sont démontés]",
+        "[STRONG: 2021 : le projet de quartier AGGLOlac est refusé]",
+      ],
+      weakLanguage: ["[WEAK: 2002 war die Landesausstellung Expo.02 in Biel]"],
+      glossary: [
+        { strong: "l'exposition nationale", weak: "die Landesausstellung" },
+        { strong: "la rive du lac", weak: "das Seeufer" },
+      ],
+    },
+    notes: ["[STRONG: montrer la rive entre Bienne et Nidau]", "[STRONG: question : que faire de ce terrain ?]"],
+  },
+  {
+    id: "streets",
+    camera: { center: BIEL, zoom: 15.8, pitch: 58, bearing: -20 },
+    duration: 1500,
+    rotate: 2,
+    layers: CLOSE_UP,
+    markers: ["central-square"],
+    panel: {
+      kicker: "[STRONG: Espace public]",
+      heading: "[STRONG: Des rues en deux langues]",
+      bullets: [
+        "[STRONG: tous les noms de rue : en allemand et en français]",
+        "[STRONG: habitants : 55 % allemand, 45 % français]",
+        "[STRONG: le bilinguisme est inscrit dans le règlement de la ville (1996)]",
+      ],
+      weakLanguage: ["[WEAK: Alle Strassenschilder sind zweisprachig]"],
+      glossary: [
+        { strong: "le panneau de rue", weak: "das Strassenschild" },
+        { strong: "le bilinguisme", weak: "die Zweisprachigkeit" },
+      ],
+    },
+    notes: ["[STRONG: exemple : Place Centrale / Zentralplatz]", "[STRONG: transition → notre avis]"],
+  },
+];
+
+/* --------------------------------------------------------------------------
+   Summary of my part in the weak language (before Payam's slides)
+   -------------------------------------------------------------------------- */
+const SUMMARY = [
   {
     id: "summary",
     camera: { center: [7.225, 47.108], zoom: 11.4, pitch: 45, bearing: 0 },
     duration: 1800,
-    layers: ["terrain", "language-border"],
+    layers: ["terrain", "language-border", "funiculars", "trolleybuses", "boat"],
     markers: ["lake-energy", "tissot-arena", "hagneck"],
     panel: {
       weakPanel: true, // the whole panel is in the weak language
       heading: "[WEAK: Zusammenfassung]",
       bullets: [
         "[WEAK: zweisprachige Stadt an der Sprachgrenze]",
-        "[WEAK: Energiestadt Gold seit 2020]",
-        "[WEAK: Seewasser, Sonne, Wasserkraft]",
+        "[WEAK: Energie: Seewasser, Sonne, Wasserkraft]",
+        "[WEAK: Verkehr: Standseilbahn, Trolleybus, Schiff]",
         "[WEAK: Ziel: klimaneutral bis 2050]",
       ],
       glossary: [
@@ -324,8 +480,14 @@ const CLOSING = [
         { strong: "l'objectif", weak: "das Ziel" },
       ],
     },
-    notes: ["[WEAK: langsam sprechen]", "[WEAK: drei Beispiele noch einmal nennen]"],
+    notes: ["[WEAK: langsam sprechen]", "[WEAK: Energie und Verkehr noch einmal nennen]"],
   },
+];
+
+/* --------------------------------------------------------------------------
+   Closing slides: one short personal stance each, then the sources
+   -------------------------------------------------------------------------- */
+const CLOSING = [
   {
     id: "stance",
     camera: { center: [7.17, 47.09], zoom: 10.6, pitch: 35, bearing: -40 },
@@ -333,12 +495,14 @@ const CLOSING = [
     layers: ["terrain"],
     markers: ["biel"],
     panel: {
-      heading: "[STRONG: Mon avis]",
-      statement: "[STRONG: À mon avis, … (deux ou trois phrases courtes)]",
-      bullets: ["[STRONG: ce qui me convainc : …]", "[STRONG: ce qui manque encore : …]"],
+      heading: "[STRONG: Notre avis]",
+      bullets: [
+        "[STRONG: Albert : à mon avis, … (une ou deux phrases)]",
+        "[STRONG: Payam : à mon avis, … (une ou deux phrases)]",
+      ],
       weakLanguage: ["[WEAK: Meiner Meinung nach …]"],
     },
-    notes: ["[STRONG: donner mon avis personnel]", "[STRONG: remercier, questions ?]"],
+    notes: ["[STRONG: chacun donne son avis, court]", "[STRONG: remercier, questions ?]"],
   },
   {
     id: "sources",
@@ -356,19 +520,38 @@ const CLOSING = [
 ];
 
 /* --------------------------------------------------------------------------
-   Sources slide: content sources first, then the map data. The full links
-   are at the end of SCRIPT.md.
+   Sources slide: content sources first, then the map data.
+   An entry is { text, links: [["shown name", "address"], ...] }.
    -------------------------------------------------------------------------- */
 const SOURCES = [
-  "Ville de Bienne / Cité de l'énergie : fiche informative « Biel/Bienne », 14.12.2020. biel-bienne.ch",
-  "Ville de Bienne : Stratégie climatique 2050, volet « Protection du climat », mai 2020. biel-bienne.ch",
-  "Energie Service Biel/Bienne (ESB) : Energieverbund Bielersee, page du projet. esb.ch/de/energieverbund-bielersee",
-  "Solar Agentur Schweiz : Prix solaire suisse 2017, Tissot Arena. solaragentur.ch",
-  "BKW : Wasserkraftwerk Hagneck, fiche du centre de visiteurs. bkw.ch – et moneycab.com, 23.10.2015",
-  "DFAE : « Quatre langues, quatre cultures, mais un seul pays », 24.9.2020. eda.admin.ch",
-  "OIF : La langue française dans le monde, synthèse 2026. francophonie.org",
-  "Cartes : Office fédéral de la statistique (OFS/BFS), régions linguistiques 2020 et limites communales (ThemaKart), état au 1.1.2024 ; Natural Earth 5.1.2.",
-  "Fond de carte : OpenFreeMap, © OpenMapTiles, © OpenStreetMap contributors. Relief : Terrain Tiles (Mapzen), AWS Open Data.",
+  { text: "Ville de Bienne / Cité de l'énergie : fiche « Biel/Bienne », 14.12.2020 ; Stratégie climatique 2050, mai 2020.", links: [
+    ["fiche", "https://www.biel-bienne.ch/public/upload/assets/12764/210113_Faktenblatt_Energiestadt_BielBienne_FR_Ansicht.pdf?fp=1"],
+    ["stratégie", "https://www.biel-bienne.ch/public/upload/assets/10857/beu_umw_klimastrategie%202050_f.pdf?fp=2"]] },
+  { text: "Energie Service Biel/Bienne (ESB) : Energieverbund Bielersee.", links: [["esb.ch", "https://www.esb.ch/de/energieverbund-bielersee"]] },
+  { text: "Solar Agentur Schweiz : Prix solaire suisse 2017, Tissot Arena.", links: [["solaragentur.ch", "https://www.solaragentur.ch/files/solarpreis-gewinner/g-17-09-20_solarpreispublikation_2017_def_20-21_solareeissport-undfussballarenatissot.pdf"]] },
+  { text: "BKW : Wasserkraftwerk Hagneck ; moneycab, 23.10.2015.", links: [
+    ["bkw.ch", "https://bkw.ch/fileadmin/user_upload/03_Energie/03_05_Energieproduktion/Besucherzentren_PDF/Factsheet_Wasserkraftwerk_Hagneck_de.pdf"],
+    ["moneycab.com", "https://www.moneycab.com/?p=1052571"]] },
+  { text: "Funiculaires : horaires officiels 22.022 et 22.023 ; Wikipédia (années d'ouverture, trolleybus).", links: [
+    ["Macolin", "https://www.tp-info.ch/sites/default/files/fap/2025/pdf/22.022.pdf"],
+    ["Évilard", "https://oev-info.ch/sites/default/files/fap/2024/pdf/22.023.pdf"],
+    ["trolleybus", "https://de.wikipedia.org/wiki/Trolleybus_Biel"]] },
+  { text: "Bielersee-Schifffahrts-Gesellschaft (BSG) : réseau et MobiCat.", links: [
+    ["bielersee.ch", "https://www.bielersee.ch/kursfahrten/streckennetz/bielersee"],
+    ["MobiCat", "https://www.bielersee.ch/unternehmen/flotte/ems-mobicat"]] },
+  { text: "A5 Westast : SRF, 3.11.2018 ; Grand Conseil du canton de Berne (motion).", links: [
+    ["srf.ch", "https://www.srf.ch/news/bewegung-biel-bleibt-laut-tausende-protestieren-gegen-westast-der-autobahnumfahrung"],
+    ["be.ch", "https://ogd.parl.apps.be.ch/pdf-upload/dca9a6bde672425c9378f6b7cf3fe3d8-332.pdf"]] },
+  { text: "Swatch Group : inauguration du siège, 3.10.2019.", links: [["swatchgroup.com", "https://www.swatchgroup.com/en/services/archive/2019/swatch-inaugurates-its-headquarters-biel"]] },
+  { text: "Expo.02 : SRF, « 20 Jahre Expo.02 » ; AGGLOlac : cash.ch, 2021.", links: [
+    ["srf.ch", "https://www.srf.ch/kultur/gesellschaft-religion/20-jahre-expo-02-wichtig-fuer-unsere-identitaet-oder-nur-teures-spektakel"],
+    ["cash.ch", "https://www.cash.ch/news/politik/bieler-und-nidauer-stadtrat-versenken-grossprojekt-agglolac-465952"]] },
+  { text: "Ville de Bienne : bilinguisme (chiffres au 31.12.2025).", links: [["biel-bienne.ch", "https://www.biel-bienne.ch/de/zweisprachigkeit.html/742"]] },
+  { text: "DFAE : « Quatre langues, quatre cultures, mais un seul pays », 2020 ; OIF : La langue française dans le monde, 2026.", links: [
+    ["eda.admin.ch", "https://www.eda.admin.ch/fr/quatre-langues-quatre-cultures-mais-un-seul-pays"],
+    ["francophonie.org", "https://www.francophonie.org/sites/default/files/2026-04/Synthese_rapport_Langue_francaise_dans_le_monde_2026.pdf"]] },
+  { text: "Cartes : OFS/BFS, régions linguistiques 2020 (état 1.1.2024) ; Natural Earth 5.1.2 ; lignes de transport : OpenStreetMap (1.11.2026)." },
+  { text: "Fond de carte : OpenFreeMap, © OpenMapTiles, © OpenStreetMap contributors. Relief : Terrain Tiles (Mapzen), AWS Open Data. Photos aériennes : © swisstopo." },
 ];
 
 window.PRESENTATION = {
@@ -391,8 +574,13 @@ window.PRESENTATION = {
     "lake-energy": "[STRONG: Centrale d'énergie du lac]",
     "tissot-arena": "Tissot Arena",
     "hagneck": "[STRONG: Centrale de Hagneck]",
+    "magglingen": "Macolin / Magglingen",
+    "evilard": "Évilard / Leubringen",
+    "swatch": "Swatch / Omega",
+    "lakeshore": "[STRONG: Rive du lac] / [WEAK: Seeufer]",
+    "central-square": "Place Centrale / Zentralplatz",
   },
 
-  slides: [...OPENING, ...MY_SLIDES, ...CLOSING],
+  slides: [...OPENING, ...MY_SLIDES, ...SUMMARY, ...PAYAM_SLIDES, ...CLOSING],
   sources: SOURCES,
 };

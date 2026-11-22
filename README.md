@@ -43,8 +43,16 @@ describes the fields of a slide.
 - **Drafted text** is wrapped as `"[STRONG: ...]"` or `"[WEAK: ...]"`. On screen
   only the inner text is shown. Rewrite the text; keeping or deleting the wrapper
   is up to you. Set `SHOW_PLACEHOLDER_MARKS = true` to see the wrappers on screen.
-- **Your slides 6–9** are the `MY_SLIDES` list. Reorder, delete or copy the blocks;
-  the numbering and the navigation follow automatically.
+- **Your slides 6–12** (energy, transport) are the `MY_SLIDES` list, slide 13 is
+  the German summary (`SUMMARY`) and **Payam's slides 14–16** are `PAYAM_SLIDES`.
+  Reorder, delete or copy the blocks; the numbering and the navigation follow
+  automatically.
+- **Close-ups** use aerial photos (`"aerial"` in `layers`, Switzerland only).
+  Replace it with `"buildings3d"` for grey building blocks on the drawn map.
+- **Moving vehicles**: a slide with `"funiculars"`, `"trolleybuses"` or `"boat"`
+  in `layers` shows those lines with vehicles moving along them. They are
+  decoration and do not follow the timetable; their number and speed are set in
+  `TRANSPORT` at the top of `app.js`.
 - **Speaking cues** go in `notes` (shown only with `N`), not in `bullets`.
 - **Glossary**: `glossary: [{ strong: "...", weak: "..." }]` per panel.
 - **Weak-language keywords**: `weakLanguage: ["..."]` per panel; `weakPanel: true`
@@ -55,8 +63,8 @@ describes the fields of a slide.
   the flight time in ms, `rotate` the slow rotation in degrees per second.
 - **Labelled points** are in [`data/points.geojson`](data/points.geojson), their
   texts in `pointLabels`, and a slide shows them with `markers: ["id"]`.
-- **Sources slide**: the `SOURCES` list. Content sources come first, then the map
-  data; the full links are at the end of `SCRIPT.md`.
+- **Sources slide**: the `SOURCES` list, each entry with its clickable links.
+  Content sources come first, then the map data.
 
 Files: `index.html` (page), `content.js` (text and camera stops), `app.js`
 (engine), `style.css` (looks), `data/` (map data), `assets/` (MapLibre).
@@ -74,6 +82,7 @@ recording a backup video.
 | What | URL | Attribution |
 | --- | --- | --- |
 | Basemap style and vector tiles | `https://tiles.openfreemap.org/styles/liberty` (fallback: `.../styles/positron`) | OpenFreeMap, © OpenMapTiles, data from OpenStreetMap (ODbL) |
+| Aerial photos on the close-ups | `https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg` | © swisstopo (SWISSIMAGE, free use with source) |
 | Elevation for 3D terrain and hillshade | `https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png` | Terrain Tiles (Mapzen), AWS Open Data |
 
 Committed to the repo:
@@ -83,11 +92,12 @@ Committed to the repo:
 | MapLibre GL JS (`assets/unpkg.com/maplibre-gl@5.24.1/`) | 5.24.1 | BSD-3-Clause |
 | Natural Earth countries | 5.1.2 | public domain |
 | BFS/OFS municipality boundaries and language regions | state of 1.1.2024 | open data, source attribution required |
+| OpenStreetMap transport lines (funiculars, trolleybus, boat) | state of 1.11.2026 | ODbL, © OpenStreetMap contributors |
 
 Details and URLs of the data: [data/SOURCES.md](data/SOURCES.md). The credit line
 at the bottom left of the map always names OpenFreeMap, OpenMapTiles and
-OpenStreetMap, and adds the terrain tiles and BFS/OFS only on slides that show
-that data. Natural Earth is public domain and is credited on the sources slide only.
+OpenStreetMap, and adds the terrain tiles, swisstopo and BFS/OFS only on slides
+that show that data. Natural Earth is public domain and is credited on the sources slide only.
 
 ## Rebuild from scratch
 
@@ -98,7 +108,8 @@ that data. Natural Earth is public domain and is credited on the sources slide o
 - `scripts/fetch-deps.sh` downloads the pinned MapLibre files into `assets/`.
 - `scripts/fetch-data.sh` downloads the raw data into `data/raw/`, checks it
   against `data/checksums.sha256` (and warns if an upstream file changed), then
-  rebuilds `data/*.geojson` with `npx mapshaper@0.8.6`. It needs Node.js.
+  rebuilds `data/*.geojson` with `npx mapshaper@0.8.6` and
+  `scripts/osm-lines.mjs`. It needs Node.js.
 - `data/points.geojson` is hand-written and not touched by the scripts.
 
 Afterwards `git status` should show no changes.
