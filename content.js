@@ -253,9 +253,9 @@ const MY_SLIDES = [
   },
   {
     id: "solar",
-    camera: { center: [7.2816, 47.1556], zoom: 16.1, pitch: 62, bearing: -30 },
+    camera: { center: [7.2822, 47.1558], zoom: 16.3, pitch: 62, bearing: -115 },   // as in the photo: from the north-east end
     duration: 1800,
-    rotate: 3,
+    rotate: 0.5,
     layers: CLOSE_UP,
     markers: ["tissot-arena"],
     panel: {
@@ -279,9 +279,9 @@ const MY_SLIDES = [
   },
   {
     id: "hagneck",
-    camera: { center: [7.1768, 47.06], zoom: 15.2, pitch: 65, bearing: 130 },
+    camera: { center: [7.1772, 47.0599], zoom: 16.6, pitch: 58, bearing: 110 },   // as in the photo: from the footbridge
     duration: 2000,
-    rotate: 2,
+    rotate: 0.5,
     layers: CLOSE_UP,
     markers: ["hagneck"],
     panel: {
@@ -305,9 +305,9 @@ const MY_SLIDES = [
   },
   {
     id: "funiculars",
-    camera: { center: [7.2300, 47.1425], zoom: 13.9, pitch: 62, bearing: -35 },
+    camera: { center: [7.2265, 47.1415], zoom: 13.2, pitch: 58, bearing: 150 },   // as in the photo: down the Évilard line
     duration: 1800,
-    rotate: 1.5,
+    rotate: 0.5,
     layers: [...CLOSE_UP, "funiculars"],
     markers: ["magglingen", "evilard"],
     legend: [{ swatch: "funicular", strong: "[STRONG: Funiculaire]", weak: "[WEAK: Standseilbahn]" }],
@@ -390,9 +390,9 @@ const MY_SLIDES = [
 const PAYAM_SLIDES = [
   {
     id: "swatch",
-    camera: { center: [7.2606, 47.1436], zoom: 16, pitch: 62, bearing: 30 },
+    camera: { center: [7.2606, 47.1437], zoom: 16.4, pitch: 65, bearing: 145 },   // as in the photo: along the street under the roof
     duration: 1800,
-    rotate: 3,
+    rotate: 0.5,
     layers: CLOSE_UP,
     markers: ["swatch"],
     panel: {
@@ -416,9 +416,9 @@ const PAYAM_SLIDES = [
   },
   {
     id: "expo",
-    camera: { center: [7.2350, 47.1300], zoom: 14.6, pitch: 60, bearing: 60 },
+    camera: { center: [7.2350, 47.1305], zoom: 14.6, pitch: 62, bearing: -45 },   // as in the photo: from the lake towards the Jura
     duration: 1600,
-    rotate: 2,
+    rotate: 0.5,
     layers: CLOSE_UP,
     markers: ["lakeshore"],
     panel: {

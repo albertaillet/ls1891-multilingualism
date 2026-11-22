@@ -537,7 +537,8 @@
     const w = window.innerWidth;
     return {
       top: 0,
-      bottom: 0,
+      // a photo card sits at the bottom left: keep the target above it
+      bottom: slide.panel && slide.panel.image ? window.innerHeight * 0.4 : 0,
       // a fitted box also keeps clear of the legend in the top-left corner
       left: layout === "title" ? w * 0.42 : slide.camera.fit && slide.legend ? w * 0.13 : 0,
       right: layout === "side" ? w * 0.36 : layout === "wide" ? w * 0.46 : 0,
