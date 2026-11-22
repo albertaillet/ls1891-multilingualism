@@ -71,9 +71,9 @@ const OPENING = [
   },
   {
     id: "francophone",
-    // Flat map (not the globe), fitted to Quebec, France and French-speaking Africa.
+    // Flat map (not the globe), fitted to all of Canada, France and French-speaking Africa.
     projection: "mercator",
-    camera: { center: [8, 20], zoom: 2.4, pitch: 0, bearing: 0, fit: [-82, -30, 55, 62] },
+    camera: { center: [8, 20], zoom: 2.4, pitch: 0, bearing: 0, fit: [-160, -30, 55, 72] },
     duration: 2400,
     layers: ["francophone"],
     legend: [
