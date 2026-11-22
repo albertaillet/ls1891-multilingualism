@@ -33,6 +33,10 @@
     "language-border": [["border-casing", "line-opacity", 0.9], ["border-line", "line-opacity", 1]],
   };
 
+  // Credit lines appear on the map only while their data is on screen. Natural
+  // Earth is public domain, so it is credited on the sources slide only.
+  const BFS_CREDIT = "Régions linguistiques : OFS/BFS";
+
   // Keyless elevation tiles (Mapzen Terrarium on AWS Open Data).
   const DEM = {
     type: "raster-dem",
@@ -116,7 +120,6 @@
     });
     map.addControl(new maplibregl.AttributionControl({
       compact: false,
-      customAttribution: ["Natural Earth", "BFS/OFS (ThemaKart, régions linguistiques)"],
     }), "bottom-left");
     map.on("error", onMapError);
     map.on("data", onMapData);
@@ -217,8 +220,8 @@
     }, below);
     line("de-line", "germanophone", COLORS.de, 1.2);
 
-    map.addSource("ch-regions", { type: "geojson", data: "data/ch_language_regions.geojson" + FRESH });
-    map.addSource("ch-border", { type: "geojson", data: "data/ch_language_border.geojson" + FRESH });
+    map.addSource("ch-regions", { type: "geojson", data: "data/ch_language_regions.geojson" + FRESH, attribution: BFS_CREDIT });
+    map.addSource("ch-border", { type: "geojson", data: "data/ch_language_border.geojson" + FRESH, attribution: BFS_CREDIT });
     fill("ch-fill", "ch-regions", ["match", ["get", "lang"], "de", COLORS.de, "fr", COLORS.fr, "it", COLORS.it, COLORS.rm]);
     line("ch-line", "ch-regions", "#ffffff", 1);
     // The German/French border: white casing with a dashed dark line on top.

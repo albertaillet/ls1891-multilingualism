@@ -84,9 +84,10 @@ Committed to the repo:
 | Natural Earth countries | 5.1.2 | public domain |
 | BFS/OFS municipality boundaries and language regions | state of 1.1.2024 | open data, source attribution required |
 
-Details and URLs of the data: [data/SOURCES.md](data/SOURCES.md). The attribution
-line at the bottom left of the map names OpenFreeMap, OpenMapTiles, OpenStreetMap,
-the terrain tiles, Natural Earth and BFS/OFS.
+Details and URLs of the data: [data/SOURCES.md](data/SOURCES.md). The credit line
+at the bottom left of the map always names OpenFreeMap, OpenMapTiles and
+OpenStreetMap, and adds the terrain tiles and BFS/OFS only on slides that show
+that data. Natural Earth is public domain and is credited on the sources slide only.
 
 ## Rebuild from scratch
 
