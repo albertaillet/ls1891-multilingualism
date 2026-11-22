@@ -55,7 +55,6 @@ html, body {
 }
 #nav button:hover { background: rgba(20, 32, 46, 0.1); }
 #counter { font-size: 1.05rem; font-weight: 600; min-width: 3.6rem; text-align: center; }
-#keys { font-size: 0.75rem; opacity: 0.55; padding-right: 0.3rem; }
 
 /* ---------- map markers ---------- */
 /* MapLibre sets the opacity of .marker itself, so we fade its contents. */
