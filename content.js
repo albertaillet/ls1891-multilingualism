@@ -65,7 +65,7 @@ const OPENING = [
       heading: "Biel/Bienne",
       subheading: "[STRONG: Ville bilingue, ville de l'énergie]",
       weakLanguage: ["[WEAK: Zweisprachige Stadt, Energiestadt]"],
-      names: "[STRONG: Prénom Nom · Prénom Nom · Prénom Nom]",
+      names: "Albert Sund Aillet · Payam Ghanbarzadegan",
     },
     notes: ["[STRONG: saluer, présenter le groupe]", "[STRONG: thème + pourquoi Bienne]", "[STRONG: plan de l'exposé]"],
   },
@@ -198,19 +198,17 @@ const MY_SLIDES = [
       kicker: "Energiestadt",
       heading: "[STRONG: Bienne, Cité de l'énergie]",
       bullets: [
-        "[STRONG: label « Cité de l'énergie » Gold depuis 2020]",
-        "[STRONG: 2040 : administration municipale neutre en CO₂]",
-        "[STRONG: 2050 : toute la ville climatiquement neutre]",
+        "[STRONG: label Gold depuis 2020]",
+        "[STRONG: objectif : zéro émission nette en 2050]",
         "[STRONG: trois exemples : lac, soleil, eau]",
       ],
-      weakLanguage: ["[WEAK: Energiestadt Gold seit 2020]", "[WEAK: klimaneutrale Stadt bis 2050]"],
+      weakLanguage: ["[WEAK: Energiestadt Gold seit 2020]"],
       glossary: [
         { strong: "la Cité de l'énergie", weak: "die Energiestadt" },
         { strong: "climatiquement neutre", weak: "klimaneutral" },
-        { strong: "l'administration municipale", weak: "die Stadtverwaltung" },
       ],
     },
-    notes: ["[STRONG: qu'est-ce que le label ?]", "[STRONG: deux objectifs : 2040 et 2050]", "[STRONG: annoncer les trois exemples]"],
+    notes: ["[STRONG: qu'est-ce que le label ?]", "[STRONG: objectif : 2050]", "[STRONG: annoncer les trois exemples]"],
   },
   {
     id: "lake",
@@ -387,7 +385,8 @@ const MY_SLIDES = [
 ];
 
 /* --------------------------------------------------------------------------
-   PAYAM'S SLIDES: architecture and streets. Drafts, to be rewritten by Payam.
+   PAYAM'S SLIDES: architecture and streets, entirely in the weak language
+   (weakPanel). Drafts, to be rewritten by Payam.
    -------------------------------------------------------------------------- */
 const PAYAM_SLIDES = [
   {
@@ -398,23 +397,23 @@ const PAYAM_SLIDES = [
     layers: CLOSE_UP,
     markers: ["swatch"],
     panel: {
-      kicker: "[STRONG: Architecture]",
-      heading: "[STRONG: Swatch et Omega : un siège en bois]",
-      image: { src: "assets/photos/swatch.jpg", alt: "Swatch", caption: "Photo : MHM55, CC BY-SA 4.0" },
+      weakPanel: true,
+      kicker: "[WEAK: Architektur]",
+      heading: "[WEAK: Swatch und Omega: ein Hauptsitz aus Holz]",
+      image: { src: "assets/photos/swatch.jpg", alt: "Swatch", caption: "Foto: MHM55, CC BY-SA 4.0" },
       bullets: [
-        "[STRONG: Bienne : siège mondial de Swatch et d'Omega]",
-        "[STRONG: siège de Swatch : 2019, architecte Shigeru Ban]",
-        "[STRONG: 240 m de long, env. 4 600 poutres en bois]",
-        "[STRONG: le bois : un matériau renouvelable]",
+        "[WEAK: Biel: Hauptsitz von Swatch und Omega]",
+        "[WEAK: Swatch-Hauptsitz: 2019, Architekt Shigeru Ban]",
+        "[WEAK: 240 m lang, ca. 4 600 Balken aus Holz]",
+        "[WEAK: Holz: ein erneuerbarer Baustoff]",
       ],
-      weakLanguage: ["[WEAK: Der Hauptsitz von Swatch ist aus Holz]"],
       glossary: [
         { strong: "le siège", weak: "der Hauptsitz" },
         { strong: "le bois", weak: "das Holz" },
         { strong: "l'horlogerie", weak: "die Uhrenindustrie" },
       ],
     },
-    notes: ["[STRONG: montrer le long bâtiment courbe]", "[STRONG: horlogerie = l'industrie de la ville]"],
+    notes: ["[WEAK: das lange, gebogene Gebäude zeigen]", "[WEAK: Uhrenindustrie = die Industrie der Stadt]"],
   },
   {
     id: "expo",
@@ -424,22 +423,22 @@ const PAYAM_SLIDES = [
     layers: CLOSE_UP,
     markers: ["lakeshore"],
     panel: {
+      weakPanel: true,
       kicker: "Expo.02",
-      heading: "[STRONG: L'héritage d'Expo.02 au bord du lac]",
-      image: { src: "assets/photos/expo02.jpg", alt: "Expo.02", caption: "Photo (2002) : WikiNik, CC BY-SA 3.0" },
+      heading: "[WEAK: Das Erbe der Expo.02 am Seeufer]",
+      image: { src: "assets/photos/expo02.jpg", alt: "Expo.02", caption: "Foto (2002): WikiNik, CC BY-SA 3.0" },
       bullets: [
-        "[STRONG: 2002 : exposition nationale suisse, Expo.02]",
-        "[STRONG: Bienne : une des « arteplages », au bord du lac]",
-        "[STRONG: après l'expo : les bâtiments sont démontés]",
-        "[STRONG: 2021 : le projet de quartier AGGLOlac est refusé]",
+        "[WEAK: 2002: Schweizer Landesausstellung Expo.02]",
+        "[WEAK: Biel: eine der «Arteplages», am See]",
+        "[WEAK: nach der Expo: Die Bauten werden abgebaut]",
+        "[WEAK: 2021: Das Quartierprojekt AGGLOlac wird abgelehnt]",
       ],
-      weakLanguage: ["[WEAK: 2002 war die Landesausstellung Expo.02 in Biel]"],
       glossary: [
         { strong: "l'exposition nationale", weak: "die Landesausstellung" },
         { strong: "la rive du lac", weak: "das Seeufer" },
       ],
     },
-    notes: ["[STRONG: montrer la rive entre Bienne et Nidau]", "[STRONG: question : que faire de ce terrain ?]"],
+    notes: ["[WEAK: das Ufer zwischen Biel und Nidau zeigen]", "[WEAK: Frage: Was machen wir mit diesem Gelände?]"],
   },
   {
     id: "streets",
@@ -449,21 +448,21 @@ const PAYAM_SLIDES = [
     layers: CLOSE_UP,
     markers: ["central-square"],
     panel: {
-      kicker: "[STRONG: Espace public]",
-      heading: "[STRONG: Des rues en deux langues]",
-      image: { src: "assets/photos/street-sign.jpg", alt: "Quellgasse / Rue de la Source", caption: "Photo : Roland Zumbuehl, CC BY-SA 4.0" },
+      weakPanel: true,
+      kicker: "[WEAK: Öffentlicher Raum]",
+      heading: "[WEAK: Strassen in zwei Sprachen]",
+      image: { src: "assets/photos/street-sign.jpg", alt: "Quellgasse / Rue de la Source", caption: "Foto: Roland Zumbuehl, CC BY-SA 4.0" },
       bullets: [
-        "[STRONG: tous les noms de rue : en allemand et en français]",
-        "[STRONG: habitants : 55 % allemand, 45 % français]",
-        "[STRONG: le bilinguisme est inscrit dans le règlement de la ville (1996)]",
+        "[WEAK: alle Strassennamen: auf Deutsch und auf Französisch]",
+        "[WEAK: Einwohner: 55 % Deutsch, 45 % Französisch]",
+        "[WEAK: Die Zweisprachigkeit steht in der Stadtordnung (1996)]",
       ],
-      weakLanguage: ["[WEAK: Alle Strassenschilder sind zweisprachig]"],
       glossary: [
         { strong: "le panneau de rue", weak: "das Strassenschild" },
         { strong: "le bilinguisme", weak: "die Zweisprachigkeit" },
       ],
     },
-    notes: ["[STRONG: exemple : Place Centrale / Zentralplatz]", "[STRONG: transition → notre avis]"],
+    notes: ["[WEAK: Beispiel: Zentralplatz / Place Centrale]", "[WEAK: Übergang → unsere Meinung]"],
   },
 ];
 

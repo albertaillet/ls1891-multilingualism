@@ -13,16 +13,16 @@ elles sont plus faciles à dire à voix haute.
 | Énergie | Albert | 6–9 | ~155 | ~1:25 |
 | Transports | Albert | 10–12 | ~130 | ~1:10 |
 | Zusammenfassung | Albert | 13 | ~30 | ~0:20 |
-| Architecture et rues | Payam | 14–16 | ~195 | ~1:50 |
+| Architektur und Strassen (en allemand) | Payam | 14–16 | ~150 | ~1:35 |
 | Notre avis, sources | ensemble | 17–18 | ~80 | ~0:45 |
-| **Total** | | | **~705** | **~6:30** |
+| **Total** | | | **~660** | **~6:15** |
 
-Il reste environ 30 secondes de marge pour les transitions de la carte.
+Il reste environ 45 secondes de marge pour les transitions de la carte.
 Chronométrez-vous une fois à voix haute, ensemble.
 
 - `→` = appuyer sur Espace pour passer à la diapositive suivante.
-- Les textes de Payam (14–16) et les avis (17) sont des propositions : à
-  réécrire avec vos mots.
+- Les textes de Payam (14–16, en allemand) et les avis (17) sont des
+  propositions : à réécrire avec vos mots.
 - « Ouvert en 2015 » pour la Tissot Arena n'est plus dans le texte, parce que
   la source n'a pas pu être vérifiée.
 
@@ -150,40 +150,35 @@ und Schiffe. Das Ziel: klimaneutral bis 2050.*
 
 ---
 
-## Architecture et rues (Payam) – proposition
+## Architektur und Strassen (Payam) – auf Deutsch, Vorschlag
 
-### 14 · Swatch et Omega : un siège en bois
+### 14 · Swatch und Omega: ein Hauptsitz aus Holz
 
-Bienne est aussi la ville des montres. Swatch et Omega ont ici leur siège
-mondial. Regardez ce long bâtiment courbe : c'est le siège de Swatch, ouvert en
-2019. L'architecte est le Japonais Shigeru Ban. Le bâtiment mesure 240 mètres
-de long, et sa structure est en bois : environ 4 600 poutres. Le bois est un
-matériau renouvelable. C'est donc aussi un exemple de construction durable.
-
-**DE** – *Der Hauptsitz von Swatch ist aus Holz gebaut.*
+**DE** – *Biel ist auch die Stadt der Uhren. Swatch und Omega haben hier ihren
+Hauptsitz. Sehen Sie das lange, gebogene Gebäude: Das ist der Hauptsitz von
+Swatch. Er ist seit 2019 offen. Der Architekt ist der Japaner Shigeru Ban. Das
+Gebäude ist 240 Meter lang und aus Holz gebaut: etwa 4 600 Balken. Holz ist ein
+erneuerbarer Baustoff. Das ist also auch ein Beispiel für nachhaltiges Bauen.*
 
 →
 
-### 15 · L'héritage d'Expo.02 au bord du lac
+### 15 · Das Erbe der Expo.02 am Seeufer
 
-En 2002, la Suisse a organisé une exposition nationale, Expo.02. Bienne était
-une des villes de l'exposition, avec un site au bord du lac. Après l'exposition, on a tout démonté. Depuis, la ville se demande :
-que faire de ce terrain au bord du lac ? En 2021, un grand projet de quartier,
-AGGLOlac, a été refusé.
-
-**DE** – *2002 war die Landesausstellung Expo.02 in Biel.*
+**DE** – *2002 gab es in der Schweiz eine Landesausstellung, die Expo.02. Biel
+war eine der Städte der Ausstellung, mit einem Gelände am See. Nach der
+Ausstellung hat man alles abgebaut. Seitdem fragt sich die Stadt: Was machen
+wir mit diesem Gelände am See? 2021 wurde ein grosses Quartierprojekt,
+AGGLOlac, abgelehnt.*
 
 →
 
-### 16 · Des rues en deux langues
+### 16 · Strassen in zwei Sprachen
 
-À Bienne, le bilinguisme se voit dans la rue. Tous les noms de rue sont en
-allemand et en français, par exemple « Zentralplatz » et « Place Centrale ».
-Environ 55 % des habitants ont l'allemand comme langue officielle, 45 % le
-français. Depuis 1996, le bilinguisme est inscrit dans le règlement de la
-ville.
-
-**DE** – *Alle Strassenschilder sind zweisprachig.*
+**DE** – *In Biel sieht man die Zweisprachigkeit auf der Strasse. Alle
+Strassennamen sind auf Deutsch und auf Französisch, zum Beispiel
+«Zentralplatz» und «Place Centrale». Etwa 55 % der Einwohner haben Deutsch als
+Amtssprache, 45 % Französisch. Seit 1996 steht die Zweisprachigkeit in der
+Stadtordnung.*
 
 →
 

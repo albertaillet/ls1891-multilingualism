@@ -115,6 +115,9 @@ on slides that show that data. Natural Earth is public domain and is credited on
 - `scripts/fetch-deps.sh` downloads the pinned MapLibre files into `assets/`.
 - `scripts/fetch-photos.sh` downloads the slide photos into `assets/photos/`.
   They are committed too, so the page works from a plain clone.
+- `scripts/make-pdf.py` saves every slide as one page of `biel-bienne.pdf`
+  (not committed). It is a uv script that opens the page in a headless
+  Chromium, so it needs internet; the first run downloads the browser.
 - `scripts/fetch-data.sh` downloads the raw data into `data/raw/`, checks it
   against `data/checksums.sha256` (and warns if an upstream file changed), then
   rebuilds `data/*.geojson` with `npx mapshaper@0.8.6` and
