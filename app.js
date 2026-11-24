@@ -608,9 +608,12 @@
     if (p.bullets) panel.append(el("ul", "bullets", p.bullets.map((b) => el("li", "", b))));
     // One photo, or a list of two that share a row: { src, alt, caption }.
     const photos = [].concat(p.image || []).map((image) => {
-      const img = el("img");
-      img.alt = plain(image.alt || "");
-      img.onload = () => fitPhotos(panel);
+      // A .mp4 file plays silently in a loop, like an animated picture.
+      const video = /\.mp4$/.test(image.src);
+      const img = el(video ? "video" : "img");
+      if (video) Object.assign(img, { muted: true, loop: true, autoplay: true, playsInline: true });
+      else img.alt = plain(image.alt || "");
+      img[video ? "onloadeddata" : "onload"] = () => fitPhotos(panel);
       img.src = image.src;
       return el("figure", "", [img, image.caption && el("figcaption", "", image.caption)]);
     });
@@ -653,7 +656,7 @@
 
   // Photos shrink until the panel fits on the screen.
   function fitPhotos(panel) {
-    const imgs = [...panel.querySelectorAll(".photos img")];
+    const imgs = [...panel.querySelectorAll(".photos img, .photos video")];
     for (const img of imgs) img.style.maxHeight = "";
     const over = panel.scrollHeight - panel.clientHeight;
     if (over <= 0) return;

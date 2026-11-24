@@ -42,7 +42,8 @@ and the sources slide links to each file page.
 | --- | --- | --- | --- |
 | `tissot-arena.jpg` | [Solarkraftwerk Tissot Arena.jpg](https://commons.wikimedia.org/wiki/File:Solarkraftwerk_Tissot_Arena.jpg) | ESB BielBienne | CC BY-SA 4.0 |
 | `hagneck.jpg` | [Neues Wasserkraftwerk Hagneck.jpg](https://commons.wikimedia.org/wiki/File:Neues_Wasserkraftwerk_Hagneck.jpg) | Arkelin | CC BY 4.0 |
-| `funicular.jpg` | [I09 386 Standseilbahn Leubringen, Wagen 1.jpg](https://commons.wikimedia.org/wiki/File:I09_386_Standseilbahn_Leubringen,_Wagen_1.jpg) | Falk2 | CC BY-SA 4.0 |
+| `funicular.jpg` (no longer on a slide) | [I09 386 Standseilbahn Leubringen, Wagen 1.jpg](https://commons.wikimedia.org/wiki/File:I09_386_Standseilbahn_Leubringen,_Wagen_1.jpg) | Falk2 | CC BY-SA 4.0 |
+| `funicular.mp4` (on the slide; 640 px wide, no sound, converted with ffmpeg) | [Funi Bienne-Macolin-27avril2025-20.webm](https://commons.wikimedia.org/wiki/File:Funi_Bienne-Macolin-27avril2025-20.webm) | MHM55 | CC BY-SA 4.0 |
 | `trolleybus.jpg` | [Trolleybus des TPB Bienne.JPG](https://commons.wikimedia.org/wiki/File:Trolleybus_des_TPB_Bienne.JPG) | VincentdeMorteau | CC BY-SA 3.0 |
 | `mobicat.jpg` | [MobiCat Ligerz.jpg](https://commons.wikimedia.org/wiki/File:MobiCat_Ligerz.jpg) | Bielersee Schifffahrtsgesellschaft (BSG) | CC BY-SA 3.0 |
 | `swatch.jpg` | [Swatch-Bienne-10.jpg](https://commons.wikimedia.org/wiki/File:Swatch-Bienne-10.jpg) | MHM55 | CC BY-SA 4.0 |

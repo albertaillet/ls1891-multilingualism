@@ -30,7 +30,8 @@
        heading: "...",
        bullets: ["...", "..."],   // 3-5 short keywords
        weakLanguage: ["..."],     // shown in italics with a language tag
-       image: { src: "assets/photos/photo.jpg", alt: "...", caption: "..." },   // or a list of two; shown in the panel
+       image: { src: "assets/photos/photo.jpg", alt: "...", caption: "..." },   // or a list of two; shown in the panel;
+                                  // a .mp4 file plays silently in a loop
        diagram: { type: "lake-energy", labels: { ... } },
        glossary: [{ strong: "...", weak: "..." }],
      },
@@ -111,7 +112,6 @@ const OPENING = [
       bullets: [
         "[STRONG: allemand : langue officielle dans 6 pays]",
         "[STRONG: les deux langues : Suisse, Belgique, Luxembourg]",
-        "[STRONG: la Suisse : au point de rencontre]",
       ],
       weakLanguage: ["[WEAK: Deutsch und Französisch treffen sich in der Schweiz]"],
       glossary: [
@@ -197,16 +197,6 @@ const MY_SLIDES = [
     panel: {
       kicker: "Energiestadt",
       heading: "[STRONG: Bienne, Cité de l'énergie]",
-      bullets: [
-        "[STRONG: label Gold depuis 2020]",
-        "[STRONG: objectif : zéro émission nette en 2050]",
-        "[STRONG: trois exemples : lac, soleil, eau]",
-      ],
-      weakLanguage: ["[WEAK: Energiestadt Gold seit 2020]"],
-      glossary: [
-        { strong: "la Cité de l'énergie", weak: "die Energiestadt" },
-        { strong: "climatiquement neutre", weak: "klimaneutral" },
-      ],
     },
     notes: ["[STRONG: qu'est-ce que le label ?]", "[STRONG: objectif : 2050]", "[STRONG: annoncer les trois exemples]"],
   },
@@ -290,7 +280,7 @@ const MY_SLIDES = [
         "[STRONG: l'Aar arrive ici dans le lac de Bienne]",
         "[STRONG: nouvelle centrale depuis 2015]",
         "[STRONG: électricité renouvelable pour la région]",
-        "[STRONG: passe à poissons : énergie + nature]",
+        "[STRONG: passe à poissons]",
       ],
       weakLanguage: ["[WEAK: Wasserkraftwerk am Hagneckkanal]"],
       glossary: [
@@ -312,7 +302,7 @@ const MY_SLIDES = [
     panel: {
       kicker: "[STRONG: Transports]",
       heading: "[STRONG: Monter sans voiture]",
-      image: { src: "assets/photos/funicular.jpg", alt: "Funiculaire Bienne–Évilard", caption: "Photo : Falk2, CC BY-SA 4.0" },
+      image: { src: "assets/photos/funicular.mp4", alt: "Funiculaire Bienne–Macolin", caption: "Vidéo : MHM55, CC BY-SA 4.0" },
       bullets: [
         "[STRONG: deux funiculaires partent de la ville]",
         "[STRONG: Macolin : depuis 1887, 1,7 km]",
@@ -564,11 +554,11 @@ const SOURCES = [
     ["francophonie.org", "https://www.francophonie.org/sites/default/files/2026-04/Synthese_rapport_Langue_francaise_dans_le_monde_2026.pdf"]] },
   { text: "Cartes : OFS/BFS, régions linguistiques 2020 (état 1.1.2024) ; Natural Earth 5.1.2 ; lignes de transport et de train : OpenStreetMap (1.11.2026)." },
   {
-    text: "Photos : Wikimedia Commons, auteurs et licences sous chaque photo.",
+    text: "Photos et vidéo : Wikimedia Commons, auteurs et licences sous chaque photo.",
     links: [
       ["Tissot Arena", "https://commons.wikimedia.org/wiki/File:Solarkraftwerk_Tissot_Arena.jpg"],
       ["Hagneck", "https://commons.wikimedia.org/wiki/File:Neues_Wasserkraftwerk_Hagneck.jpg"],
-      ["funiculaire", "https://commons.wikimedia.org/wiki/File:I09_386_Standseilbahn_Leubringen,_Wagen_1.jpg"],
+      ["funiculaire (vidéo)", "https://commons.wikimedia.org/wiki/File:Funi_Bienne-Macolin-27avril2025-20.webm"],
       ["trolleybus", "https://commons.wikimedia.org/wiki/File:Trolleybus_des_TPB_Bienne.JPG"],
       ["MobiCat", "https://commons.wikimedia.org/wiki/File:MobiCat_Ligerz.jpg"],
       ["Swatch", "https://commons.wikimedia.org/wiki/File:Swatch-Bienne-10.jpg"],

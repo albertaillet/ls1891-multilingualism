@@ -1,6 +1,6 @@
 #!/bin/sh
 # Downloads the photos on the slides from Wikimedia Commons into assets/photos/,
-# scaled down to at most 1280 pixels wide. Needs curl.
+# scaled down to at most 1280 pixels wide. Needs curl, and ffmpeg for the video.
 # Authors and licences: see data/SOURCES.md.
 set -eu
 cd "$(dirname "$0")/.."
@@ -16,9 +16,16 @@ photo() {
 
 photo tissot-arena.jpg "Solarkraftwerk%20Tissot%20Arena.jpg"
 photo hagneck.jpg "Neues%20Wasserkraftwerk%20Hagneck.jpg"
-photo funicular.jpg "I09%20386%20Standseilbahn%20Leubringen%2C%20Wagen%201.jpg"
+photo funicular.jpg "I09%20386%20Standseilbahn%20Leubringen%2C%20Wagen%201.jpg"   # no longer on a slide
 photo trolleybus.jpg "Trolleybus%20des%20TPB%20Bienne.JPG"
 photo mobicat.jpg "MobiCat%20Ligerz.jpg"
 photo swatch.jpg "Swatch-Bienne-10.jpg"
 photo expo02.jpg "Tuerme%20auf%20der%20Arteplage%20Biel%20der%20Expo.02.jpg"
 photo street-sign.jpg "2005-Biel-Quellgasse.jpg"
+
+# The funicular video: the 480p version from Commons, without sound, as .mp4.
+echo "fetch funicular.mp4"
+curl -fL -sS --retry 5 --retry-delay 10 -A "map-presentation-fetch-data/1.0" -o assets/photos/funicular.webm \
+  "https://upload.wikimedia.org/wikipedia/commons/transcoded/2/2e/Funi_Bienne-Macolin-27avril2025-20.webm/Funi_Bienne-Macolin-27avril2025-20.webm.480p.vp9.webm"
+ffmpeg -v error -y -i assets/photos/funicular.webm -an -vf "scale=640:-2" -c:v libx264 -crf 26 -pix_fmt yuv420p -movflags +faststart assets/photos/funicular.mp4
+rm assets/photos/funicular.webm
