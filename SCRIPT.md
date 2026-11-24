@@ -14,15 +14,15 @@ elles sont plus faciles à dire à voix haute.
 | Transports | Albert | 10–12 | ~130 | ~1:10 |
 | Zusammenfassung | Albert | 13 | ~30 | ~0:20 |
 | Architektur und Strassen (en allemand) | Payam | 14–16 | ~150 | ~1:35 |
-| Notre avis, sources | ensemble | 17–18 | ~80 | ~0:45 |
-| **Total** | | | **~660** | **~6:15** |
+| Sources | ensemble | 17 | ~15 | ~0:10 |
+| **Total** | | | **~595** | **~5:40** |
 
-Il reste environ 45 secondes de marge pour les transitions de la carte.
+Il reste plus d'une minute de marge pour les transitions de la carte.
 Chronométrez-vous une fois à voix haute, ensemble.
 
 - `→` = appuyer sur Espace pour passer à la diapositive suivante.
-- Les textes de Payam (14–16, en allemand) et les avis (17) sont des
-  propositions : à réécrire avec vos mots.
+- Les textes de Payam (14–16, en allemand) sont des propositions : à réécrire
+  avec vos mots.
 - « Ouvert en 2015 » pour la Tissot Arena n'est plus dans le texte, parce que
   la source n'a pas pu être vérifiée.
 
@@ -186,22 +186,7 @@ Stadtordnung.*
 
 ## Conclusion (ensemble)
 
-### 17 · Notre avis
-
-*(Propositions – à remplacer par vos avis personnels.)*
-
-**Albert** – À mon avis, Bienne est un bon exemple, parce que la ville utilise
-ce qu'elle a déjà : un lac, des toits et une rivière. Mais pour être neutre en
-2050, il faut aussi changer les transports.
-
-**Payam** – À mon avis, le plus intéressant est l'architecture : le siège de
-Swatch montre qu'on peut construire grand avec du bois.
-
-**DE** – *Meiner Meinung nach ist Biel ein gutes Beispiel für andere Städte.*
-
-→
-
-### 18 · Sources
+### 17 · Sources
 
 Voici nos sources. Merci de votre attention. Avez-vous des questions ?
 
@@ -209,7 +194,7 @@ Voici nos sources. Merci de votre attention. Avez-vous des questions ?
 
 ## D'où viennent les chiffres
 
-Les liens sont sur la diapositive 18 (liste `SOURCES` dans `content.js`), où on
+Les liens sont sur la diapositive 17 (liste `SOURCES` dans `content.js`), où on
 peut cliquer dessus.
 
 | Diapositive | Affirmation | Source |

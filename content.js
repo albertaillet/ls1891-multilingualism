@@ -452,7 +452,7 @@ const PAYAM_SLIDES = [
         { strong: "le bilinguisme", weak: "die Zweisprachigkeit" },
       ],
     },
-    notes: ["[WEAK: Beispiel: Zentralplatz / Place Centrale]", "[WEAK: Übergang → unsere Meinung]"],
+    notes: ["[WEAK: Beispiel: Zentralplatz / Place Centrale]", "[WEAK: Übergang → Quellen]"],
   },
 ];
 
@@ -485,25 +485,9 @@ const SUMMARY = [
 ];
 
 /* --------------------------------------------------------------------------
-   Closing slides: one short personal stance each, then the sources
+   Closing slide: the sources
    -------------------------------------------------------------------------- */
 const CLOSING = [
-  {
-    id: "stance",
-    camera: { center: [7.17, 47.09], zoom: 10.6, pitch: 35, bearing: -40 },
-    duration: 1200,
-    layers: ["terrain"],
-    markers: ["biel"],
-    panel: {
-      heading: "[STRONG: Notre avis]",
-      bullets: [
-        "[STRONG: Albert : à mon avis, … (une ou deux phrases)]",
-        "[STRONG: Payam : à mon avis, … (une ou deux phrases)]",
-      ],
-      weakLanguage: ["[WEAK: Meiner Meinung nach …]"],
-    },
-    notes: ["[STRONG: chacun donne son avis, court]", "[STRONG: remercier, questions ?]"],
-  },
   {
     id: "sources",
     camera: { center: [8.23, 46.8], zoom: 5.2, pitch: 0, bearing: 0 },
