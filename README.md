@@ -99,6 +99,7 @@ Committed to the repo:
 | Natural Earth countries | 5.1.2 | public domain |
 | BFS/OFS municipality boundaries and language regions | state of 1.1.2024 | open data, source attribution required |
 | OpenStreetMap transport lines (funiculars, trolleybus, boat, SBB tracks) | state of 1.11.2026 | ODbL, © OpenStreetMap contributors |
+| Slide photos from Wikimedia Commons (`assets/photos/`) | 1280 px wide | CC BY / CC BY-SA, per photo in `data/SOURCES.md` |
 
 Details and URLs of the data: [data/SOURCES.md](data/SOURCES.md). The credit line
 at the bottom left of the map always names the Sentinel-2 imagery, and adds
@@ -113,7 +114,7 @@ on slides that show that data. Natural Earth is public domain and is credited on
 
 - `scripts/fetch-deps.sh` downloads the pinned MapLibre files into `assets/`.
 - `scripts/fetch-photos.sh` downloads the slide photos into `assets/photos/`.
-  They are not committed, so run it once after cloning.
+  They are committed too, so the page works from a plain clone.
 - `scripts/fetch-data.sh` downloads the raw data into `data/raw/`, checks it
   against `data/checksums.sha256` (and warns if an upstream file changed), then
   rebuilds `data/*.geojson` with `npx mapshaper@0.8.6` and

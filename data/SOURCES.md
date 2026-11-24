@@ -35,7 +35,7 @@ where its coordinate comes from.
 ## Photos on the slides (`assets/photos/`)
 
 Downloaded from Wikimedia Commons by `scripts/fetch-photos.sh`, scaled down to
-at most 1280 pixels wide. The files are not committed (`.gitignore`). The author and licence are shown under each photo,
+at most 1280 pixels wide. The files are committed to the repo. The author and licence are shown under each photo,
 and the sources slide links to each file page.
 
 | File | Commons file | Author | Licence |
