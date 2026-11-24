@@ -3,7 +3,7 @@
 # requires-python = ">=3.10"
 # dependencies = [
 #     "playwright",
-#     "pillow",
+#     "pymupdf",
 # ]
 # ///
 """Saves every slide as one page of biel-bienne.pdf, in the project folder.
@@ -16,12 +16,11 @@ Usage:
 """
 
 import argparse
-import io
 import subprocess
 import sys
 from pathlib import Path
 
-from PIL import Image
+import pymupdf
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -33,7 +32,7 @@ def main() -> None:
 
     subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
 
-    pages = []
+    pdf = pymupdf.open()
     with sync_playwright() as p:
         browser = p.chromium.launch(args=["--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"])
         page = browser.new_page(viewport={"width": 1920, "height": 1080})
@@ -53,13 +52,23 @@ def main() -> None:
                 timeout=120_000,
             )
             page.wait_for_timeout(2500)
-            pages.append(Image.open(io.BytesIO(page.screenshot(type="jpeg", quality=88))))
+            # One PDF page per slide: the screenshot at half size (960 x 540 points),
+            # with a clickable area over every link on the slide.
+            sheet = pdf.new_page(width=960, height=540)
+            sheet.insert_image(sheet.rect, stream=page.screenshot(type="jpeg", quality=88))
+            links = page.evaluate(
+                "[...document.querySelectorAll('#panel a[href]')].map(a =>"
+                " [a.href, ...[...a.getClientRects()].map(r => [r.left, r.top, r.right, r.bottom])])"
+            )
+            for href, *boxes in links:
+                for box in boxes:
+                    sheet.insert_link({"kind": pymupdf.LINK_URI, "from": pymupdf.Rect(box) * 0.5, "uri": href})
             print(f"slide {i + 1} / {count}")
         browser.close()
 
     out = ROOT / "biel-bienne.pdf"
-    pages[0].save(out, save_all=True, append_images=pages[1:], resolution=144)
-    print(f"wrote {out} ({len(pages)} pages, {out.stat().st_size / 1e6:.1f} MB)")
+    pdf.save(out)
+    print(f"wrote {out} ({len(pdf)} pages, {out.stat().st_size / 1e6:.1f} MB)")
 
 
 if __name__ == "__main__":
